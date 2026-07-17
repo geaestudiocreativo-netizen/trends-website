@@ -1,0 +1,97 @@
+---
+import "../styles/global.css";
+import { site } from "../data/site";
+
+interface Props { title?: string; description?: string; }
+const {
+  title = "GABS · by Gabriel García — Tartas artesanales",
+  description = "Tartas artesanales para ti, tu restaurante y tu evento. Haz tu pedido por WhatsApp.",
+} = Astro.props;
+---
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f3ebe0" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/images/hero-cream.jpg" />
+
+    <!-- Fonts: preconnect + display=swap for fast, CLS-free loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Krona+One&family=Poppins:wght@300;400;500;600&display=swap"
+    />
+
+    <link rel="preload" as="image" href="/images/hero-cream.jpg" />
+  </head>
+  <body>
+    <a class="skip-link" href="#catalogo">Saltar al catálogo</a>
+    <slot />
+
+    <footer class="site-footer">
+      <div class="container">
+        <span>{site.brand} · {site.tagline}</span>
+        <span>© {new Date().getFullYear()}</span>
+      </div>
+    </footer>
+
+    <style>
+      .skip-link {
+        position: absolute; left: 12px; top: -60px;
+        background: var(--brown); color: #fff; padding: 10px 16px; border-radius: 6px;
+        z-index: 100; transition: top 0.2s ease;
+      }
+      .skip-link:focus { top: 12px; }
+      .site-footer {
+        background: var(--cream);
+        border-top: 1px solid var(--hairline);
+        padding-block: 28px;
+        font-size: 0.8rem;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+      }
+      .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    </style>
+
+    <script>
+      // Smooth in-page scroll for the hero "Nuestras Tartas" button.
+      document.querySelectorAll<HTMLAnchorElement>("[data-scroll]").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          const target = document.querySelector(el.dataset.scroll!);
+          if (!target) return;
+          e.preventDefault();
+          const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+          target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+          (target as HTMLElement).setAttribute("tabindex", "-1");
+          (target as HTMLElement).focus({ preventScroll: true });
+        });
+      });
+
+      // Scroll-reveal for elements marked .reveal (GPU: opacity + transform).
+      const revealTargets = document.querySelectorAll<HTMLElement>(".reveal:not(.is-in), .reveal-card:not(.is-in)");
+      if (revealTargets.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-in");
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+        );
+        revealTargets.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

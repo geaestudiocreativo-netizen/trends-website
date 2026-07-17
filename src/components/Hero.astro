@@ -1,0 +1,135 @@
+---
+import { site, waLink } from "../data/site";
+import WhatsAppIcon from "./WhatsAppIcon.astro";
+---
+<header class="hero" id="top">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+  <div class="hero__inner container">
+    <h1 class="hero__wordmark">{site.brand}</h1>
+    <p class="hero__tagline">{site.tagline}</p>
+    <div class="hero__cta">
+      <a class="btn btn--light" href="#catalogo" data-scroll="#catalogo">Nuestras Tartas</a>
+      <a
+        class="btn btn--gold"
+        href={waLink()}
+        target="_blank"
+        rel="noopener"
+      >
+        <WhatsAppIcon size={18} />
+        Haz tu pedido ya
+      </a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: clamp(560px, 84vh, 880px);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    /* New photo layered over the cream texture: until you upload
+       hero-photo.jpg, the texture shows; once it exists, it covers. */
+    background-image: url("/images/hero-photo.jpg"), url("/images/hero-cream.jpg");
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.04);
+    opacity: 0;
+    animation:
+      heroBgIn 500ms var(--ease-out) forwards,
+      heroDrift 22s ease-in-out 500ms infinite alternate;
+  }
+  /* Soft cream glow behind the wordmark so the dark logo stays legible
+     on a bright photo — lightens, never darkens the image. */
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(
+      ellipse 72% 56% at 50% 44%,
+      rgba(243, 235, 224, 0.5),
+      rgba(243, 235, 224, 0) 70%
+    );
+  }
+  @keyframes heroBgIn {
+    to { opacity: 1; }
+  }
+  @keyframes heroDrift {
+    from { transform: scale(1.04) translate3d(0, 0, 0); }
+    to   { transform: scale(1.08) translate3d(0, -1.4%, 0); }
+  }
+  @keyframes heroContentIn {
+    from { opacity: 0; transform: translate3d(0, 30px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  .hero__inner {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero__wordmark {
+    font-family: var(--font-logo);
+    font-weight: 400;                 /* Krona One ships a single weight */
+    color: var(--brown);
+    font-size: clamp(2.3rem, 10.5vw, 6.4rem);
+    letter-spacing: 0.02em;           /* Krona One is already wide by design */
+    line-height: 1;
+    max-width: 100%;
+    overflow-wrap: normal;
+  }
+  .hero__tagline {
+    margin-top: 0.4rem;
+    font-size: clamp(0.72rem, 1.3vw, 0.9rem);
+    letter-spacing: 0.42em;
+    text-indent: 0.42em;
+    color: var(--brown);
+    font-weight: 300;
+  }
+  .hero__cta {
+    margin-top: clamp(1.6rem, 4vw, 2.6rem);
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .hero__cta .btn { min-width: 240px; }
+
+  .hero__wordmark,
+  .hero__tagline,
+  .hero__cta {
+    opacity: 0;
+    transform: translate3d(0, 30px, 0);
+    animation: heroContentIn 500ms var(--ease-out) forwards;
+  }
+  .hero__wordmark { animation-delay: 150ms; }
+  .hero__tagline  { animation-delay: 300ms; }
+  .hero__cta      { animation-delay: 500ms; }
+
+  @media (max-width: 560px) {
+    .hero__cta { flex-direction: column; width: 100%; max-width: 320px; }
+    .hero__cta .btn { width: 100%; min-width: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__bg {
+      opacity: 1;
+      animation: none;
+      transform: none;
+    }
+    .hero__wordmark,
+    .hero__tagline,
+    .hero__cta {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>

@@ -29,8 +29,31 @@ export function waLink(message: string = site.whatsappDefaultMessage): string {
 //
 //  To change the hero image, just replace this file:
 //      public/images/hero.jpg
-//  Keep the same name and no code changes are needed anywhere.
-//  (Referenced by Hero.astro for the background and by Base.astro
-//   for the preload hint and the social share image.)
+//  Keep the same name; no code changes are needed anywhere.
+//
+//  The URL carries a short fingerprint of the file's contents, so a
+//  replaced image always gets a NEW url. Without it the browser keeps
+//  serving the previously cached bytes for /images/hero.jpg and the old
+//  photo flashes up before the new one arrives.
+//  The fingerprint is computed at build time (Astro runs this on the
+//  server), so it costs nothing at runtime.
 // ─────────────────────────────────────────────────────────────
-export const heroImage = "/images/hero.jpg";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+
+const HERO_PATH = "/images/hero.jpg";
+
+function fingerprint(publicPath: string): string {
+  try {
+    const file = new URL(`../../public${publicPath}`, import.meta.url);
+    return createHash("sha1").update(readFileSync(file)).digest("hex").slice(0, 8);
+  } catch {
+    // Missing file at build time: fall back to an unversioned URL rather
+    // than breaking the build.
+    return "";
+  }
+}
+
+const heroVersion = fingerprint(HERO_PATH);
+
+export const heroImage = heroVersion ? `${HERO_PATH}?v=${heroVersion}` : HERO_PATH;

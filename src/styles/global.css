@@ -29,16 +29,16 @@
   --font-logo: "Krona One", "Poppins", system-ui, sans-serif;
 
   /* Layout */
-  --container: 1200px;
+  --container: 1440px;
   --grid-max: 1120px;      /* 3×360 + 2×20 */
-  --gutter: clamp(20px, 5vw, 60px);
-  --radius-card: 20px;
+  --gutter: clamp(20px, 8.8vw, 127px);
+  --radius-card: 10px;
   --radius-btn: 5px;
 
   /* Motion */
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --dur: 0.4s;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 0.42s;
 }
 
 /* ---------- reset ---------- */
@@ -101,38 +101,35 @@ ul { list-style: none; padding: 0; }
   font-weight: 400;
   letter-spacing: 0.01em;
   color: var(--brown);
-  transition: transform 150ms var(--ease-out), box-shadow var(--dur) var(--ease),
+  will-change: transform;
+  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
     background-color var(--dur) var(--ease);
 }
 .btn:hover { transform: translateY(-2px); }
-.btn:active { transform: scale(0.97); }
-@media (hover: hover) {
-  .btn:hover:active { transform: translateY(-2px) scale(0.97); }
-}
+.btn:active { transform: translateY(0); }
 .btn--light { background: var(--pink-white); box-shadow: 0 2px 12px rgba(69,41,40,.14), inset 0 0 0 1px rgba(69,41,40,.07); }
 .btn--light:hover { box-shadow: 0 10px 24px rgba(69,41,40,.18), inset 0 0 0 1px rgba(69,41,40,.07); }
+.btn--dark { background: var(--btn-dark); color: var(--cream-hero); }
+.btn--dark:hover { box-shadow: 0 8px 22px rgba(41,25,24,.38); }
 .btn--gold { background: var(--gold); }
 .btn--gold:hover { box-shadow: 0 8px 22px rgba(212,189,101,.5); }
 
 /* ---------- category pills ---------- */
 .pill {
   height: 35px;
-  padding-inline: 18px;
+  min-width: 124px;
+  padding-inline: 14px;
   border-radius: 17.5px;
   font-size: 0.78rem;
   font-weight: 400;
   color: var(--white);
   background: var(--olive);
   white-space: nowrap;
-  transition: transform 150ms var(--ease-out), filter var(--dur) var(--ease),
+  transition: transform var(--dur) var(--ease), filter var(--dur) var(--ease),
     background-color var(--dur) var(--ease);
 }
 .pill[data-tone="special"] { background: var(--brown); }
 .pill:hover { transform: translateY(-1px); filter: brightness(1.06); }
-.pill:active { transform: scale(0.97); }
-@media (hover: hover) {
-  .pill:hover:active { transform: translateY(-1px) scale(0.97); }
-}
 .pill[aria-pressed="true"] { box-shadow: inset 0 0 0 2px rgba(255,255,255,.55); }
 
 /* ---------- reduced motion ---------- */
@@ -145,29 +142,21 @@ ul { list-style: none; padding: 0; }
   }
 }
 
-/* ---------- scroll reveal (GPU: opacity + transform only) ---------- */
+/* ---------- page-load reveal (GPU: opacity + transform only) ---------- */
 @keyframes rise {
-  from { opacity: 0; transform: translate3d(0, 30px, 0); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .reveal { opacity: 0; }
-.reveal.is-in { animation: rise 400ms var(--ease-out) both; }
-
-@keyframes revealCard {
-  from { opacity: 0; transform: translate3d(0, 30px, 0); }
-  to   { opacity: 1; transform: translate3d(0, 0, 0); }
-}
-.reveal-card {
-  opacity: 0;
-  transform: translate3d(0, 30px, 0);
-}
-.reveal-card.is-in {
-  animation: revealCard 400ms var(--ease-out) var(--reveal-delay, 0ms) both;
-}
-
+.reveal.is-in { animation: rise 0.7s var(--ease-out) both; }
 @media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .reveal-card { opacity: 1; transform: none; }
-  .reveal.is-in,
-  .reveal-card.is-in { animation: none; }
+  .reveal { opacity: 1; }
+  .reveal.is-in { animation: none; }
+}
+
+/* Tokens from the FINAL Desktop/Mobile Home Page frames */
+:root {
+  --cream-hero: #FFFAF4;     /* services band + card surface */
+  --catalogue-dark: #291918; /* catalogue band */
+  --btn-dark: #412726;       /* primary hero button */
 }

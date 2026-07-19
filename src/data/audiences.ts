@@ -5,6 +5,7 @@
 export type Audience = {
   id: string;
   label: string;
+  short: string; // compact descriptor shown on mobile (from MOBILE frame)
   image: string; // path under /public
   alt: string;
   detail: string; // shown when the panel expands
@@ -15,6 +16,7 @@ export const audiences: Audience[] = [
   {
     id: "para-ti",
     label: "Para ti",
+    short: "Siempre hay una buena excusa.",
     image: "/images/para-ti.jpg",
     alt: "Tarta artesanal decorada con flores para una celebración personal",
     detail:
@@ -24,6 +26,7 @@ export const audiences: Audience[] = [
   {
     id: "para-restaurante",
     label: "Restaurantes",
+    short: "Postres para tu carta.",
     image: "/images/para-restaurante.jpg",
     alt: "Postre emplatado en la mesa de un restaurante",
     detail:
@@ -33,6 +36,7 @@ export const audiences: Audience[] = [
   {
     id: "para-evento",
     label: "Eventos",
+    short: "Bodas, cumpleaños y empresas.",
     image: "/images/para-evento.jpg",
     alt: "Pareja cortando la tarta en una boda",
     detail:

@@ -19,7 +19,7 @@ import CakeCard from "./CakeCard.astro";
     </div>
 
     <div class="catalogue__grid" data-cards>
-      {cakes.map((cake, i) => <CakeCard cake={cake} index={i} />)}
+      {cakes.map((cake) => <CakeCard cake={cake} />)}
     </div>
 
     <p class="catalogue__empty" data-empty hidden>No hay tartas en esta categoría todavía.</p>
@@ -27,12 +27,15 @@ import CakeCard from "./CakeCard.astro";
 </section>
 
 <style>
-  .catalogue { background: var(--cream); }
+  .catalogue { background: var(--catalogue-dark); }
+  .catalogue__head .section-title { color: var(--cream-hero); }
+  .catalogue__head .eyebrow { color: rgba(255, 250, 244, 0.62); }
   .catalogue__head { display: flex; flex-direction: column; gap: 6px; }
   .catalogue__filters {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    row-gap: 12px;
     margin-top: clamp(24px, 4vw, 40px);
   }
   .catalogue__grid {
@@ -41,15 +44,16 @@ import CakeCard from "./CakeCard.astro";
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
     max-width: var(--grid-max);
+    margin-inline: 0;
     align-items: start;
   }
-  .catalogue__empty { margin-top: 32px; color: var(--muted); }
+  .catalogue__empty { margin-top: 32px; color: rgba(255, 250, 244, 0.62); }
 
   @media (max-width: 900px) {
     .catalogue__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
-  @media (max-width: 560px) {
-    .catalogue__grid { grid-template-columns: 1fr; max-width: 420px; margin-inline: auto; }
+  @media (max-width: 640px) {
+    .catalogue__grid { grid-template-columns: 1fr; max-width: none; }
   }
 </style>
 

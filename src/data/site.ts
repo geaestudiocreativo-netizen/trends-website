@@ -4,8 +4,10 @@
 // ─────────────────────────────────────────────────────────────
 
 export const site = {
+  // Line above the wordmark in the final Home Page frame
+  eyebrow: "2026 — Tartas de autor en Majadahonda",
   brand: "TRENDS",
-  tagline: "BY GABRIEL GARCÍA",
+  tagline: "— BY GABRIEL GARCÍA",
 
   // ⚠️ REPLACE THIS with your real WhatsApp number in international format,
   //    digits only, no "+", no spaces. Example (Spain): 34600112233

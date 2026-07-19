@@ -77,8 +77,8 @@ const {
       });
 
       // Scroll-reveal for elements marked .reveal (GPU: opacity + transform).
-      const revealTargets = document.querySelectorAll<HTMLElement>(".reveal:not(.is-in), .reveal-card:not(.is-in)");
-      if (revealTargets.length) {
+      const reveals = document.querySelectorAll<HTMLElement>(".reveal:not(.is-in)");
+      if (reveals.length) {
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
@@ -90,7 +90,7 @@ const {
           },
           { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
         );
-        revealTargets.forEach((el) => io.observe(el));
+        reveals.forEach((el) => io.observe(el));
       }
     </script>
   </body>

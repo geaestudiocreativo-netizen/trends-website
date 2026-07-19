@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { site } from "../data/site";
+import { site, heroImage } from "../data/site";
 
 interface Props { title?: string; description?: string; }
 const {
@@ -21,7 +21,7 @@ const {
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/images/hero-cream.jpg" />
+    <meta property="og:image" content={heroImage} />
 
     <!-- Fonts: preconnect + display=swap for fast, CLS-free loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,7 +31,7 @@ const {
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Krona+One&family=Poppins:wght@300;400;500;600&display=swap"
     />
 
-    <link rel="preload" as="image" href="/images/hero-cream.jpg" />
+    <link rel="preload" as="image" href={heroImage} />
   </head>
   <body>
     <a class="skip-link" href="#catalogo">Saltar al catálogo</a>

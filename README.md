@@ -30,9 +30,14 @@ npm run preview    # preview the production build
 2. **Your photos** — drop images into `public/images/` over the existing
    filenames; no code changes needed.
 
+   The hero is a **single asset**: replace `public/images/hero.jpg`, keep the
+   name, and it updates the background, the `<link rel="preload">` hint and the
+   social share image at once. The path is declared once in `src/data/site.ts`
+   (`heroImage`) if you ever need to point somewhere else.
+
 | File | Where it appears |
 |---|---|
-| `hero-photo.jpg` | Hero background (`hero-cream.jpg` is a fallback layer) |
+| `hero.jpg` | Hero background, preload hint and social share image |
 | `tiramisu.jpg`, `cheesecake-pistacho.jpg`, `cheesecake-caramelo.jpg`, `cheesecake-frutos-rojos.jpg`, `tarta-chocolate.jpg`, `chocolate-fundente.jpg` | Cake cards |
 | `para-ti.jpg`, `para-restaurante.jpg`, `para-evento.jpg` | Unused by the current design; kept with the Services data |
 

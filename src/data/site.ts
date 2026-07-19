@@ -23,3 +23,14 @@ export const site = {
 export function waLink(message: string = site.whatsappDefaultMessage): string {
   return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
+
+// ─────────────────────────────────────────────────────────────
+//  Hero photograph — single source of truth.
+//
+//  To change the hero image, just replace this file:
+//      public/images/hero.jpg
+//  Keep the same name and no code changes are needed anywhere.
+//  (Referenced by Hero.astro for the background and by Base.astro
+//   for the preload hint and the social share image.)
+// ─────────────────────────────────────────────────────────────
+export const heroImage = "/images/hero.jpg";

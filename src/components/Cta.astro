@@ -1,0 +1,83 @@
+---
+// Primary + secondary calls to action.
+// Per the Home Page frames these sit on the cream band BELOW Services,
+// between the Services rows and the Catalogue — not inside the Hero.
+import { waLink } from "../data/site";
+import WhatsAppIcon from "./WhatsAppIcon.astro";
+---
+<section class="cta" aria-label="Acciones principales">
+  <div class="container cta__inner">
+    <a class="btn btn--dark" href="#catalogo" data-scroll="#catalogo">
+      Nuestras Tartas
+    </a>
+    <a class="btn btn--gold" href={waLink()} target="_blank" rel="noopener">
+      <WhatsAppIcon size={18} />
+      Haz tu pedido ya
+    </a>
+  </div>
+</section>
+
+<style>
+  /* Continues the Services band — no visible seam between them. */
+  .cta {
+    background: var(--cream-hero);
+    padding-block: 0 clamp(48px, 8vw, 104px);
+  }
+  .cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  /* Same premium treatment the buttons had in the Hero. */
+  .cta .btn {
+    width: 300px;
+    max-width: 100%;
+    height: 52px;
+    padding-inline: 28px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    will-change: transform;
+    transition:
+      transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cta .btn--dark { box-shadow: 0 1px 2px rgba(41, 25, 24, 0.16); }
+  .cta .btn--dark:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 12px 28px rgba(41, 25, 24, 0.26);
+  }
+  .cta .btn--gold { box-shadow: 0 1px 2px rgba(69, 41, 40, 0.12); }
+  .cta .btn--gold:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 12px 28px rgba(212, 189, 101, 0.42);
+    filter: brightness(1.03);
+  }
+  .cta .btn:active {
+    transform: translate3d(0, 0, 0) scale(0.994);
+    transition-duration: 0.12s;
+  }
+  .cta .btn:focus-visible {
+    outline: 2px solid var(--brown);
+    outline-offset: 4px;
+  }
+
+  /* Frame: 300 wide, stacked, 10px apart, full width inside the gutter. */
+  @media (max-width: 640px) {
+    .cta__inner { align-items: stretch; }
+    .cta .btn { width: 100%; height: 48px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cta .btn,
+    .cta .btn:hover,
+    .cta .btn:active {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>

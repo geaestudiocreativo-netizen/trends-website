@@ -1,52 +1,71 @@
 ---
-import { site, waLink } from "../data/site";
-import WhatsAppIcon from "./WhatsAppIcon.astro";
+import { site, heroImage } from "../data/site";
 ---
 <header class="hero" id="top">
-  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="hero__media" aria-hidden="true">
+    <img
+      class="hero__img"
+      src={heroImage}
+      alt=""
+      fetchpriority="high"
+      decoding="async"
+    />
+  </div>
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__inner container">
-    <p class="hero__eyebrow reveal is-in">{site.eyebrow}</p>
-    <h1 class="hero__wordmark reveal is-in">{site.brand}</h1>
-    <p class="hero__tagline reveal is-in">{site.tagline}</p>
-    <div class="hero__cta reveal is-in">
-      <a class="btn btn--dark" href="#catalogo" data-scroll="#catalogo">Nuestras Tartas</a>
-      <a
-        class="btn btn--gold"
-        href={waLink()}
-        target="_blank"
-        rel="noopener"
-      >
-        <WhatsAppIcon size={18} />
-        Haz tu pedido ya
-      </a>
-    </div>
+    <p class="hero__eyebrow hero-in">{site.eyebrow}</p>
+    <h1 class="hero__wordmark hero-in">{site.brand}</h1>
+    <p class="hero__tagline hero-in">{site.tagline}</p>
   </div>
 </header>
 
 <style>
+  /* ── shell ──────────────────────────────────────────────
+     Photograph is the background at EVERY breakpoint; the
+     text is overlaid on top of it (never stacked below).   */
   .hero {
     position: relative;
-    min-height: clamp(560px, 84vh, 880px);
+    /* Clean base while the photograph loads — flat colour, no old content. */
+    background-color: var(--cream-hero);
+    min-height: clamp(640px, 90vh, 960px);
+    min-height: clamp(640px, 90svh, 960px);
     display: grid;
     place-items: center;
+    padding-block: clamp(56px, 9vh, 116px) clamp(88px, 14vh, 172px);
     overflow: hidden;
     isolation: isolate;
   }
-  .hero__bg {
+
+  /* Parallax layer. Kept separate from .hero__bg so the scroll
+     transform never competes with the intro scale animation.
+     Vertical slack (-7%) means the drift can never expose an edge. */
+  .hero__media {
+    position: absolute;
+    inset: -7% 0;
+    z-index: -2;
+    will-change: transform;
+  }
+  /* Single hero asset — src comes from src/data/site.ts.
+     Swap public/images/hero.jpg to change it; no code edits.
+     Hidden until it has actually decoded, so a stale cached bitmap
+     can never be painted. The intro only starts once .hero is ready. */
+  .hero__img {
     position: absolute;
     inset: 0;
-    z-index: -2;
-    /* Hero photo from the final Home Page frame.
-       hero-cream.jpg stays as a fallback layer underneath. */
-    background-image: url("/images/hero-photo.jpg"), url("/images/hero-cream.jpg");
-    background-size: cover;
-    background-position: center;
-    transform: scale(1.04);           /* room for a subtle drift, GPU only */
-    animation: heroDrift 22s ease-in-out infinite alternate;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transform: scale(1.05);
+    transform-origin: center;
+    will-change: transform, opacity;
   }
-  /* Soft cream glow behind the wordmark so the dark logo stays legible
-     on a bright photo — lightens, never darkens the image. */
+  .hero.is-ready .hero__img {
+    animation: heroIntro 6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  /* Soft cream veil so the dark logo stays legible on a bright photo. */
   .hero__scrim {
     position: absolute;
     inset: 0;
@@ -58,10 +77,11 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
       rgba(255, 250, 244, 0) 72%
     );
   }
-  @keyframes heroDrift {
-    from { transform: scale(1.04) translate3d(0, 0, 0); }
-    to   { transform: scale(1.08) translate3d(0, -1.4%, 0); }
-  }
+
+  /* The photograph ends on a clean, defined edge — the Services
+     section begins immediately below it. No blending between them. */
+
+  /* ── content ────────────────────────────────────────── */
   .hero__inner {
     padding-inline: clamp(20px, 7.6vw, 110px);
     max-width: none;
@@ -76,69 +96,195 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
     letter-spacing: 0.22em;
     color: var(--brown);
     font-weight: 300;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.62rem;
   }
   .hero__wordmark {
     font-family: var(--font-logo);
     font-weight: 400;                 /* Krona One ships a single weight */
     color: var(--brown);
-    font-size: clamp(2.6rem, 8.2vw, 7rem);
-    letter-spacing: 0.02em;           /* Krona One is already wide by design */
+    font-size: clamp(2.76rem, 8.7vw, 7.42rem);
+    letter-spacing: 0.02em;
     line-height: 1;
     max-width: 100%;
     overflow-wrap: normal;
   }
   .hero__tagline {
-    margin-top: 0.4rem;
+    margin-top: 0.5rem;
     font-size: clamp(0.72rem, 1.3vw, 0.9rem);
     letter-spacing: 0.28em;
     color: var(--brown);
     font-weight: 300;
   }
-  .hero__cta {
-    margin-top: clamp(1.6rem, 4vw, 2.8rem);
-    display: flex;
-    gap: clamp(12px, 2.8vw, 40px);
-    flex-wrap: wrap;
-    justify-content: flex-start;
+
+  /* ── entrance ──────────────────────────────────────── */
+  @keyframes heroIntro {
+    0%   { opacity: 0; transform: scale(1.05); }
+    35%  { opacity: 1; }
+    100% { opacity: 1; transform: scale(1); }
   }
-  .hero__cta .btn { width: 300px; max-width: 100%; }
+  /* Restrained parallax: the photograph drifts at roughly a sixth
+     of scroll speed. Where scroll-driven animations are supported
+     this runs entirely on the compositor — no JS, no scroll handler. */
+  @keyframes heroParallax {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(0, 6%, 0); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .hero__media {
+        animation: heroParallax linear both;
+        animation-timeline: scroll(root block);
+        animation-range: 0 100vh;
+      }
+    }
+  }
 
-  /* stagger the load reveals */
-  .hero__wordmark { animation-delay: 0.05s; }
-  .hero__tagline  { animation-delay: 0.18s; }
-  .hero__cta      { animation-delay: 0.3s; }
+  @keyframes heroRise {
+    from { opacity: 0; transform: translate3d(0, 14px, 0); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  .hero-in {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .hero.is-ready .hero-in {
+    animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .hero__eyebrow.hero-in  { animation-delay: 0.15s; }
+  .hero__wordmark.hero-in { animation-delay: 0.30s; }
+  .hero__tagline.hero-in  { animation-delay: 0.45s; }
 
+  /* ── mobile ────────────────────────────────────────────
+     Same overlay structure as desktop — only the height and
+     the veil direction change. Frame: photo band 0–569.    */
   @media (max-width: 640px) {
-    /* MOBILE frame: photo band on top, text + buttons on a light block below */
+    /* The photograph owns the first screen: the hero fills almost the
+       whole viewport, so Services only appears once the user scrolls. */
     .hero {
-      min-height: auto;
-      display: block;
-      background: var(--cream-hero);
+      min-height: 92vh;
+      min-height: 92svh;
+      /* content is anchored in the lower half rather than centred */
+      place-items: end start;
+      padding-block: clamp(40px, 8vh, 72px) clamp(72px, 14vh, 132px);
     }
-    .hero__bg {
-      position: relative;
-      inset: auto;
-      z-index: auto;
-      height: min(56vh, 440px);
-      transform: none;
-      animation: none;
+
+    /* Veil peaks behind the type and eases off again before the
+       bottom, so the image keeps its density right up to the edge. */
+    .hero__scrim {
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 250, 244, 0) 0%,
+        rgba(255, 250, 244, 0.1) 46%,
+        rgba(255, 250, 244, 0.42) 80%,
+        rgba(255, 250, 244, 0.12) 100%
+      );
     }
-    .hero__scrim { display: none; }
-    .hero__inner {
-      align-items: stretch;
-      padding-block: 24px 30px;
+
+    /* Type sits directly on the photograph now, so a barely-visible
+       cream halo keeps it crisp over crumbs and shadows without
+       lightening the image itself. */
+    .hero__eyebrow,
+    .hero__wordmark,
+    .hero__tagline {
+      text-shadow: 0 1px 14px rgba(255, 250, 244, 0.62);
     }
-    .hero__wordmark { font-size: clamp(2.6rem, 15vw, 4rem); }
-    .hero__cta {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 12px;
-      margin-top: 22px;
-    }
-    .hero__cta .btn { width: 100%; height: 46px; }
+
+    .hero__wordmark { font-size: clamp(2.76rem, 15.9vw, 4.24rem); }
   }
+
+  /* ── reduced motion ────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
-    .hero__bg { animation: none; transform: none; }
+    /* Selectors here must match the specificity of the .hero.is-ready
+       rules above, or the animations would still win. */
+    .hero__media,
+    .hero.is-ready .hero__img,
+    .hero.is-ready .hero-in {
+      animation: none;
+      transform: none;
+    }
+    .hero.is-ready .hero-in { opacity: 1; }
+    .hero__img { opacity: 0; transform: none; }
+    .hero.is-ready .hero__img { opacity: 1; }
   }
 </style>
+
+<script>
+  // ── Reveal gate ───────────────────────────────────────────────
+  // The hero stays on a flat colour until the photograph has actually
+  // decoded, so a previously cached image can never be painted first.
+  {
+    const heroEl = document.querySelector<HTMLElement>(".hero");
+    const img = document.querySelector<HTMLImageElement>(".hero__img");
+
+    const reveal = () => heroEl?.classList.add("is-ready");
+
+    if (heroEl && img) {
+      if (img.complete && img.naturalWidth > 0) {
+        // Already in memory (bfcache / instant cache hit): decode then show.
+        img.decode?.().catch(() => {}).finally(reveal) ?? reveal();
+      } else {
+        img.addEventListener("load", () => {
+          img.decode?.().catch(() => {}).finally(reveal) ?? reveal();
+        }, { once: true });
+        // Never leave the hero blank if the image 404s or the network dies.
+        img.addEventListener("error", reveal, { once: true });
+        window.setTimeout(reveal, 4000);
+      }
+    } else {
+      reveal();
+    }
+  }
+
+  // Parallax fallback for browsers without scroll-driven CSS animations
+  // (Safari, Firefox). Chromium handles it on the compositor via the
+  // @supports block above, so this never runs there.
+  const media = document.querySelector<HTMLElement>(".hero__media");
+  const hero = document.querySelector<HTMLElement>(".hero");
+
+  const supportsScrollTimeline =
+    typeof CSS !== "undefined" && CSS.supports("animation-timeline: scroll()");
+
+  if (media && hero && !supportsScrollTimeline) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let visible = true;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      if (reduce.matches || !visible) return;
+      const h = hero.offsetHeight || 1;
+      // 0 → 1 across the first screenful, then clamp
+      const progress = Math.min(Math.max(window.scrollY / h, 0), 1);
+      media.style.transform = `translate3d(0, ${(progress * 6).toFixed(3)}%, 0)`;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+
+    // Only listen while the hero is actually on screen.
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+        },
+        { rootMargin: "10% 0px" }
+      ).observe(hero);
+    }
+
+    const enable = () => {
+      if (reduce.matches) {
+        media.style.transform = "";
+        window.removeEventListener("scroll", onScroll);
+      } else {
+        window.addEventListener("scroll", onScroll, { passive: true });
+        update();
+      }
+    };
+
+    enable();
+    reduce.addEventListener?.("change", enable);
+  }
+</script>

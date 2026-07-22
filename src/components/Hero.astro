@@ -25,6 +25,9 @@ import { site, heroImage } from "../data/site";
      text is overlaid on top of it (never stacked below).   */
   .hero {
     position: relative;
+    /* Clean loading state: flat brand cream shows until the photograph
+       paints. No JS, no animation — just the section's own colour. */
+    background-color: var(--cream-hero);
     /* Clean base while the photograph loads — flat colour, no old content. */
     background-color: var(--cream-hero);
     min-height: clamp(640px, 90vh, 960px);
@@ -47,21 +50,21 @@ import { site, heroImage } from "../data/site";
   }
   /* Single hero asset — src comes from src/data/site.ts.
      Swap public/images/hero.jpg to change it; no code edits.
-     Hidden until it has actually decoded, so a stale cached bitmap
-     can never be painted. The intro only starts once .hero is ready. */
+     A content fingerprint on the URL (see site.ts) is what prevents a
+     stale cached bitmap, so visibility never depends on JavaScript. */
   .hero__img {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
-    opacity: 0;
+    /* Portrait photo: on the wide desktop crop, bias upward so the
+       whisk-and-bowl stay in frame rather than the blurred counter.
+       Mobile shows nearly the full frame, so it stays centred (below). */
+    object-position: center 35%;
     transform: scale(1.05);
     transform-origin: center;
     will-change: transform, opacity;
-  }
-  .hero.is-ready .hero__img {
     animation: heroIntro 6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
   }
 
@@ -144,10 +147,7 @@ import { site, heroImage } from "../data/site";
     to   { opacity: 1; transform: translate3d(0, 0, 0); }
   }
   .hero-in {
-    opacity: 0;
     will-change: transform, opacity;
-  }
-  .hero.is-ready .hero-in {
     animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .hero__eyebrow.hero-in  { animation-delay: 0.15s; }
@@ -189,52 +189,25 @@ import { site, heroImage } from "../data/site";
       text-shadow: 0 1px 14px rgba(255, 250, 244, 0.62);
     }
 
+    /* Mobile shows almost the whole portrait — centre it. */
+    .hero__img { object-position: center; }
+
     .hero__wordmark { font-size: clamp(2.76rem, 15.9vw, 4.24rem); }
   }
 
   /* ── reduced motion ────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
-    /* Selectors here must match the specificity of the .hero.is-ready
-       rules above, or the animations would still win. */
     .hero__media,
-    .hero.is-ready .hero__img,
-    .hero.is-ready .hero-in {
+    .hero__img,
+    .hero-in {
       animation: none;
       transform: none;
+      opacity: 1;
     }
-    .hero.is-ready .hero-in { opacity: 1; }
-    .hero__img { opacity: 0; transform: none; }
-    .hero.is-ready .hero__img { opacity: 1; }
   }
 </style>
 
 <script>
-  // ── Reveal gate ───────────────────────────────────────────────
-  // The hero stays on a flat colour until the photograph has actually
-  // decoded, so a previously cached image can never be painted first.
-  {
-    const heroEl = document.querySelector<HTMLElement>(".hero");
-    const img = document.querySelector<HTMLImageElement>(".hero__img");
-
-    const reveal = () => heroEl?.classList.add("is-ready");
-
-    if (heroEl && img) {
-      if (img.complete && img.naturalWidth > 0) {
-        // Already in memory (bfcache / instant cache hit): decode then show.
-        img.decode?.().catch(() => {}).finally(reveal) ?? reveal();
-      } else {
-        img.addEventListener("load", () => {
-          img.decode?.().catch(() => {}).finally(reveal) ?? reveal();
-        }, { once: true });
-        // Never leave the hero blank if the image 404s or the network dies.
-        img.addEventListener("error", reveal, { once: true });
-        window.setTimeout(reveal, 4000);
-      }
-    } else {
-      reveal();
-    }
-  }
-
   // Parallax fallback for browsers without scroll-driven CSS animations
   // (Safari, Firefox). Chromium handles it on the compositor via the
   // @supports block above, so this never runs there.

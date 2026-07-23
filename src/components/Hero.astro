@@ -1,11 +1,13 @@
 ---
-import { site, heroImage } from "../data/site";
+import { site } from "../data/site";
+
+const heroTagline = "BY GABRIEL GARCÍA";
 ---
 <header class="hero" id="top">
   <div class="hero__media" aria-hidden="true">
     <img
       class="hero__img"
-      src={heroImage}
+      src="/images/hero.jpg"
       alt=""
       fetchpriority="high"
       decoding="async"
@@ -13,9 +15,8 @@ import { site, heroImage } from "../data/site";
   </div>
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__inner container">
-    <p class="hero__eyebrow hero-in">{site.eyebrow}</p>
     <h1 class="hero__wordmark hero-in">{site.brand}</h1>
-    <p class="hero__tagline hero-in">{site.tagline}</p>
+    <p class="hero__tagline hero-in">{heroTagline}</p>
   </div>
 </header>
 
@@ -30,13 +31,10 @@ import { site, heroImage } from "../data/site";
     background-color: var(--cream-hero);
     /* Clean base while the photograph loads — flat colour, no old content. */
     background-color: var(--cream-hero);
-    min-height: clamp(640px, 90vh, 960px);
-    min-height: clamp(640px, 90svh, 960px);
-    display: grid;
-    place-items: center;
-    padding-block: clamp(56px, 9vh, 116px) clamp(88px, 14vh, 172px);
     overflow: hidden;
     isolation: isolate;
+    width: 100%;
+    aspect-ratio: 16 / 9;
   }
 
   /* Parallax layer. Kept separate from .hero__bg so the scroll
@@ -44,9 +42,10 @@ import { site, heroImage } from "../data/site";
      Vertical slack (-7%) means the drift can never expose an edge. */
   .hero__media {
     position: absolute;
-    inset: -7% 0;
-    z-index: -2;
-    will-change: transform;
+    inset: 0;
+    height: 100%;
+    z-index: 0;
+    will-change: opacity;
   }
   /* Single hero asset — src comes from src/data/site.ts.
      Swap public/images/hero.jpg to change it; no code edits.
@@ -55,14 +54,12 @@ import { site, heroImage } from "../data/site";
   .hero__img {
     position: absolute;
     inset: 0;
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Portrait photo: on the wide desktop crop, bias upward so the
-       whisk-and-bowl stay in frame rather than the blurred counter.
-       Mobile shows nearly the full frame, so it stays centred (below). */
-    object-position: center 35%;
-    transform: scale(1.05);
+    object-position: center;
+    transform: none;
     transform-origin: center;
     will-change: transform, opacity;
     animation: heroIntro 6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
@@ -72,12 +69,12 @@ import { site, heroImage } from "../data/site";
   .hero__scrim {
     position: absolute;
     inset: 0;
-    z-index: -1;
+    z-index: 1;
     background: linear-gradient(
       to right,
-      rgba(255, 250, 244, 0.62) 0%,
-      rgba(255, 250, 244, 0.28) 46%,
-      rgba(255, 250, 244, 0) 72%
+      rgba(255, 250, 244, 0.04) 0%,
+      rgba(255, 250, 244, 0.1) 52%,
+      rgba(255, 250, 244, 0.18) 100%
     );
   }
 
@@ -86,25 +83,35 @@ import { site, heroImage } from "../data/site";
 
   /* ── content ────────────────────────────────────────── */
   .hero__inner {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
     padding-inline: clamp(20px, 7.6vw, 110px);
+    padding-top: clamp(48px, 8.6vh, 120px);
     max-width: none;
     text-align: left;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    justify-content: center;
     width: 100%;
+    transform: translateY(-18%);
   }
   .hero__eyebrow {
     font-size: clamp(0.72rem, 1.1vw, 0.95rem);
     letter-spacing: 0.22em;
     color: var(--brown);
     font-weight: 300;
-    margin-bottom: 0.62rem;
+    margin-top: clamp(1rem, 1.8vh, 1.45rem);
+    margin-bottom: clamp(0.95rem, 1.7vh, 1.25rem);
   }
   .hero__wordmark {
     font-family: var(--font-logo);
     font-weight: 400;                 /* Krona One ships a single weight */
     color: var(--brown);
+    align-self: center;
+    text-align: center;
+    margin-top: 0;
     font-size: clamp(2.76rem, 8.7vw, 7.42rem);
     letter-spacing: 0.02em;
     line-height: 1;
@@ -112,34 +119,21 @@ import { site, heroImage } from "../data/site";
     overflow-wrap: normal;
   }
   .hero__tagline {
-    margin-top: 0.5rem;
+    align-self: center;
+    text-align: center;
+    margin-top: 0;
     font-size: clamp(0.72rem, 1.3vw, 0.9rem);
-    letter-spacing: 0.28em;
+    letter-spacing: 0.38em;
     color: var(--brown);
     font-weight: 300;
+    text-transform: uppercase;
   }
 
   /* ── entrance ──────────────────────────────────────── */
   @keyframes heroIntro {
-    0%   { opacity: 0; transform: scale(1.05); }
+    0%   { opacity: 0; transform: none; }
     35%  { opacity: 1; }
-    100% { opacity: 1; transform: scale(1); }
-  }
-  /* Restrained parallax: the photograph drifts at roughly a sixth
-     of scroll speed. Where scroll-driven animations are supported
-     this runs entirely on the compositor — no JS, no scroll handler. */
-  @keyframes heroParallax {
-    from { transform: translate3d(0, 0, 0); }
-    to   { transform: translate3d(0, 6%, 0); }
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    @supports (animation-timeline: scroll()) {
-      .hero__media {
-        animation: heroParallax linear both;
-        animation-timeline: scroll(root block);
-        animation-range: 0 100vh;
-      }
-    }
+    100% { opacity: 1; transform: none; }
   }
 
   @keyframes heroRise {
@@ -158,14 +152,23 @@ import { site, heroImage } from "../data/site";
      Same overlay structure as desktop — only the height and
      the veil direction change. Frame: photo band 0–569.    */
   @media (max-width: 640px) {
-    /* The photograph owns the first screen: the hero fills almost the
-       whole viewport, so Services only appears once the user scrolls. */
     .hero {
+      aspect-ratio: auto;
       min-height: 92vh;
       min-height: 92svh;
-      /* content is anchored in the lower half rather than centred */
-      place-items: end start;
-      padding-block: clamp(40px, 8vh, 72px) clamp(72px, 14vh, 132px);
+    }
+
+    .hero__media {
+      height: 100%;
+    }
+
+    .hero__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: 42% center;
+      transform: scale(-1.06, 1.06);
+      animation: heroIntroMobile 6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
     }
 
     /* Veil peaks behind the type and eases off again before the
@@ -173,10 +176,9 @@ import { site, heroImage } from "../data/site";
     .hero__scrim {
       background: linear-gradient(
         to bottom,
-        rgba(255, 250, 244, 0) 0%,
-        rgba(255, 250, 244, 0.1) 46%,
-        rgba(255, 250, 244, 0.42) 80%,
-        rgba(255, 250, 244, 0.12) 100%
+        rgba(255, 250, 244, 0.02) 0%,
+        rgba(255, 250, 244, 0.08) 58%,
+        rgba(255, 250, 244, 0.16) 100%
       );
     }
 
@@ -189,75 +191,41 @@ import { site, heroImage } from "../data/site";
       text-shadow: 0 1px 14px rgba(255, 250, 244, 0.62);
     }
 
-    /* Mobile shows almost the whole portrait — centre it. */
-    .hero__img { object-position: center; }
+    .hero__inner {
+      text-align: left;
+      align-items: flex-start;
+      padding-top: clamp(34px, 8.4vh, 72px);
+    }
 
     .hero__wordmark { font-size: clamp(2.76rem, 15.9vw, 4.24rem); }
   }
 
+  @media (min-width: 1024px) {
+    .hero__inner {
+      padding-left: var(--gutter);
+    }
+
+    .hero__media {
+      transform: scaleX(-1);
+      transform-origin: center;
+    }
+  }
+
+  @keyframes heroIntroMobile {
+    0%   { opacity: 0; transform: scale(-1.1, 1.1); }
+    35%  { opacity: 1; }
+    100% { opacity: 1; transform: scale(-1.06, 1.06); }
+  }
+
   /* ── reduced motion ────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
-    .hero__media,
     .hero__img,
     .hero-in {
       animation: none;
-      transform: none;
       opacity: 1;
+    }
+    .hero-in {
+      transform: none;
     }
   }
 </style>
-
-<script>
-  // Parallax fallback for browsers without scroll-driven CSS animations
-  // (Safari, Firefox). Chromium handles it on the compositor via the
-  // @supports block above, so this never runs there.
-  const media = document.querySelector<HTMLElement>(".hero__media");
-  const hero = document.querySelector<HTMLElement>(".hero");
-
-  const supportsScrollTimeline =
-    typeof CSS !== "undefined" && CSS.supports("animation-timeline: scroll()");
-
-  if (media && hero && !supportsScrollTimeline) {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let visible = true;
-    let ticking = false;
-
-    const update = () => {
-      ticking = false;
-      if (reduce.matches || !visible) return;
-      const h = hero.offsetHeight || 1;
-      // 0 → 1 across the first screenful, then clamp
-      const progress = Math.min(Math.max(window.scrollY / h, 0), 1);
-      media.style.transform = `translate3d(0, ${(progress * 6).toFixed(3)}%, 0)`;
-    };
-
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(update);
-    };
-
-    // Only listen while the hero is actually on screen.
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(
-        ([entry]) => {
-          visible = entry.isIntersecting;
-        },
-        { rootMargin: "10% 0px" }
-      ).observe(hero);
-    }
-
-    const enable = () => {
-      if (reduce.matches) {
-        media.style.transform = "";
-        window.removeEventListener("scroll", onScroll);
-      } else {
-        window.addEventListener("scroll", onScroll, { passive: true });
-        update();
-      }
-    };
-
-    enable();
-    reduce.addEventListener?.("change", enable);
-  }
-</script>

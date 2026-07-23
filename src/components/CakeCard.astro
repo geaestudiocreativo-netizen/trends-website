@@ -8,6 +8,7 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
 interface Props { cake: Cake; }
 const { cake } = Astro.props;
 const sizes = cake.sizes.map((code) => SIZE_CATALOG[code]).filter(Boolean);
+const collapsedSizes = sizes.filter((size) => size.code !== "L");
 const allergenNames = cake.allergens.map((id) => allergenById[id]?.name).filter(Boolean);
 const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
 ---
@@ -26,14 +27,17 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
     <span class="card__body">
       <span class="card__title-row">
         <span class="card__title">{cake.title}</span>
-        <span class="card__sizes" role="list" aria-label="Tamaños disponibles">
-          {sizes.map((s) => (
-            <span class="size-chip" role="listitem" title={`${s.code} · ${s.name}`} style={`--bg:${s.bg};--fg:${s.fg}`}>{s.code}</span>
-          ))}
-        </span>
       </span>
       <span class="card__desc">{cake.description}</span>
       <span class="card__sub">{cake.subline}</span>
+      <span class="card__bottom-row">
+        <span class="card__sizes" role="list" aria-label="Tamaños disponibles">
+          {collapsedSizes.map((s) => (
+            <span class="size-chip" role="listitem" title={s.code === "S" ? "15 cm" : "22 cm"} style={`--bg:${s.code === "S" ? "#A49250" : "#8AC3BE"};--fg:${s.code === "S" ? "#574D29" : "#567B77"}`}>{s.code === "S" ? "15 cm" : "22 cm"}</span>
+          ))}
+        </span>
+        <span class="card__details">Ver detalles <span class="card__details-arrow" aria-hidden="true">→</span></span>
+      </span>
     </span>
   </button>
 
@@ -69,6 +73,9 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
 
 <style>
   .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     background: var(--cream-hero);
     border-radius: var(--radius-card);
     box-shadow: var(--card-shadow);
@@ -79,7 +86,14 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
   .card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
   .card:focus-within { box-shadow: var(--card-shadow-hover); }
 
-  .card__head { display: block; width: 100%; text-align: left; padding: 13px 10.5px 0; }
+  .card__head {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    width: 100%;
+    text-align: left;
+    padding: 13px 10.5px 0;
+  }
 
   .card__media {
     position: relative;
@@ -104,11 +118,22 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
   }
   .card__price::before { content: "desde "; }
 
-  .card__body { display: block; padding: 11px 2px 13px; }
-  .card__title-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .card__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: 17px 2px 11px;
+  }
+  .card__title-row {
+    display: flex;
+    min-height: 2.816rem;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
   .card__title {
-    font-family: var(--font-logo);
-    font-weight: 400;                 /* Krona One ships a single weight */
+    font-family: "Montserrat", var(--font-sans);
+    font-weight: 600;
     font-size: 1.28rem;
     color: var(--brown);
     line-height: 1.1;
@@ -116,10 +141,18 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
     letter-spacing: 0.02em;
   }
   .card__sizes { display: inline-flex; gap: 5px; flex-shrink: 0; }
+  .card__bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+    margin-bottom: 16px;
+  }
   .size-chip {
     display: inline-grid;
     place-items: center;
-    width: 21px;
+    width: 42px;
     height: 21px;
     border-radius: 5px;
     background: var(--bg, var(--olive));
@@ -130,8 +163,32 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
     letter-spacing: 0;
   }
 
-  .card__desc { display: block; margin-top: 5px; font-size: 0.8rem; color: var(--brown); }
-  .card__sub { display: block; margin-top: 3px; font-size: 0.66rem; color: var(--muted); }
+  .card__desc {
+    display: block;
+    min-height: calc(6em - 30px);
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: var(--brown);
+  }
+  .card__sub { display: block; margin-top: 0; font-size: calc(0.66rem + 2px); color: var(--muted); }
+  .card__details {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 0;
+    color: #452928;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    opacity: 0.72;
+  }
+  .card__details-arrow {
+    display: inline-block;
+    transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  }
+  .card__head:hover .card__details,
+  .card__head:focus-visible .card__details { opacity: 1; }
+  .card__head:hover .card__details-arrow,
+  .card__head:focus-visible .card__details-arrow { transform: translateX(4px); }
 
   /* expand */
   .card__panel {
@@ -148,7 +205,13 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
   .card__head[aria-expanded="true"] + .card__panel { grid-template-rows: 1fr; }
   .card__head[aria-expanded="true"] + .card__panel .card__panel-inner { opacity: 1; transform: none; }
 
-  .detail { padding: 4px 20px 22px; border-top: 1px solid var(--hairline); margin: 0 4px; }
+  .detail {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 20px 22px;
+    border-top: 1px solid var(--hairline);
+    margin: 0 4px;
+  }
   .card__panel-inner { background: var(--cream-hero); }
   .detail__h {
     font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;

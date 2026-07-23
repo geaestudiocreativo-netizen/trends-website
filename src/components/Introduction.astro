@@ -1,0 +1,48 @@
+<section class="section introduction" aria-labelledby="introduction-title">
+  <div class="container introduction__inner">
+    <h2 id="introduction-title" class="introduction__title">TARTAS DE AUTOR EN MAJADAHONDA</h2>
+    <p class="introduction__body">
+      Creemos que una buena tarta no es solo un postre.
+      Es la excusa para reunir a la gente alrededor de una mesa.
+      <br />
+      <br />
+      Por eso cada receta se prepara de forma artesanal, buscando un equilibrio entre sabor, textura y una presentación que haga que el momento sea aún más especial.
+    </p>
+  </div>
+</section>
+
+<style>
+  .introduction {
+    background: #291918;
+    padding-block: clamp(140px, 15vw, 180px);
+  }
+
+  .introduction__inner {
+    max-width: 900px;
+    margin-inline: auto;
+    text-align: left;
+  }
+
+  .introduction__title {
+    color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    line-height: 1.35;
+  }
+
+  .introduction__body {
+    margin-top: 24px;
+    color: #ffffff;
+    font-size: clamp(1rem, 1.25vw, 1.125rem);
+    line-height: 1.85;
+  }
+
+  @media (max-width: 640px) {
+    .introduction {
+      padding-block: 108px;
+    }
+  }
+</style>

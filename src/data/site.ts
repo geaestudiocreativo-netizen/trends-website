@@ -41,7 +41,7 @@ export function waLink(message: string = site.whatsappDefaultMessage): string {
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 
-const HERO_PATH = "/images/hero.jpg";
+const HERO_PATH = "/images/tarta-chocolate.jpg";
 
 function fingerprint(publicPath: string): string {
   try {

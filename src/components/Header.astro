@@ -1,0 +1,127 @@
+<header class="site-header" data-site-header>
+  <div class="site-header__inner">
+    <a class="site-header__brand" href="#top" aria-label="Ir al inicio">TRENDS</a>
+
+    <button
+      class="site-header__menu-btn"
+      type="button"
+      aria-label="Abrir menu"
+    >
+      <span class="site-header__menu-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 76px;
+    background: rgba(41, 25, 24, 0.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .site-header.is-hidden {
+    opacity: 0;
+    transform: translateY(-14px);
+    pointer-events: none;
+  }
+
+  .site-header__inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: clamp(20px, 7.6vw, 110px);
+  }
+
+  .site-header__brand {
+    font-family: var(--font-logo);
+    font-weight: 400;
+    font-size: clamp(1.2rem, 1.9vw, 1.5rem);
+    letter-spacing: 0.04em;
+    line-height: 1;
+    color: var(--brown);
+  }
+
+  .site-header__menu-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 999px;
+    display: inline-grid;
+    place-items: center;
+    color: var(--brown);
+    transition: transform 300ms cubic-bezier(0.22, 0.61, 0.36, 1),
+      background-color 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .site-header__menu-btn:hover {
+    transform: translateY(-1px);
+    background-color: rgba(255, 250, 244, 0.08);
+  }
+
+  .site-header__menu-icon {
+    position: relative;
+    width: 24px;
+    height: 14px;
+    display: inline-block;
+    border-top: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+  }
+
+  .site-header__menu-icon::before,
+  .site-header__menu-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header {
+      transition: none;
+    }
+
+    .site-header__menu-btn {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const siteHeader = document.querySelector<HTMLElement>("[data-site-header]");
+  const heroSection = document.querySelector<HTMLElement>("#top");
+
+  if (siteHeader) {
+    if (!heroSection) {
+      siteHeader.classList.remove("is-hidden");
+    } else {
+      siteHeader.classList.add("is-hidden");
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          siteHeader.classList.toggle("is-hidden", entry.isIntersecting);
+        },
+        {
+          threshold: 0,
+        }
+      );
+
+      observer.observe(heroSection);
+    }
+  }
+</script>

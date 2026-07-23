@@ -18,16 +18,22 @@
   }
 
   .introduction__inner {
-    max-width: 900px;
+    max-width: 560px;
     margin-inline: auto;
     text-align: left;
   }
 
+  @media (min-width: 641px) {
+    .introduction__inner {
+      max-width: 620px;
+    }
+  }
+
   .introduction__title {
-    color: #ffffff;
+    color: #f6f1eb;
     font-family: var(--font-sans);
     font-size: clamp(1.05rem, 1.6vw, 1.35rem);
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.14em;
     line-height: 1.35;
@@ -35,22 +41,14 @@
 
   .introduction__body {
     margin-top: 24px;
-    color: #ffffff;
+    color: #f6f1eb;
     font-size: clamp(1rem, 1.25vw, 1.125rem);
     line-height: 1.85;
   }
 
   @media (max-width: 640px) {
     .introduction {
-      min-height: 100dvh;
-      display: flex;
-      align-items: center;
       padding-block: 108px;
-    }
-
-    .introduction__inner {
-      padding-inline: clamp(16px, 4.5vw, 20px);
-      max-width: 92vw;
     }
   }
 </style>

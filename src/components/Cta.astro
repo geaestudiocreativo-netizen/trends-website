@@ -1,5 +1,4 @@
 ---
-// Primary + secondary calls to action.
 // Per the Home Page frames these sit on the cream band BELOW Services,
 // between the Services rows and the Catalogue — not inside the Hero.
 import { waLink } from "../data/site";
@@ -7,9 +6,6 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
 ---
 <section class="cta" aria-label="Acciones principales">
   <div class="container cta__inner">
-    <a class="btn btn--dark" href="#catalogo" data-scroll="#catalogo">
-      Nuestras Tartas
-    </a>
     <a class="btn btn--gold" href={waLink()} target="_blank" rel="noopener">
       <WhatsAppIcon size={18} />
       Haz tu pedido ya
@@ -26,7 +22,7 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
   .cta__inner {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
   }
 
@@ -66,10 +62,9 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
     outline-offset: 4px;
   }
 
-  /* Frame: 300 wide, stacked, 10px apart, full width inside the gutter. */
+  /* Keep the primary action compact and centered on narrow screens. */
   @media (max-width: 640px) {
-    .cta__inner { align-items: stretch; }
-    .cta .btn { width: 100%; height: 48px; }
+    .cta .btn { height: 48px; }
   }
 
   @media (prefers-reduced-motion: reduce) {

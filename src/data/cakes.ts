@@ -47,34 +47,33 @@ export type Cake = {
 const storage =
   "Conservar en frío (2–4 °C). Consumir preferentemente en 48 h. Sacar 15 minutos antes de servir para disfrutarla en su punto.";
 
-// Faithful placeholder text from the design, shared by every card.
 const T = "Suspiro Italiano";
 const D = "Nuestra versión del clásico Tiramisú";
-const S = "Bizcochos de soletilla — Ingrediente secundario — Otro ingrediente";
+const S = "Bizcochos de soletilla, ingrediente secundario, otro ingrediente";
 
 export const cakes: Cake[] = [
-  { id: "cake-1", title: T, description: D, subline: S, price: "20 €", image: "/images/tiramisu.jpg",
+  { id: "cake-1", title: "Tarta de Limón", description: "Cremosísima y fresca tarta cítrica con base crujiente.", subline: "Limón, galletas", price: "20 €", image: "/images/tiramisu.jpg",
     alt: "Tarta de tiramisú con cacao espolvoreado", categories: ["dulces", "mas-vendidas"],
     sizes: ["S", "M", "L"], allergens: ["gluten", "lacteos", "huevo"], storage },
-  { id: "cake-2", title: T, description: D, subline: S, price: "18 €", image: "/images/cheesecake-pistacho.jpg",
+  { id: "cake-2", title: "Tarta Cremosa de Oreo", description: "La galleta de toda la vida hecha tarta.", subline: "Oreo", price: "18 €", image: "/images/cheesecake-pistacho.jpg",
     alt: "Cheesecake con topping de pistacho", categories: ["cheesecake", "frescas"],
     sizes: ["M"], allergens: ["lacteos", "frutos-secos"], storage },
-  { id: "cake-3", title: T, description: D, subline: S, price: "22 €", image: "/images/cheesecake-caramelo.jpg",
+  { id: "cake-3", title: "Tarta de Zanahoria", description: "Esponjoso bizcocho de zanahoria con un toque crujiente de nueces y aroma de canela, cubierto de un cremoso icing.", subline: "Zanahoria, nueces, canela", price: "22 €", image: "/images/cheesecake-caramelo.jpg",
     alt: "Cheesecake con caramelo", categories: ["cheesecake", "nuevas"],
     sizes: ["S", "M", "L"], allergens: ["gluten", "lacteos", "frutos-secos"], storage },
-  { id: "cake-4", title: T, description: D, subline: S, price: "20 €", image: "/images/cheesecake-frutos-rojos.jpg",
+  { id: "cake-4", title: "Trilogía de Chocolates", description: "Para los que aman el chocolate, sus tres versiones con una base crujiente de galleta.", subline: "Chocolate blanco, chocolate con leche, chocolate negro, galleta", price: "20 €", image: "/images/cheesecake-frutos-rojos.jpg",
     alt: "Cheesecake con frutos rojos en plato rojo", categories: ["cheesecake", "frescas"],
     sizes: ["S", "M", "L"], allergens: ["lacteos", "huevo"], storage },
-  { id: "cake-5", title: T, description: D, subline: S, price: "20 €", image: "/images/tarta-chocolate.jpg",
+  { id: "cake-5", title: "Bizcocho Felisa", description: "Esponjoso bizcocho de limón, el de toda la vida, con una crujiente capa cítrica.", subline: "Limón", price: "20 €", image: "/images/tarta-chocolate.jpg",
     alt: "Tarta fundente de chocolate servida con cuchara", categories: ["dulces", "bizcocho"],
     sizes: ["S", "M"], allergens: ["gluten", "lacteos"], storage },
-  { id: "cake-6", title: T, description: D, subline: S, price: "20 €", image: "/images/chocolate-fundente.jpg",
+  { id: "cake-6", title: "Recuerdos de la Infancia", description: "Laminado de galletas y chocolate.", subline: "Galletas, chocolate", price: "20 €", image: "/images/chocolate-fundente.jpg",
     alt: "Tarta de chocolate con ganache", categories: ["dulces", "bizcocho", "mas-vendidas"],
     sizes: ["S", "M", "L"], allergens: ["gluten", "lacteos", "huevo", "soja"], storage },
-  { id: "cake-7", title: T, description: D, subline: S, price: "20 €", image: "/images/tiramisu.jpg",
+  { id: "cake-7", title: "Suspiro Italiano", description: "Nuestra versión del clásico tiramisú.", subline: "Bizcochos de soletilla", price: "20 €", image: "/images/tiramisu.jpg",
     alt: "Tarta de tiramisú con cacao espolvoreado", categories: ["dulces", "mas-vendidas"],
     sizes: ["S", "M", "L"], allergens: ["gluten", "lacteos", "huevo"], storage },
-  { id: "cake-8", title: T, description: D, subline: S, price: "18 €", image: "/images/cheesecake-pistacho.jpg",
+  { id: "cake-8", title: "Nuestra Tarta de Queso", description: "Cremosa y con todo el sabor a queso. Te sorprenderá.", subline: "Queso, galletas", price: "18 €", image: "/images/cheesecake-pistacho.jpg",
     alt: "Cheesecake con topping de pistacho", categories: ["cheesecake", "frescas", "nuevas"],
     sizes: ["M"], allergens: ["lacteos", "frutos-secos"], storage },
   { id: "cake-9", title: T, description: D, subline: S, price: "22 €", image: "/images/cheesecake-caramelo.jpg",

@@ -17,7 +17,7 @@ export const audiences: Audience[] = [
     id: "para-ti",
     label: "Para ti",
     short: "Siempre hay una buena excusa.",
-    image: "/images/para-ti.jpg",
+    image: "/images/parami.jpg",
     alt: "Tarta artesanal decorada con flores para una celebración personal",
     detail:
       "Un capricho para regalarte o para sorprender a quien quieres. Elegimos contigo sabor, tamaño y decoración para que cada tarta sea única.",
@@ -27,7 +27,7 @@ export const audiences: Audience[] = [
     id: "para-restaurante",
     label: "Restaurantes",
     short: "Postres para tu carta.",
-    image: "/images/para-restaurante.jpg",
+    image: "/images/restaurante.jpg",
     alt: "Postre emplatado en la mesa de un restaurante",
     detail:
       "Postres de carta y producción recurrente para hostelería. Fichas técnicas, alérgenos y conservación listos para tu equipo de sala.",
@@ -37,7 +37,7 @@ export const audiences: Audience[] = [
     id: "para-evento",
     label: "Eventos",
     short: "Bodas, cumpleaños y empresas.",
-    image: "/images/para-evento.jpg",
+    image: "/images/event.jpg",
     alt: "Pareja cortando la tarta en una boda",
     detail:
       "Bodas, cumpleaños y celebraciones. Diseñamos tartas de varios pisos y mesas dulces a la altura del día más importante.",

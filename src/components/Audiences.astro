@@ -1,28 +1,36 @@
 ---
-// SERVICES — static rows on the light band, per the FINAL Home Page frames
-// (Desktop | Home Page and Mobile | Home Page now share this layout).
-// Row: LABEL — short descriptor.
 import { audiences } from "../data/audiences";
 ---
-<section class="section audiences-section" aria-labelledby="audiences-title">
-  <div class="container">
-    <h2 class="sr-only" id="audiences-title">Para quiénes</h2>
-    <ul class="audiences__list">
-      {audiences.map((a) => (
-        <li class="aud">
-          <span class="aud__label">{a.label}</span>
-          <span class="aud__dash" aria-hidden="true">—</span>
-          <span class="aud__short">{a.short}</span>
-        </li>
-      ))}
-    </ul>
+<section class="audiences-section" aria-labelledby="audiences-title">
+  <h2 class="sr-only" id="audiences-title">Formas de pedir en Trends</h2>
+  <p class="audiences__progress" data-progress aria-hidden="true">
+    <span class="audiences__progress-current" data-progress-current>01</span>
+    <span class="audiences__progress-total">/ {String(audiences.length).padStart(2, "0")}</span>
+  </p>
+  <div class="audiences__slides">
+    {audiences.map((a, index) => (
+      <article class:list={["audience", { "is-active": index === 0 }]} data-audience-slide>
+        <img class="audience__image" src={a.image} alt="" aria-hidden="true" loading={index === 0 ? "eager" : "lazy"} />
+        <div class="audience__veil" aria-hidden="true"></div>
+        <div class="audience__content">
+          <div class="audience__copy">
+            <span class="audience__rule" aria-hidden="true"></span>
+            <h3 class="audience__label">{a.label}</h3>
+            <p class="audience__short">{a.short}</p>
+          </div>
+        </div>
+      </article>
+    ))}
   </div>
 </section>
 
 <style>
   .audiences-section {
-    background: var(--cream-hero);
-    padding-block: clamp(40px, 7vw, 92px);
+    position: relative;
+    min-height: clamp(460px, 68svh, 700px);
+    overflow: hidden;
+    isolation: isolate;
+    background: var(--brown);
   }
   .sr-only {
     position: absolute;
@@ -34,38 +42,175 @@ import { audiences } from "../data/audiences";
     border: 0;
   }
 
-  .audiences__list {
+  .audiences__slides {
+    position: absolute;
+    inset: 0;
+  }
+  .audiences__progress {
+    position: absolute;
+    top: clamp(34px, 4.8vw, 64px);
+    left: var(--gutter);
+    z-index: 3;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.36em;
+    color: var(--cream-hero);
+    pointer-events: none;
+  }
+  .audiences__progress-current {
+    display: inline-block;
+    font-family: var(--font-logo);
+    font-size: clamp(2.2rem, 5vw, 4.3rem);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
+    transition: opacity 0.44s ease, transform 0.44s ease;
+  }
+  .audiences__progress-total {
+    font-family: var(--font-logo);
+    font-size: clamp(1.1rem, 2.1vw, 1.8rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    opacity: 0.52;
+  }
+  .audiences__progress.is-changing .audiences__progress-current {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  .audience {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.1s ease;
+  }
+  .audience.is-active {
+    opacity: 1;
+    z-index: 1;
+  }
+  .audience__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .audience__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(41, 25, 24, 0.45) 0%, rgba(41, 25, 24, 0.22) 42%, rgba(41, 25, 24, 0.08) 76%, rgba(41, 25, 24, 0.03) 100%);
+  }
+  .audience__content {
+    position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
-    gap: clamp(14px, 1.8vw, 26px);
+    justify-content: flex-end;
+    min-height: 100%;
+    padding: clamp(120px, 20vh, 220px) var(--gutter) clamp(58px, 10vh, 130px);
+    color: var(--cream-hero);
   }
-  .aud {
-    display: grid;
-    grid-template-columns: minmax(0, 240px) auto minmax(0, 1fr);
-    align-items: baseline;
-    gap: clamp(10px, 1.6vw, 22px);
+  .audience__copy {
+    max-width: min(700px, 62vw);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+    opacity: 0;
+    transform: translateY(14px);
   }
-  .aud__label {
-    font-size: clamp(0.9rem, 1.5vw, 1.32rem);
-    font-weight: 600;
+  .audience__rule {
+    display: block;
+    width: clamp(40px, 5vw, 60px);
+    height: 2px;
+    border-radius: 999px;
+    background: var(--teal);
+    opacity: 0;
+    transform: scaleX(0.3);
+    transform-origin: left center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    margin-bottom: clamp(16px, 2.2vw, 24px);
+  }
+  .audience.is-active .audience__copy {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .audience.is-active .audience__rule {
+    opacity: 0.95;
+    transform: scaleX(1);
+  }
+  .audience__label {
+    color: var(--cream-hero);
+    font-family: var(--font-logo);
+    font-size: clamp(2.7rem, 7vw, 6.5rem);
+    font-weight: 400;
+    line-height: 0.96;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--brown);
-    line-height: 1.2;
+    letter-spacing: 0.04em;
   }
-  .aud__dash { color: var(--brown); line-height: 1.2; }
-  .aud__short {
-    font-size: clamp(0.8rem, 1.1vw, 1rem);
-    letter-spacing: 0.06em;
-    color: var(--brown);
-    line-height: 1.5;
+  .audience__short {
+    max-width: 540px;
+    margin-top: 1rem;
+    color: rgba(255, 250, 244, 0.86);
+    font-size: clamp(1rem, 1.5vw, 1.35rem);
+    letter-spacing: 0.12em;
+    line-height: 1.35;
   }
 
   @media (max-width: 640px) {
-    .aud {
-      grid-template-columns: minmax(0, auto) auto minmax(0, 1fr);
-      gap: 8px;
+    .audiences-section {
+      min-height: 70svh;
     }
-    .aud__short { letter-spacing: 0.02em; }
+    .audience__veil {
+      background: linear-gradient(180deg, rgba(41, 25, 24, 0.06) 0%, rgba(41, 25, 24, 0.22) 55%, rgba(41, 25, 24, 0.66) 100%);
+    }
+    .audience__content {
+      padding: 96px 24px 60px;
+    }
+    .audiences__progress-current {
+      font-size: clamp(1.7rem, 11vw, 2.4rem);
+    }
+    .audiences__progress-total {
+      font-size: clamp(0.9rem, 5.5vw, 1.35rem);
+    }
+    .audience__copy {
+      max-width: 88vw;
+    }
+    .audience__label {
+      font-size: clamp(2.35rem, 12vw, 4.5rem);
+      letter-spacing: 0.02em;
+    }
+    .audience__short {
+      max-width: 88vw;
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+    }
   }
 </style>
+
+<script>
+  const slides = Array.from(document.querySelectorAll<HTMLElement>("[data-audience-slide]"));
+  const progress = document.querySelector<HTMLElement>("[data-progress]");
+  const progressCurrent = document.querySelector<HTMLElement>("[data-progress-current]");
+  let activeSlide = 0;
+
+  const renderProgress = (index: number) => {
+    if (!progress || !progressCurrent) return;
+
+    progress.classList.add("is-changing");
+    window.setTimeout(() => {
+      progressCurrent.textContent = String(index + 1).padStart(2, "0");
+      progress.classList.remove("is-changing");
+    }, 180);
+  };
+
+  if (slides.length > 1) {
+    window.setInterval(() => {
+      slides[activeSlide].classList.remove("is-active");
+      activeSlide = (activeSlide + 1) % slides.length;
+      slides[activeSlide].classList.add("is-active");
+      renderProgress(activeSlide);
+    }, 5000);
+  }
+</script>

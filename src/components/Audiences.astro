@@ -165,7 +165,10 @@ import { audiences } from "../data/audiences";
       background: linear-gradient(180deg, rgba(41, 25, 24, 0.06) 0%, rgba(41, 25, 24, 0.22) 55%, rgba(41, 25, 24, 0.66) 100%);
     }
     .audience__content {
-      padding: 96px 24px 60px;
+      padding: 96px clamp(16px, 4.5vw, 20px) 60px;
+    }
+    .audiences__progress {
+      left: clamp(16px, 4.5vw, 20px);
     }
     .audiences__progress-current {
       font-size: clamp(1.7rem, 11vw, 2.4rem);
@@ -174,14 +177,14 @@ import { audiences } from "../data/audiences";
       font-size: clamp(0.9rem, 5.5vw, 1.35rem);
     }
     .audience__copy {
-      max-width: 88vw;
+      max-width: 92vw;
     }
     .audience__label {
       font-size: clamp(2.35rem, 12vw, 4.5rem);
       letter-spacing: 0.02em;
     }
     .audience__short {
-      max-width: 88vw;
+      max-width: 92vw;
       margin-top: 0.75rem;
       font-size: 0.95rem;
       letter-spacing: 0.08em;

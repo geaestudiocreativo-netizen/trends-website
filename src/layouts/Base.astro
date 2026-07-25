@@ -5,7 +5,7 @@ import { site, heroImage } from "../data/site";
 
 interface Props { title?: string; description?: string; }
 const {
-  title = "GABS · by Gabriel García — Tartas artesanales",
+  title = ".G · by Gabriel García — Tartas artesanales",
   description = "Tartas artesanales para ti, tu restaurante y tu evento. Haz tu pedido por WhatsApp.",
 } = Astro.props;
 ---
@@ -17,6 +17,8 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f3ebe0" />
+    <link rel="icon" type="image/png" href="/assets/logos/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/logos/logo.png" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

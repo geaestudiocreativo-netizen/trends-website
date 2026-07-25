@@ -1,11 +1,13 @@
 ---
 import { site } from "../data/site";
+const heroImagePath = `${import.meta.env.BASE_URL}images/hero.jpg`;
+const heroLogoPath = `${import.meta.env.BASE_URL}images/logotype.png`;
 ---
-<header class="hero" id="top">
+<header class="hero" id="top" style={`--hero-image-url: url('${heroImagePath}')`}>
   <div class="hero__media" aria-hidden="true">
     <img
       class="hero__img"
-      src="/images/pexels-yulia-oliinychenko-849416506-19651272.jpg"
+      src={heroImagePath}
       alt=""
       fetchpriority="high"
       decoding="async"
@@ -14,7 +16,7 @@ import { site } from "../data/site";
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__inner container">
     <div class="hero__brand">
-      <img class="hero__logo hero-in" src={`${import.meta.env.BASE_URL}images/logotype.png`} alt="" width="640" height="220" decoding="async" />
+      <img class="hero__logo hero-in" src={heroLogoPath} alt="" width="640" height="220" decoding="async" />
       <p class="hero__eyebrow hero-in">{site.eyebrow}</p>
     </div>
   </div>
@@ -157,7 +159,7 @@ import { site } from "../data/site";
      the veil direction change. Frame: photo band 0–569.    */
   @media (max-width: 640px) {
         .hero {
-          background-image: url("/images/hero.jpg");
+          background-image: var(--hero-image-url);
           background-size: cover;
           background-position: center;
         }

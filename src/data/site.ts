@@ -6,7 +6,7 @@
 export const site = {
   // Line above the wordmark in the final Home Page frame
   eyebrow: "2026 — Tartas de autor en Majadahonda",
-  brand: ".G",
+  brand: "TRENDS",
   tagline: "— BY GABRIEL GARCÍA",
 
   // ⚠️ REPLACE THIS with your real WhatsApp number in international format,

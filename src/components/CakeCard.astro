@@ -8,7 +8,6 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
 interface Props { cake: Cake; }
 const { cake } = Astro.props;
 const sizes = cake.sizes.map((code) => SIZE_CATALOG[code]).filter(Boolean);
-const collapsedSizes = sizes.filter((size) => size.code !== "L");
 const allergenNames = cake.allergens.map((id) => allergenById[id]?.name).filter(Boolean);
 const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
 ---
@@ -21,7 +20,6 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
   >
     <span class="card__media">
       <img src={cake.image} alt={cake.alt} width="339" height="366" loading="lazy" decoding="async" />
-      <span class="card__price">{cake.price}</span>
     </span>
 
     <span class="card__body">
@@ -29,14 +27,12 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
         <span class="card__title">{cake.title}</span>
       </span>
       <span class="card__desc">{cake.description}</span>
-      <span class="card__sub">{cake.subline}</span>
       <span class="card__bottom-row">
-        <span class="card__sizes" role="list" aria-label="Tamaños disponibles">
-          {collapsedSizes.map((s) => (
-            <span class="size-chip" role="listitem" title={s.code === "S" ? "15 cm" : "22 cm"} style={`--bg:${s.code === "S" ? "#A49250" : "#8AC3BE"};--fg:${s.code === "S" ? "#574D29" : "#567B77"}`}>{s.code === "S" ? "15 cm" : "22 cm"}</span>
-          ))}
+        <span class="card__details" aria-hidden="true">
+          <span class="card__details-label card__details-label--more">Ver más información</span>
+          <span class="card__details-label card__details-label--less">Ver menos información</span>
+          <span class="card__details-arrow" aria-hidden="true">↓</span>
         </span>
-        <span class="card__details">Ver detalles <span class="card__details-arrow" aria-hidden="true">→</span></span>
       </span>
     </span>
   </button>
@@ -44,6 +40,9 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
   <div class="card__panel" id={`panel-${cake.id}`} role="region" aria-labelledby={`btn-${cake.id}`}>
     <div class="card__panel-inner">
       <div class="detail">
+        <h4 class="detail__h">Ingredientes</h4>
+        <p class="detail__ingredients">{cake.subline}</p>
+
         <h4 class="detail__h">Tamaños y precios</h4>
         <ul class="sizes">
           {sizes.map((s) => (
@@ -80,10 +79,12 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
     border-radius: var(--radius-card);
     box-shadow: var(--card-shadow);
     overflow: hidden;
+    transform: scale(0.9);
+    transform-origin: top center;
     transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
     will-change: transform;
   }
-  .card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
+  .card:hover { transform: scale(0.9) translateY(-4px); box-shadow: var(--card-shadow-hover); }
   .card:focus-within { box-shadow: var(--card-shadow-hover); }
 
   .card__head {
@@ -108,15 +109,6 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
     will-change: transform;
   }
   .card:hover .card__media img { transform: scale(1.05); }
-  .card__price {
-    position: absolute; top: 0; right: 0;
-    background: var(--brown);
-    color: var(--cream-hero);
-    font-size: 0.76rem; font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 0 var(--radius-card) 0 10px;
-  }
-  .card__price::before { content: "desde "; }
 
   .card__body {
     display: flex;
@@ -140,27 +132,59 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
     text-transform: uppercase;
     letter-spacing: 0.02em;
   }
-  .card__sizes { display: inline-flex; gap: 5px; flex-shrink: 0; }
   .card__bottom-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+    justify-content: flex-start;
+    min-height: 21px;
+    gap: 4px;
     margin-top: auto;
     margin-bottom: 16px;
   }
-  .size-chip {
-    display: inline-grid;
-    place-items: center;
-    width: 42px;
-    height: 21px;
-    border-radius: 5px;
-    background: var(--bg, var(--olive));
-    color: var(--fg, #fff);
-    font-size: 0.68rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0;
+
+  .card__details {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+    color: #452928;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    opacity: 0.72;
+  }
+
+  .card__details-label {
+    display: inline-block;
+    text-align: left;
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+  }
+
+  .card__details-label--less {
+    opacity: 0;
+    transform: translateY(2px);
+    pointer-events: none;
+  }
+
+  .card__details-arrow {
+    display: inline-block;
+    transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  }
+
+  .card__head:hover .card__details,
+  .card__head:focus-visible .card__details { opacity: 1; }
+
+  .card__head[aria-expanded="true"] .card__details-label--more {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+
+  .card__head[aria-expanded="true"] .card__details-label--less {
+    opacity: 1;
+    transform: none;
+  }
+
+  .card__head[aria-expanded="true"] .card__details-arrow {
+    transform: rotate(180deg);
   }
 
   .card__desc {
@@ -170,25 +194,6 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
     font-size: 0.8rem;
     color: var(--brown);
   }
-  .card__sub { display: block; margin-top: 0; font-size: calc(0.66rem + 2px); color: var(--muted); }
-  .card__details {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 0;
-    color: #452928;
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    opacity: 0.72;
-  }
-  .card__details-arrow {
-    display: inline-block;
-    transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
-  }
-  .card__head:hover .card__details,
-  .card__head:focus-visible .card__details { opacity: 1; }
-  .card__head:hover .card__details-arrow,
-  .card__head:focus-visible .card__details-arrow { transform: translateX(4px); }
 
   /* expand */
   .card__panel {
@@ -216,6 +221,11 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
   .detail__h {
     font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--olive-dark); margin-top: 16px; margin-bottom: 8px;
+  }
+  .detail__ingredients {
+    font-size: 0.82rem;
+    color: var(--brown);
+    line-height: 1.55;
   }
   .sizes { display: flex; flex-direction: column; gap: 8px; }
   .size { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 0.86rem; }

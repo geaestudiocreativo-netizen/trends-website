@@ -2,7 +2,7 @@
 import { audiences } from "../data/audiences";
 ---
 <section class="audiences-section" aria-labelledby="audiences-title">
-  <h2 class="sr-only" id="audiences-title">Formas de pedir en .G</h2>
+  <h2 class="sr-only" id="audiences-title">Formas de pedir en Trends</h2>
   <p class="audiences__progress" data-progress aria-hidden="true">
     <span class="audiences__progress-current" data-progress-current>01</span>
     <span class="audiences__progress-total">/ {String(audiences.length).padStart(2, "0")}</span>
@@ -27,7 +27,7 @@ import { audiences } from "../data/audiences";
 <style>
   .audiences-section {
     position: relative;
-    min-height: clamp(460px, 68svh, 700px);
+    min-height: clamp(620px, 88svh, 920px);
     overflow: hidden;
     isolation: isolate;
     background: var(--brown);
@@ -159,39 +159,31 @@ import { audiences } from "../data/audiences";
 
   @media (max-width: 640px) {
     .audiences-section {
-      min-height: 100dvh;
+      min-height: 86svh;
     }
     .audience__veil {
       background: linear-gradient(180deg, rgba(41, 25, 24, 0.06) 0%, rgba(41, 25, 24, 0.22) 55%, rgba(41, 25, 24, 0.66) 100%);
     }
     .audience__content {
-      justify-content: flex-end;
-      padding: 96px clamp(16px, 4.5vw, 20px) clamp(36px, 8vh, 48px);
-    }
-    .audiences__progress {
-      top: clamp(22px, 6vw, 34px);
-      left: clamp(16px, 4.5vw, 20px);
+      padding: 96px 24px 60px;
     }
     .audiences__progress-current {
-      font-size: clamp(3rem, 10vw, 4rem);
+      font-size: clamp(1.7rem, 11vw, 2.4rem);
     }
     .audiences__progress-total {
-      font-size: clamp(1.35rem, 4.8vw, 1.9rem);
-    }
-    .audience__rule {
-      width: clamp(48px, 6vw, 72px);
+      font-size: clamp(0.9rem, 5.5vw, 1.35rem);
     }
     .audience__copy {
-      max-width: 75vw;
+      max-width: 88vw;
     }
     .audience__label {
-      font-size: clamp(1.5rem, 7vw, 2.6rem);
+      font-size: clamp(2.35rem, 12vw, 4.5rem);
       letter-spacing: 0.02em;
     }
     .audience__short {
-      max-width: 75vw;
+      max-width: 88vw;
       margin-top: 0.75rem;
-      font-size: clamp(1.1rem, 3.8vw, 1.35rem);
+      font-size: 0.95rem;
       letter-spacing: 0.08em;
     }
   }

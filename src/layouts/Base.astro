@@ -1,11 +1,10 @@
 ---
 import "../styles/global.css";
-import BrandMark from "../components/BrandMark.astro";
 import { site, heroImage } from "../data/site";
 
 interface Props { title?: string; description?: string; }
 const {
-  title = ".G · by Gabriel García — Tartas artesanales",
+  title = "GABS · by Gabriel García — Tartas artesanales",
   description = "Tartas artesanales para ti, tu restaurante y tu evento. Haz tu pedido por WhatsApp.",
 } = Astro.props;
 ---
@@ -17,8 +16,6 @@ const {
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f3ebe0" />
-    <link rel="icon" type="image/png" href="/assets/logos/logo.png" />
-    <link rel="apple-touch-icon" href="/assets/logos/logo.png" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -42,10 +39,7 @@ const {
 
     <footer class="site-footer">
       <div class="container">
-        <span class="site-footer__brandline">
-          <BrandMark class="site-footer__brandmark" />
-          <span>· {site.tagline}</span>
-        </span>
+        <span>{site.brand} · {site.tagline}</span>
         <span>© {new Date().getFullYear()}</span>
       </div>
     </footer>
@@ -64,18 +58,6 @@ const {
         font-size: 0.8rem;
         color: var(--muted);
         letter-spacing: 0.08em;
-      }
-      .site-footer__brandline {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 0.5em;
-      }
-      .site-footer__brandmark {
-        font-family: var(--font-logo);
-        font-weight: 400;
-        font-size: 1.02em;
-        letter-spacing: 0.02em;
-        line-height: 1;
       }
       .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     </style>

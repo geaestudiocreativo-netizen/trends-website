@@ -5,7 +5,7 @@
 
 export const site = {
   // Line above the wordmark in the final Home Page frame
-  eyebrow: "2026 — Tartas de autor en Majadahonda",
+  eyebrow: "2026 — Tartas de autor en Las Rozas",
   brand: "TRENDS",
   tagline: "— BY GABRIEL GARCÍA",
 

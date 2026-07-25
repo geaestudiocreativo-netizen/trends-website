@@ -19,17 +19,16 @@ import CakeCard from "./CakeCard.astro";
   .catalogue { background: var(--catalogue-dark); }
   .catalogue__head .section-title { color: var(--cream-hero); }
   .catalogue__head .eyebrow { color: rgba(255, 250, 244, 0.62); }
-  .catalogue__head { display: flex; flex-direction: column; gap: 6px; text-align: center; align-items: center; }
+  .catalogue__head { display: flex; flex-direction: column; gap: 6px; }
   .catalogue__grid {
     margin-top: clamp(24px, 4vw, 36px);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2px;
+    gap: 20px;
     max-width: var(--grid-max);
     margin-inline: 0;
     align-items: start;
   }
-
   @media (max-width: 900px) {
     .catalogue__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
@@ -50,5 +49,6 @@ import CakeCard from "./CakeCard.astro";
         head.setAttribute("aria-expanded", open ? "false" : "true");
       });
     });
+
   }
 </script>

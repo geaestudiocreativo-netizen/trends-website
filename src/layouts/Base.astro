@@ -39,7 +39,7 @@ const {
 
     <footer class="site-footer">
       <div class="container">
-        <span>{site.brand} · {site.tagline}</span>
+        <img class="site-footer__logo" src="/images/logotype.png" alt=".G" width="180" height="60" decoding="async" />
         <span>© {new Date().getFullYear()}</span>
       </div>
     </footer>
@@ -60,6 +60,7 @@ const {
         letter-spacing: 0.08em;
       }
       .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+      .site-footer__logo { width: auto; height: 26px; }
     </style>
 
     <script>

@@ -13,9 +13,10 @@ import { site } from "../data/site";
   </div>
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__inner container">
-    <p class="hero__eyebrow hero-in">{site.eyebrow}</p>
-    <h1 class="hero__wordmark hero-in">{site.brand}</h1>
-    <p class="hero__tagline hero-in">{site.tagline}</p>
+    <div class="hero__brand">
+      <img class="hero__logo hero-in" src={`${import.meta.env.BASE_URL}images/logotype.png`} alt="" width="640" height="220" decoding="async" />
+      <p class="hero__eyebrow hero-in">{site.eyebrow}</p>
+    </div>
   </div>
 </header>
 
@@ -95,29 +96,26 @@ import { site } from "../data/site";
     padding-right: clamp(20px, 9vw, 132px);
     width: 100%;
   }
+  .hero__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
   .hero__eyebrow {
     font-size: clamp(0.72rem, 1.1vw, 0.95rem);
     letter-spacing: 0.22em;
     color: var(--brown);
     font-weight: 300;
-    margin-bottom: 0.62rem;
+    margin-top: 14px;
+    margin-bottom: 0;
+    text-align: left;
   }
-  .hero__wordmark {
-    font-family: var(--font-logo);
-    font-weight: 400;                 /* Krona One ships a single weight */
-    color: var(--brown);
-    font-size: clamp(2.76rem, 8.7vw, 7.42rem);
-    letter-spacing: 0.02em;
-    line-height: 1;
+  .hero__logo {
+    display: block;
+    width: auto;
+    height: 180px;
     max-width: 100%;
-    overflow-wrap: normal;
-  }
-  .hero__tagline {
-    margin-top: 0.5rem;
-    font-size: clamp(0.72rem, 1.3vw, 0.9rem);
-    letter-spacing: 0.28em;
-    color: var(--brown);
-    font-weight: 300;
+    object-fit: contain;
   }
 
   /* ── entrance ──────────────────────────────────────── */
@@ -151,14 +149,21 @@ import { site } from "../data/site";
     will-change: transform, opacity;
     animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  .hero__eyebrow.hero-in  { animation-delay: 0.15s; }
-  .hero__wordmark.hero-in { animation-delay: 0.30s; }
-  .hero__tagline.hero-in  { animation-delay: 0.45s; }
+  .hero__logo.hero-in { animation-delay: 0.15s; }
+  .hero__eyebrow.hero-in  { animation-delay: 0.30s; }
 
   /* ── mobile ────────────────────────────────────────────
      Same overlay structure as desktop — only the height and
      the veil direction change. Frame: photo band 0–569.    */
   @media (max-width: 640px) {
+        .hero {
+          background-image: url("/images/hero.jpg");
+          background-size: cover;
+          background-position: center;
+        }
+
+        .hero__media { display: none; }
+
     /* The photograph owns the first screen: the hero fills almost the
        whole viewport, so Services only appears once the user scrolls. */
     .hero {
@@ -184,8 +189,7 @@ import { site } from "../data/site";
        cream halo keeps it crisp over crumbs and shadows without
        lightening the image itself. */
     .hero__eyebrow,
-    .hero__wordmark,
-    .hero__tagline {
+    .hero__logo {
       text-shadow: 0 1px 14px rgba(255, 250, 244, 0.62);
     }
 
@@ -198,7 +202,14 @@ import { site } from "../data/site";
       padding-right: clamp(20px, 7.6vw, 110px);
     }
 
-    .hero__wordmark { font-size: clamp(2.76rem, 15.9vw, 4.24rem); }
+    .hero__brand {
+      align-items: flex-start;
+    }
+
+    .hero__logo {
+      height: 120px;
+      max-width: 100%;
+    }
   }
 
   /* ── reduced motion ────────────────────────────────── */

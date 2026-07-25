@@ -1,5 +1,5 @@
 ---
-import { site } from "../data/site";
+import BrandMark from "./BrandMark.astro";
 
 const heroTagline = "BY GABRIEL GARCÍA";
 ---
@@ -15,7 +15,7 @@ const heroTagline = "BY GABRIEL GARCÍA";
   </div>
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__inner container">
-    <h1 class="hero__wordmark hero-in">{site.brand}</h1>
+    <h1 class="hero__wordmark hero-in"><BrandMark /></h1>
     <p class="hero__tagline hero-in">{heroTagline}</p>
   </div>
 </header>
@@ -109,24 +109,25 @@ const heroTagline = "BY GABRIEL GARCÍA";
     font-family: var(--font-logo);
     font-weight: 400;                 /* Krona One ships a single weight */
     color: var(--brown);
-    align-self: center;
-    text-align: center;
+    align-self: flex-start;
+    text-align: left;
     margin-top: 0;
-    font-size: clamp(2.76rem, 8.7vw, 7.42rem);
+    font-size: clamp(8.6rem, 27.2vw, 22.8rem);
     letter-spacing: 0.02em;
     line-height: 1;
     max-width: 100%;
     overflow-wrap: normal;
   }
   .hero__tagline {
-    align-self: center;
-    text-align: center;
-    width: max-content;
-    margin-inline: auto;
-    margin-top: 0;
-    font-size: clamp(0.72rem, 1.3vw, 0.9rem);
+    align-self: flex-start;
+    text-align: left;
+    width: auto;
+    margin-inline: 0;
+    margin-top: clamp(0.7rem, 1.4vh, 1.05rem);
+    font-size: clamp(0.66rem, 1.1vw, 0.78rem);
     letter-spacing: 0.38em;
     color: var(--brown);
+    opacity: 0.8;
     font-weight: 300;
     text-transform: uppercase;
   }
@@ -206,7 +207,7 @@ const heroTagline = "BY GABRIEL GARCÍA";
       text-align: left;
     }
 
-    .hero__wordmark { font-size: clamp(2.76rem, 15.9vw, 4.24rem); }
+    .hero__wordmark { font-size: clamp(6.4rem, 36.4vw, 10.6rem); }
   }
 
   @media (min-width: 1024px) {

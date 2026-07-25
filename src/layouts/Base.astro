@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import BrandMark from "../components/BrandMark.astro";
 import { site, heroImage } from "../data/site";
 
 interface Props { title?: string; description?: string; }
@@ -39,7 +40,10 @@ const {
 
     <footer class="site-footer">
       <div class="container">
-        <span>{site.brand} · {site.tagline}</span>
+        <span class="site-footer__brandline">
+          <BrandMark class="site-footer__brandmark" />
+          <span>· {site.tagline}</span>
+        </span>
         <span>© {new Date().getFullYear()}</span>
       </div>
     </footer>
@@ -58,6 +62,18 @@ const {
         font-size: 0.8rem;
         color: var(--muted);
         letter-spacing: 0.08em;
+      }
+      .site-footer__brandline {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.5em;
+      }
+      .site-footer__brandmark {
+        font-family: var(--font-logo);
+        font-weight: 400;
+        font-size: 1.02em;
+        letter-spacing: 0.02em;
+        line-height: 1;
       }
       .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
     </style>

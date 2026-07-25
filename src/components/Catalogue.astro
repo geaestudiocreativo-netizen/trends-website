@@ -1,6 +1,5 @@
 ---
 import { cakes } from "../data/cakes";
-import { categories } from "../data/categories";
 import CakeCard from "./CakeCard.astro";
 ---
 <section class="section catalogue" id="catalogo" aria-labelledby="catalogue-title">
@@ -10,19 +9,9 @@ import CakeCard from "./CakeCard.astro";
       <p class="eyebrow">Siempre para compartir.</p>
     </header>
 
-    <div class="catalogue__filters" role="group" aria-label="Filtrar tartas por categoría">
-      {categories.map((c) => (
-        <button class="pill" data-filter={c.slug} data-tone={c.tone ?? "default"} aria-pressed="false">
-          {c.label}
-        </button>
-      ))}
-    </div>
-
     <div class="catalogue__grid" data-cards>
       {cakes.map((cake) => <CakeCard cake={cake} />)}
     </div>
-
-    <p class="catalogue__empty" data-empty hidden>No hay tartas en esta categoría todavía.</p>
   </div>
 </section>
 
@@ -31,17 +20,6 @@ import CakeCard from "./CakeCard.astro";
   .catalogue__head .section-title { color: var(--cream-hero); }
   .catalogue__head .eyebrow { color: rgba(255, 250, 244, 0.62); }
   .catalogue__head { display: flex; flex-direction: column; gap: 6px; }
-  .catalogue__filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    row-gap: 12px;
-    margin-top: clamp(24px, 4vw, 40px);
-  }
-  .catalogue__filters .pill {
-    height: 25px;
-    padding-inline: 19px;
-  }
   .catalogue__grid {
     margin-top: clamp(24px, 4vw, 36px);
     display: grid;
@@ -51,8 +29,6 @@ import CakeCard from "./CakeCard.astro";
     margin-inline: 0;
     align-items: start;
   }
-  .catalogue__empty { margin-top: 32px; color: rgba(255, 250, 244, 0.62); }
-
   @media (max-width: 900px) {
     .catalogue__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
@@ -71,33 +47,6 @@ import CakeCard from "./CakeCard.astro";
         const open = head.getAttribute("aria-expanded") === "true";
         heads.forEach((h) => h.setAttribute("aria-expanded", "false"));
         head.setAttribute("aria-expanded", open ? "false" : "true");
-      });
-    });
-
-    // ── Category filter: single-select, click again to clear ─────
-    const pills = Array.from(document.querySelectorAll<HTMLButtonElement>("[data-filter]"));
-    const cards = Array.from(grid.querySelectorAll<HTMLElement>("[data-card]"));
-    const empty = document.querySelector<HTMLElement>("[data-empty]");
-    let active: string | null = null;
-
-    const apply = () => {
-      let shown = 0;
-      cards.forEach((card) => {
-        const cats = (card.dataset.categories || "").split(" ");
-        const match = !active || cats.includes(active);
-        card.classList.toggle("is-hidden", !match);
-        if (!match) card.querySelector(".card__head")?.setAttribute("aria-expanded", "false");
-        if (match) shown++;
-      });
-      if (empty) empty.hidden = shown !== 0;
-    };
-
-    pills.forEach((pill) => {
-      pill.addEventListener("click", () => {
-        const slug = pill.dataset.filter!;
-        active = active === slug ? null : slug;
-        pills.forEach((p) => p.setAttribute("aria-pressed", String(p.dataset.filter === active)));
-        apply();
       });
     });
   }

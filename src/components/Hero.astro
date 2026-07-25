@@ -1,7 +1,5 @@
 ---
 import BrandMark from "./BrandMark.astro";
-
-const heroTagline = "BY GABRIEL GARCÍA";
 ---
 <header class="hero" id="top">
   <div class="hero__media" aria-hidden="true">
@@ -16,7 +14,6 @@ const heroTagline = "BY GABRIEL GARCÍA";
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__inner container">
     <h1 class="hero__wordmark hero-in"><BrandMark /></h1>
-    <p class="hero__tagline hero-in">{heroTagline}</p>
   </div>
 </header>
 
@@ -118,20 +115,6 @@ const heroTagline = "BY GABRIEL GARCÍA";
     max-width: 100%;
     overflow-wrap: normal;
   }
-  .hero__tagline {
-    align-self: flex-start;
-    text-align: left;
-    width: auto;
-    margin-inline: 0;
-    margin-top: clamp(0.7rem, 1.4vh, 1.05rem);
-    font-size: clamp(0.66rem, 1.1vw, 0.78rem);
-    letter-spacing: 0.38em;
-    color: var(--brown);
-    opacity: 0.8;
-    font-weight: 300;
-    text-transform: uppercase;
-  }
-
   /* ── entrance ──────────────────────────────────────── */
   @keyframes heroIntro {
     0%   { opacity: 0; transform: none; }
@@ -188,8 +171,7 @@ const heroTagline = "BY GABRIEL GARCÍA";
        cream halo keeps it crisp over crumbs and shadows without
        lightening the image itself. */
     .hero__eyebrow,
-    .hero__wordmark,
-    .hero__tagline {
+    .hero__wordmark {
       text-shadow: 0 1px 14px rgba(255, 250, 244, 0.62);
     }
 
@@ -201,8 +183,7 @@ const heroTagline = "BY GABRIEL GARCÍA";
       padding-top: clamp(72px, 14vh, 140px);
     }
 
-    .hero__wordmark,
-    .hero__tagline {
+    .hero__wordmark {
       align-self: flex-start;
       text-align: left;
     }

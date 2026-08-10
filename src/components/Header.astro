@@ -1,0 +1,71 @@
+<header class="site-nav" aria-label="Navegacion principal">
+	<div class="container site-nav__inner">
+		<a class="site-nav__brand" href="#top" aria-label="Volver al inicio">
+			<img src="/images/logotype.png" alt="GABS" width="210" height="72" decoding="async" />
+		</a>
+
+		<nav aria-label="Secciones" class="site-nav__menu">
+			<a href="#servicios">Servicios</a>
+			<a href="#catalogo">Nuestras Tartas</a>
+			<a href="#sobre-nosotros">Sobre nosotros</a>
+			<a href="#contacto">Contacto</a>
+		</nav>
+	</div>
+</header>
+
+<style>
+	.site-nav {
+		display: none;
+	}
+
+	@media (min-width: 901px) {
+		.site-nav {
+			display: block;
+			background: var(--cream-hero);
+		}
+
+		.site-nav__inner {
+			min-height: 88px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 36px;
+			padding-block: 16px;
+		}
+
+		.site-nav__brand {
+			display: inline-flex;
+			align-items: center;
+			color: var(--brown);
+			flex-shrink: 0;
+		}
+
+		.site-nav__brand img {
+			width: auto;
+			height: clamp(38px, 3.2vw, 46px);
+		}
+
+		.site-nav__menu {
+			display: inline-flex;
+			align-items: center;
+			justify-content: flex-end;
+			gap: clamp(18px, 2.6vw, 38px);
+			flex-wrap: wrap;
+		}
+
+		.site-nav__menu a {
+			font-family: var(--font-sans);
+			font-size: clamp(0.92rem, 1.15vw, 1.02rem);
+			font-weight: 400;
+			letter-spacing: 0.04em;
+			color: var(--brown);
+			opacity: 0.9;
+			transition: opacity 160ms ease;
+		}
+
+		.site-nav__menu a:hover,
+		.site-nav__menu a:focus-visible {
+			opacity: 0.62;
+		}
+	}
+</style>

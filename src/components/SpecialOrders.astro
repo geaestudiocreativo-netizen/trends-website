@@ -4,7 +4,7 @@ import WhatsAppIcon from "./WhatsAppIcon.astro";
 
 const message = site.whatsappDefaultMessage;
 ---
-<section class="special-orders" aria-labelledby="special-orders-title">
+<section id="contacto" class="special-orders" aria-labelledby="special-orders-title">
   <div class="special-orders__inner">
     <p class="special-orders__eyebrow">ENCARGOS ESPECIALES</p>
     <h2 class="special-orders__heading" id="special-orders-title">¿Y SI TU TARTA FUERA OTRA?</h2>
@@ -55,11 +55,22 @@ const message = site.whatsappDefaultMessage;
     margin: 0 0 28px;
   }
 
+  @media (min-width: 1024px) {
+    .special-orders__inner {
+      max-width: 760px;
+    }
+
+    .special-orders__heading {
+      white-space: nowrap;
+    }
+  }
+
   .special-orders__body {
     font-size: clamp(0.88rem, 1.2vw, 1rem);
     line-height: 1.8;
     color: var(--brown);
-    max-width: 440px;
+    width: 100%;
+    max-width: clamp(440px, 58vw, 860px);
     margin: 0 0 40px;
     opacity: 0.82;
   }

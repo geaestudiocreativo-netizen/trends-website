@@ -24,16 +24,26 @@ import CakeCard from "./CakeCard.astro";
     margin-top: clamp(24px, 4vw, 36px);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
+    row-gap: clamp(24px, 3vw, 32px);
+    column-gap: clamp(24px, 2.4vw, 30px);
     max-width: var(--grid-max);
     margin-inline: 0;
     align-items: start;
   }
   @media (max-width: 900px) {
-    .catalogue__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .catalogue__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      row-gap: clamp(20px, 2.2vw, 24px);
+      column-gap: clamp(20px, 2.2vw, 24px);
+    }
   }
   @media (max-width: 640px) {
-    .catalogue__grid { grid-template-columns: 1fr; max-width: none; }
+    .catalogue__grid {
+      grid-template-columns: 1fr;
+      max-width: none;
+      row-gap: 18px;
+      column-gap: 18px;
+    }
   }
 </style>
 

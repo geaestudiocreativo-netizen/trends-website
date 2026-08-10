@@ -11,12 +11,12 @@ export const site = {
 
   // ⚠️ REPLACE THIS with your real WhatsApp number in international format,
   //    digits only, no "+", no spaces. Example (Spain): 34600112233
-  whatsappNumber: "34600000000",
+  whatsappNumber: "34609086964",
 
   // Default message pre-filled when a customer opens WhatsApp.
   // {item} is replaced by the cake name when ordering a specific cake.
-  whatsappDefaultMessage: "¡Hola GABS! Me gustaría hacer un pedido.",
-  whatsappItemMessage: "¡Hola GABS! Me gustaría pedir: {item}.",
+  whatsappDefaultMessage: "Hola! Me gustaría hacer un encargo especial.",
+  whatsappItemMessage: "Hola! Me gustaría hacer un encargo de {item}.",
 } as const;
 
 /** Build a wa.me link with an URL-encoded message. */
@@ -41,7 +41,7 @@ export function waLink(message: string = site.whatsappDefaultMessage): string {
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 
-const HERO_PATH = "/images/tarta-chocolate.jpg";
+const HERO_PATH = "/images/hero/hero.jpg";
 
 function fingerprint(publicPath: string): string {
   try {

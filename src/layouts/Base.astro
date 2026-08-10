@@ -17,6 +17,10 @@ const {
     <meta name="description" content={description} />
     <meta name="theme-color" content="#f3ebe0" />
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/logos/logo.png" />
+    <link rel="apple-touch-icon" href="/assets/logos/logo.png" />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
@@ -42,6 +46,9 @@ const {
         <img class="site-footer__logo" src="/images/logotype.png" alt=".G" width="180" height="60" decoding="async" />
         <span>© {new Date().getFullYear()}</span>
       </div>
+      <div class="site-footer__credit">
+        <a class="site-footer__credit-link" href="https://www.geaestudiocreativo.com" target="_blank" rel="noopener">Una web creada por <span class="site-footer__credit-name">Gea Estudio</span></a>
+      </div>
     </footer>
 
     <style>
@@ -61,6 +68,27 @@ const {
       }
       .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
       .site-footer__logo { width: auto; height: 26px; }
+      .site-footer__credit {
+        margin-top: 20px;
+        padding-top: 16px;
+        padding-inline: clamp(20px, 5vw, 40px);
+        border-top: 1px solid var(--hairline);
+        font-size: 0.7rem;
+        color: var(--muted);
+        letter-spacing: 0.06em;
+        opacity: 0.7;
+        width: 100%;
+        text-align: center;
+      }
+      .site-footer__credit-link {
+        color: var(--muted);
+        font-weight: 400;
+        text-decoration: none;
+        letter-spacing: 0.06em;
+        transition: opacity 0.2s ease;
+      }
+      .site-footer__credit-link:hover { opacity: 0.55; text-decoration: underline; text-underline-offset: 3px; }
+      .site-footer__credit-name { font-weight: 500; }
     </style>
 
     <script>

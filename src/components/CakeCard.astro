@@ -1,67 +1,77 @@
 ---
-import { SIZE_CATALOG } from "../data/cakes";
 import type { Cake } from "../data/cakes";
-import { allergenById } from "../data/allergens";
 import { site, waLink } from "../data/site";
 import WhatsAppIcon from "./WhatsAppIcon.astro";
 
-interface Props { cake: Cake; }
-const { cake } = Astro.props;
-const sizes = cake.sizes.map((code) => SIZE_CATALOG[code]).filter(Boolean);
-const collapsedSizes = sizes.filter((size) => size.code !== "L");
-const allergenNames = cake.allergens.map((id) => allergenById[id]?.name).filter(Boolean);
-const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
+interface Props {
+  cake: Cake;
+  id: string;
+  index: number;
+}
+const { cake, id, index } = Astro.props;
+const num = String(index + 1).padStart(2, "0");
+const orderMsg = site.whatsappItemMessage.replace("{item}", cake.name);
 ---
-<article class="card" data-card data-categories={cake.categories.join(" ")}>
+<article class="card" data-card>
   <button
     class="card__head"
     aria-expanded="false"
-    aria-controls={`panel-${cake.id}`}
-    id={`btn-${cake.id}`}
+    aria-controls={`panel-${id}`}
+    id={`btn-${id}`}
   >
     <span class="card__media">
-      <img src={cake.image} alt={cake.alt} width="339" height="366" loading="lazy" decoding="async" />
-      <span class="card__price">{cake.price}</span>
+      <img src={cake.image} alt={cake.name} width="339" height="366" loading="lazy" decoding="async" />
     </span>
 
     <span class="card__body">
+      <span class="card__editorial">{num} / {cake.category}</span>
       <span class="card__title-row">
-        <span class="card__title">{cake.title}</span>
+        <span class="card__title">{cake.name}</span>
       </span>
-      <span class="card__desc">{cake.description}</span>
-      <span class="card__sub">{cake.subline}</span>
+      {cake.description && <span class="card__desc">{cake.description}</span>}
       <span class="card__bottom-row">
-        <span class="card__sizes" role="list" aria-label="Tamaños disponibles">
-          {collapsedSizes.map((s) => (
-            <span class="size-chip" role="listitem" title={s.code === "S" ? "15 cm" : "22 cm"} style={`--bg:${s.code === "S" ? "#A49250" : "#8AC3BE"};--fg:${s.code === "S" ? "#574D29" : "#567B77"}`}>{s.code === "S" ? "15 cm" : "22 cm"}</span>
-          ))}
-        </span>
-        <span class="card__details">Ver detalles <span class="card__details-arrow" aria-hidden="true">→</span></span>
+        <span></span>
+          <span class="card__details">Ver detalles</span>
       </span>
     </span>
   </button>
 
-  <div class="card__panel" id={`panel-${cake.id}`} role="region" aria-labelledby={`btn-${cake.id}`}>
+  <div class="card__panel" id={`panel-${id}`} role="region" aria-labelledby={`btn-${id}`}>
     <div class="card__panel-inner">
       <div class="detail">
-        <h4 class="detail__h">Tamaños y precios</h4>
-        <ul class="sizes">
-          {sizes.map((s) => (
-            <li class="size">
-              <span class="size__label">
-                <span class="size__code" style={`--bg:${s.bg};--fg:${s.fg}`}>{s.code}</span>
-                {s.name}<em class="size__note">{s.note}</em>
-              </span>
-              <span class="size__price">{s.price}</span>
-            </li>
-          ))}
-        </ul>
+        {cake.sizes && cake.sizes.length > 0 && (
+          <>
+            <h4 class="detail__h">Tamaños y precios</h4>
+            <ul class="sizes">
+              {cake.sizes.map((s, i) => (
+                <li class="size">
+                  <span class="size__label">
+                    <span class="size-chip" style={`--bg:${i % 2 === 0 ? "#7B8062" : "#4A2928"};--fg:#F7F1E8`}>{s.size}</span>
+                  </span>
+                  <span class="size__price">{s.price}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
 
-        <h4 class="detail__h">Alérgenos</h4>
-        <p class="detail__allergens">{allergenNames.join(" · ")}</p>
+        {cake.flavors && cake.flavors.length > 0 && (
+          <>
+            <h4 class="detail__h">Variedades</h4>
+            <ul class="detail__allergens">
+              {cake.flavors.map((f) => <li>{f}</li>)}
+            </ul>
+          </>
+        )}
 
-        <h4 class="detail__h">Conservación</h4>
-        <p class="detail__storage">{cake.storage}</p>
+        {cake.allergens && cake.allergens.length > 0 && (
+          <>
+            <h4 class="detail__h">Alérgenos</h4>
+            <ul class="detail__allergens">
+              {cake.allergens.map((a) => <li>{a}</li>)}
+            </ul>
+          </>
+        )}
 
         <a class="btn btn--gold detail__cta" href={waLink(orderMsg)} target="_blank" rel="noopener">
           <WhatsAppIcon size={17} /> Pedir esta tarta
@@ -73,11 +83,10 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
 
 <style>
   .card {
-    height: 100%;
     display: flex;
     flex-direction: column;
     background: var(--cream-hero);
-    border-radius: var(--radius-card);
+    border-radius: 0;
     box-shadow: var(--card-shadow);
     overflow: hidden;
     transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
@@ -88,18 +97,17 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
 
   .card__head {
     display: flex;
-    flex: 1 1 auto;
     flex-direction: column;
     width: 100%;
     text-align: left;
-    padding: 13px 10.5px 0;
+    padding: 9px 8px 0;
   }
 
   .card__media {
     position: relative;
     display: block;
     aspect-ratio: 339 / 366;
-    border-radius: var(--radius-card);
+    border-radius: 0;
     overflow: hidden;
   }
   .card__media img {
@@ -120,9 +128,17 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
 
   .card__body {
     display: flex;
-    flex: 1 1 auto;
     flex-direction: column;
     padding: 17px 2px 11px;
+  }
+  .card__editorial {
+    display: block;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--olive-dark);
+    margin-bottom: 4px;
   }
   .card__title-row {
     display: flex;
@@ -146,14 +162,16 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin-top: auto;
+    margin-top: 20px;
     margin-bottom: 16px;
   }
   .size-chip {
     display: inline-grid;
     place-items: center;
-    width: 42px;
+    min-width: 52px;
     height: 21px;
+    padding-inline: 6px;
+    white-space: nowrap;
     border-radius: 5px;
     background: var(--bg, var(--olive));
     color: var(--fg, #fff);
@@ -165,30 +183,37 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
 
   .card__desc {
     display: block;
-    min-height: calc(6em - 30px);
-    margin-top: 12px;
+    min-height: 4rem; /* 3 columns worst case: 3 lines at 0.8rem/1.5lh */
+    margin-top: 5px;
     font-size: 0.8rem;
     color: var(--brown);
+  }
+
+  @media (max-width: 900px) {
+    /* 2 columns: longest desc wraps to ~2 lines */
+    .card__desc { min-height: 2.8rem; }
+  }
+
+  @media (max-width: 640px) {
+    /* 1 column: all descs fit in 1–2 lines */
+    .card__desc { min-height: 2rem; }
   }
   .card__sub { display: block; margin-top: 0; font-size: calc(0.66rem + 2px); color: var(--muted); }
   .card__details {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    margin-top: 0;
+    padding: 5px 10px;
+    border: 1px solid #452928;
+    border-radius: 100px;
+    background: transparent;
     color: #452928;
     font-size: 0.7rem;
     letter-spacing: 0.04em;
     opacity: 0.72;
-  }
-  .card__details-arrow {
-    display: inline-block;
-    transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease);
   }
   .card__head:hover .card__details,
-  .card__head:focus-visible .card__details { opacity: 1; }
-  .card__head:hover .card__details-arrow,
-  .card__head:focus-visible .card__details-arrow { transform: translateX(4px); }
+  .card__head:focus-visible .card__details { opacity: 1; background: rgba(69,41,40,0.06); }
 
   /* expand */
   .card__panel {
@@ -229,7 +254,18 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.title);
   .size__note { display: block; width: 100%; font-size: 0.7rem; color: var(--muted); font-style: normal; padding-left: 28px; }
   .size__price { color: var(--brown); font-weight: 600; white-space: nowrap; }
 
-  .detail__allergens { font-size: 0.82rem; color: var(--brown); }
+  .detail__allergens {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    color: #6b5c5a;
+  }
+  .detail__allergens li::before { content: "— "; }
 
   .detail__storage { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
   .detail__cta { margin-top: 18px; width: 100%; height: 46px; font-size: 0.9rem; }

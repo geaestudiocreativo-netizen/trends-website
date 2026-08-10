@@ -10,7 +10,7 @@ import CakeCard from "./CakeCard.astro";
     </header>
 
     <div class="catalogue__grid" data-cards>
-      {cakes.map((cake) => <CakeCard cake={cake} />)}
+      {cakes.map((cake, i) => <CakeCard cake={cake} id={`cake-${i}`} index={i} />)}
     </div>
   </div>
 </section>

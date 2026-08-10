@@ -17,7 +17,7 @@ export const audiences: Audience[] = [
     id: "para-ti",
     label: "Para ti",
     short: "Siempre hay una buena excusa.",
-    image: "/images/parami.jpg",
+    image: "/images/services/tartas.jpeg",
     alt: "Tarta artesanal decorada con flores para una celebración personal",
     detail:
       "Un capricho para regalarte o para sorprender a quien quieres. Elegimos contigo sabor, tamaño y decoración para que cada tarta sea única.",
@@ -27,7 +27,7 @@ export const audiences: Audience[] = [
     id: "para-restaurante",
     label: "Restaurantes",
     short: "Postres para tu carta.",
-    image: "/images/restaurante.jpg",
+    image: "/images/services/restauracion.jpeg",
     alt: "Postre emplatado en la mesa de un restaurante",
     detail:
       "Postres de carta y producción recurrente para hostelería. Fichas técnicas, alérgenos y conservación listos para tu equipo de sala.",
@@ -37,10 +37,20 @@ export const audiences: Audience[] = [
     id: "para-evento",
     label: "Eventos",
     short: "Bodas, cumpleaños y empresas.",
-    image: "/images/event.jpg",
+    image: "/images/services/celebraciones.jpeg",
     alt: "Pareja cortando la tarta en una boda",
     detail:
       "Bodas, cumpleaños y celebraciones. Diseñamos tartas de varios pisos y mesas dulces a la altura del día más importante.",
     cta: "¡Hola GABS! Organizo un evento y quiero pedir presupuesto de tarta.",
+  },
+  {
+    id: "hecho-a-mano",
+    label: "Hecho a mano",
+    short: "Cada tarta, hecha con cuidado.",
+    image: "/images/services/hecho-a-manoo.jpeg",
+    alt: "Elaboración artesanal de una tarta",
+    detail:
+      "Cada tarta se elabora a mano, con ingredientes seleccionados y el tiempo que merece. Sin atajos, sin prisas.",
+    cta: "¡Hola GABS! Me gustaría saber más sobre vuestro proceso artesanal.",
   },
 ];

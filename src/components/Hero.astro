@@ -1,6 +1,6 @@
 ---
 import { site } from "../data/site";
-const heroImagePath = `${import.meta.env.BASE_URL}images/hero.jpg`;
+const heroImagePath = `${import.meta.env.BASE_URL}images/hero/hero.jpg`;
 const heroLogoPath = `${import.meta.env.BASE_URL}images/logotype.png`;
 ---
 <header class="hero" id="top" style={`--hero-image-url: url('${heroImagePath}')`}>
@@ -36,8 +36,8 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logotype.png`;
     min-height: clamp(640px, 90vh, 960px);
     min-height: clamp(640px, 90svh, 960px);
     display: grid;
-    place-items: center;
-    padding-block: clamp(56px, 9vh, 116px) clamp(88px, 14vh, 172px);
+    place-items: start center;
+    padding-block: clamp(72px, 14vh, 140px) clamp(88px, 14vh, 172px);
     overflow: hidden;
     isolation: isolate;
   }
@@ -153,6 +153,15 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logotype.png`;
   }
   .hero__logo.hero-in { animation-delay: 0.15s; }
   .hero__eyebrow.hero-in  { animation-delay: 0.30s; }
+
+  @media (min-width: 641px) {
+    .hero__inner {
+      align-items: center;
+      text-align: left;
+      padding-right: clamp(20px, 7.6vw, 110px);
+    }
+    .hero__brand { align-items: flex-start; }
+  }
 
   /* ── mobile ────────────────────────────────────────────
      Same overlay structure as desktop — only the height and

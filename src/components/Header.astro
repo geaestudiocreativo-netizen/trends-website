@@ -21,6 +21,16 @@
 	@media (min-width: 901px) {
 		.site-nav {
 			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: 80;
+			background: transparent;
+			transition: background-color 220ms ease;
+		}
+
+		.site-nav.is-scrolled {
 			background: var(--cream-hero);
 		}
 
@@ -69,3 +79,19 @@
 		}
 	}
 </style>
+
+<script>
+	const nav = document.querySelector<HTMLElement>(".site-nav");
+	const hero = document.querySelector<HTMLElement>("#top");
+
+	if (nav && hero && window.matchMedia("(min-width: 901px)").matches) {
+		const updateNavState = () => {
+			const passedHero = window.scrollY >= hero.offsetHeight;
+			nav.classList.toggle("is-scrolled", passedHero);
+		};
+
+		updateNavState();
+		window.addEventListener("scroll", updateNavState, { passive: true });
+		window.addEventListener("resize", updateNavState);
+	}
+</script>

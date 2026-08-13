@@ -1,12 +1,9 @@
-// ─────────────────────────────────────────────────────────────
-//  EUFORIA · GABS — Site configuration
-//  Edit these values to update the whole site. No code changes needed.
-// ─────────────────────────────────────────────────────────────
+// Site configuration for the Punto G website.
+// Edit these values to update the whole site. No code changes needed.
 
 export const site = {
   // Line above the wordmark in the final Home Page frame
   eyebrow: "2026 — Tartas de autor en Las Rozas",
-  brand: "TRENDS",
   tagline: "— BY GABRIEL GARCÍA",
 
   // ⚠️ REPLACE THIS with your real WhatsApp number in international format,
@@ -24,20 +21,8 @@ export function waLink(message: string = site.whatsappDefaultMessage): string {
   return `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
 
-// ─────────────────────────────────────────────────────────────
-//  Hero photograph — single source of truth.
-//
-//  To change the hero image, just replace this file:
-//      public/images/hero.jpg
-//  Keep the same name; no code changes are needed anywhere.
-//
-//  The URL carries a short fingerprint of the file's contents, so a
-//  replaced image always gets a NEW url. Without it the browser keeps
-//  serving the previously cached bytes for /images/hero.jpg and the old
-//  photo flashes up before the new one arrives.
-//  The fingerprint is computed at build time (Astro runs this on the
-//  server), so it costs nothing at runtime.
-// ─────────────────────────────────────────────────────────────
+// Hero photograph — single source of truth.
+// Replace public/images/hero.jpg to change the hero image.
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 

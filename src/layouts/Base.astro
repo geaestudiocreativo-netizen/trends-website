@@ -8,7 +8,7 @@ const {
   description = "Tartas de autor elaboradas artesanalmente en Las Rozas. Postres para celebrar, compartir y disfrutar en cada ocasión.",
 } = Astro.props;
 
-const canonicalUrl = "https://tartaspuntog.es/";
+const canonicalUrl = "https://www.tartaspuntog.es/";
 const openGraphImage = new URL(heroImage, canonicalUrl).toString();
 const logoUrl = new URL("/images/logo/logo-complete.png", canonicalUrl).toString();
 const phoneNumber = "+34 609 08 69 64";
@@ -18,7 +18,7 @@ const businessSchema = {
   "@context": "https://schema.org",
   "@type": "Bakery",
   name: "Punto G",
-  url: "https://tartaspuntog.es",
+  url: "https://www.tartaspuntog.es",
   logo: logoUrl,
   telephone: phoneNumber,
   areaServed: {
@@ -65,10 +65,13 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Punto G" />
+    <meta property="og:locale" content="es_ES" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={openGraphImage} />
+    <meta property="og:image:alt" content="Punto G - tartas y reposteria personalizada" />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />

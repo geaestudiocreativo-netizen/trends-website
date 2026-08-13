@@ -1,8 +1,3 @@
-/* ============================================================
-   EUFORIA · GABS — global styles
-   Tokens taken directly from the Figma export.
-   ============================================================ */
-
 :root {
   /* Palette (exact hex from the design) */
   --brown: #452928;        /* primary text / dark pills / wordmark */

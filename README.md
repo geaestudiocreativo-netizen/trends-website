@@ -1,8 +1,7 @@
-# TRENDS · by Gabriel García — Astro site
+# Punto G — Astro site
 
-Astro implementation of the final Figma frames **Desktop | Home Page** and
-**Mobile | Home Page**. Responsive (one set of components, no duplication),
-keyboard accessible, and tuned for Lighthouse.
+Astro implementation of the Punto G website. Responsive (one set of
+components, no duplication), keyboard accessible, and tuned for Lighthouse.
 
 ---
 
@@ -47,14 +46,12 @@ npm run preview    # preview the production build
 
 Everything lives in `src/data/`:
 
-- **`site.ts`** — brand, hero eyebrow line, tagline, WhatsApp number and
-  message templates.
+- **`site.ts`** — hero eyebrow line, tagline, WhatsApp number and message
+  templates.
 - **`cakes.ts`** — the 9 cards. Card text (title, description, subline,
   badge price, image) plus the expanded detail. `SIZE_CATALOG` defines
   S/M/L once (name, dimensions, price, chip colours); each cake lists the
   sizes it comes in via `sizes: ["S","M","L"]`.
-- **`categories.ts`** — the filter pills. `tone: "special"` = dark pill.
-- **`allergens.ts`** — allergen names (listed in the expanded card).
 - **`audiences.ts`** — the three Services rows (`label` + `short`).
   `detail`/`cta`/`image` are retained but unused by the current design.
 
@@ -62,7 +59,7 @@ Everything lives in `src/data/`:
 
 ## Layout (from the final frames)
 
-- **Hero** — full-bleed photo, left-aligned: eyebrow line, `TRENDS`
+- **Hero** — full-bleed photo, left-aligned: eyebrow line, `Punto G`
   wordmark (Krona One), `— BY GABRIEL GARCÍA`, then a dark and a gold
   button (300×50). Buttons stack full-width on mobile.
 - **Services** — light `#FFFAF4` band with three static rows:
@@ -126,6 +123,6 @@ preview.html    → zero-install standalone preview
 
 ## Fonts
 
-- **Krona One** — `TRENDS` wordmark and cake card titles
+- **Krona One** — wordmark and cake card titles
 - **Poppins** — UI and body text
 - **Cormorant Garamond** — loaded and available via `--font-display`

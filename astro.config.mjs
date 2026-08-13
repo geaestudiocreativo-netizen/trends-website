@@ -3,7 +3,7 @@ import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://tartaspuntog.es",
+  site: "https://www.tartaspuntog.es",
   integrations: [sitemap()],
   compressHTML: true,
 });

@@ -1,12 +1,53 @@
 ---
 import "../styles/global.css";
-import { site, heroImage } from "../data/site";
+import { heroImage } from "../data/site";
 
 interface Props { title?: string; description?: string; }
 const {
-  title = "GABS · by Gabriel García — Tartas artesanales",
-  description = "Tartas artesanales para ti, tu restaurante y tu evento. Haz tu pedido por WhatsApp.",
+  title = "Tartas Punto G | Tartas de autor en Las Rozas",
+  description = "Tartas de autor elaboradas artesanalmente en Las Rozas. Postres para celebrar, compartir y disfrutar en cada ocasión.",
 } = Astro.props;
+
+const canonicalUrl = "https://tartaspuntog.es/";
+const openGraphImage = new URL(heroImage, canonicalUrl).toString();
+const logoUrl = new URL("/images/logo/logo-complete.png", canonicalUrl).toString();
+const phoneNumber = "+34 609 08 69 64";
+const whatsappUrl = "https://wa.me/34609086964";
+
+const businessSchema = {
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  name: "Punto G",
+  url: "https://tartaspuntog.es",
+  logo: logoUrl,
+  telephone: phoneNumber,
+  areaServed: {
+    "@type": "Place",
+    name: "Las Rozas, Madrid, Spain",
+  },
+  sameAs: [whatsappUrl],
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      telephone: phoneNumber,
+      contactType: "customer service",
+      areaServed: "ES",
+      availableLanguage: ["es"],
+      url: whatsappUrl,
+    },
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Las Rozas",
+    addressRegion: "Madrid",
+    addressCountry: "ES",
+  },
+};
+const businessSchemaJson = JSON.stringify(businessSchema);
+
+const imagePath = (assetPath: string) => `${import.meta.env.BASE_URL}${assetPath}`;
+const heroDesktopJpegSrcset = `${imagePath("images/hero/hero-1280.jpg")} 1280w, ${imagePath("images/hero/hero-1920.jpg")} 1920w, ${imagePath("images/hero/hero-2560.jpg")} 2560w`;
+const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 640w, ${imagePath("images/hero/hero-mobile-960.jpg")} 960w, ${imagePath("images/hero/hero-mobile-1280.jpg")} 1280w`;
 ---
 <!doctype html>
 <html lang="es">
@@ -15,17 +56,27 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
     <meta name="theme-color" content="#f3ebe0" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/logos/logo.png" />
-    <link rel="apple-touch-icon" href="/assets/logos/logo.png" />
+    <link rel="icon" type="image/svg+xml" href="/images/logo/logo-simple.svg" />
+    <link rel="apple-touch-icon" href="/images/logo/logo-simple.svg" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={heroImage} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={openGraphImage} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={openGraphImage} />
+
+    <script type="application/ld+json" set:html={businessSchemaJson}></script>
 
     <!-- Fonts: preconnect + display=swap for fast, CLS-free loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -35,7 +86,24 @@ const {
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Krona+One&family=Montserrat:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
     />
 
-    <link rel="preload" as="image" href={heroImage} />
+    <link
+      rel="preload"
+      as="image"
+      href={imagePath("images/hero/hero-1920.jpg")}
+      imagesrcset={heroDesktopJpegSrcset}
+      imagesizes="100vw"
+      media="(min-width: 641px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href={imagePath("images/hero/hero-mobile-960.jpg")}
+      imagesrcset={heroMobileJpegSrcset}
+      imagesizes="100vw"
+      media="(max-width: 640px)"
+      fetchpriority="high"
+    />
   </head>
   <body>
     <a class="skip-link" href="#catalogo">Saltar al catálogo</a>
@@ -43,7 +111,7 @@ const {
 
     <footer class="site-footer">
       <div class="container">
-        <img class="site-footer__logo" src="/images/logotype.png" alt=".G" width="180" height="60" decoding="async" />
+        <img class="site-footer__logo" src="/images/logo/logo-simple.svg" alt="Punto G" width="180" height="60" decoding="async" />
         <span>© {new Date().getFullYear()}</span>
       </div>
       <div class="site-footer__credit">
@@ -60,7 +128,6 @@ const {
       .skip-link:focus { top: 12px; }
       .site-footer {
         background: var(--cream);
-        border-top: 1px solid var(--hairline);
         padding-block: 28px;
         font-size: 0.8rem;
         color: var(--muted);

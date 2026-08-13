@@ -32,17 +32,35 @@ const editorialServices = [
   </div>
 
   <div class="services-editorial__flow">
-    {editorialServices.map((item, index) => (
-      <article class:list={["service-spot", `service-spot--${item.align}`]}>
-        <figure class="service-spot__media">
-          <img src={item.image} alt={item.alt} loading={index === 0 ? "eager" : "lazy"} decoding="async" />
-        </figure>
-        <div class="service-spot__copy">
-          <h3 class="service-spot__title">{item.title}</h3>
-          <p class="service-spot__subtitle">{item.subtitle}</p>
-        </div>
-      </article>
-    ))}
+    {editorialServices.map((item, index) => {
+      const imageBase = item.image.replace(/\.(?:jpe?g|png)$/i, "");
+      const webpSrcSet = `${imageBase}-480.webp 480w, ${imageBase}-960.webp 960w, ${imageBase}-1440.webp 1440w`;
+      const jpegSrcSet = `${imageBase}-480.jpg 480w, ${imageBase}-960.jpg 960w, ${imageBase}-1440.jpg 1440w`;
+
+      return (
+        <article class:list={["service-spot", `service-spot--${item.align}`]}>
+          <figure class="service-spot__media">
+            <picture>
+              <source type="image/webp" srcset={webpSrcSet} sizes="(max-width: 900px) 94vw, 32vw" />
+              <img
+                src={`${imageBase}-960.jpg`}
+                srcset={jpegSrcSet}
+                sizes="(max-width: 900px) 94vw, 32vw"
+                alt={item.alt}
+                width="6240"
+                height="4160"
+                loading={index === 0 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            </picture>
+          </figure>
+          <div class="service-spot__copy">
+            <h3 class="service-spot__title">{item.title}</h3>
+            <p class="service-spot__subtitle">{item.subtitle}</p>
+          </div>
+        </article>
+      );
+    })}
   </div>
 
   <div class="container services-editorial__inner">

@@ -1,20 +1,60 @@
+---
+const navItems = [
+	{ label: "Servicios", href: "#servicios" },
+	{ label: "Nuestras Tartas", href: "#catalogo" },
+	{ label: "Sobre nosotros", href: "#sobre-nosotros" },
+	{ label: "Contacto", href: "#contacto" },
+] as const;
+---
 <header class="site-nav" aria-label="Navegacion principal">
+	<div class="site-nav__mobile-bar">
+		<a class="site-nav__brand site-nav__brand--mobile" href="#top" aria-label="Volver al inicio">
+			<img src="/images/logo/logo-simple.svg" alt="Punto G" width="564" height="364" decoding="async" />
+		</a>
+
+		<button
+			type="button"
+			class="site-nav__toggle"
+			aria-controls="mobile-navigation"
+			aria-expanded="false"
+			aria-label="Abrir menú"
+			data-mobile-nav-toggle
+		>
+			<span class="site-nav__toggle-lines" aria-hidden="true">
+				<span></span>
+				<span></span>
+				<span></span>
+			</span>
+		</button>
+	</div>
+
+	<nav id="mobile-navigation" class="site-nav__mobile-menu" aria-label="Secciones principales" hidden data-mobile-nav>
+		{navItems.map((item) => (
+			<a href={item.href} data-scroll={item.href}>{item.label}</a>
+		))}
+	</nav>
+
 	<div class="container site-nav__inner">
 		<a class="site-nav__brand" href="#top" aria-label="Volver al inicio">
-			<img src="/images/logotype.png" alt="GABS" width="210" height="72" decoding="async" />
+			<img src="/images/logo/logo-simple.svg" alt="Punto G" width="564" height="364" decoding="async" />
 		</a>
 
 		<nav aria-label="Secciones" class="site-nav__menu">
-			<a href="#servicios">Servicios</a>
-			<a href="#catalogo">Nuestras Tartas</a>
-			<a href="#sobre-nosotros">Sobre nosotros</a>
-			<a href="#contacto">Contacto</a>
+			{navItems.map((item) => (
+				<a href={item.href}>{item.label}</a>
+			))}
 		</nav>
 	</div>
 </header>
 
 <style>
 	.site-nav {
+		display: none;
+	}
+
+	.site-nav__mobile-bar,
+	.site-nav__mobile-menu,
+	.site-nav__toggle {
 		display: none;
 	}
 
@@ -34,13 +74,18 @@
 			background: var(--cream-hero);
 		}
 
+		.site-nav .container.site-nav__inner {
+			max-width: none;
+			padding-inline: clamp(12px, 1.6vw, 20px);
+		}
+
 		.site-nav__inner {
-			min-height: 88px;
+			min-height: 64px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			gap: 36px;
-			padding-block: 16px;
+			padding-block: 8px;
 		}
 
 		.site-nav__brand {
@@ -52,7 +97,7 @@
 
 		.site-nav__brand img {
 			width: auto;
-			height: clamp(38px, 3.2vw, 46px);
+			height: clamp(34px, 2.8vw, 40px);
 		}
 
 		.site-nav__menu {
@@ -78,11 +123,157 @@
 			opacity: 0.62;
 		}
 	}
+
+	@media (max-width: 900px) {
+		.site-nav {
+			display: block;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: 80;
+			overflow-x: clip;
+			background: transparent;
+		}
+
+		.site-nav__inner {
+			display: none;
+		}
+
+		.site-nav__mobile-bar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 16px;
+			min-height: 60px;
+			padding: 12px 16px 10px;
+			background: rgba(255, 250, 244, 0.94);
+			backdrop-filter: blur(10px);
+			-webkit-backdrop-filter: blur(10px);
+			border-bottom: 1px solid rgba(69, 41, 40, 0.08);
+		}
+
+		.site-nav__brand--mobile {
+			display: inline-flex;
+			align-items: center;
+			flex-shrink: 0;
+		}
+
+		.site-nav__brand--mobile img {
+			width: auto;
+			height: 28px;
+		}
+
+		.site-nav__toggle {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 42px;
+			height: 42px;
+			border-radius: 999px;
+			border: 1px solid rgba(69, 41, 40, 0.14);
+			background: rgba(255, 255, 255, 0.52);
+			color: var(--brown);
+			transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+		}
+
+		.site-nav__toggle:hover,
+		.site-nav__toggle:focus-visible {
+			background: rgba(255, 255, 255, 0.82);
+			border-color: rgba(69, 41, 40, 0.28);
+		}
+
+		.site-nav__toggle-lines {
+			display: grid;
+			gap: 4px;
+			width: 16px;
+		}
+
+		.site-nav__toggle-lines span {
+			display: block;
+			height: 1.5px;
+			border-radius: 999px;
+			background: currentColor;
+			transition: transform 180ms ease, opacity 180ms ease;
+		}
+
+		.site-nav.is-mobile-open .site-nav__toggle-lines span:nth-child(1) {
+			transform: translateY(5.5px) rotate(45deg);
+		}
+
+		.site-nav.is-mobile-open .site-nav__toggle-lines span:nth-child(2) {
+			opacity: 0;
+		}
+
+		.site-nav.is-mobile-open .site-nav__toggle-lines span:nth-child(3) {
+			transform: translateY(-5.5px) rotate(-45deg);
+		}
+
+		.site-nav__mobile-menu {
+			display: grid;
+			gap: 4px;
+			padding: 14px 16px 18px;
+			background: rgba(255, 250, 244, 0.98);
+			border-bottom: 1px solid rgba(69, 41, 40, 0.08);
+			box-shadow: 0 18px 30px rgba(69, 41, 40, 0.08);
+		}
+
+		.site-nav__mobile-menu a {
+			display: flex;
+			align-items: center;
+			min-height: 48px;
+			padding-block: 12px;
+			font-family: var(--font-sans);
+			font-size: 0.96rem;
+			font-weight: 400;
+			letter-spacing: 0.05em;
+			color: var(--brown);
+			border-top: 1px solid rgba(69, 41, 40, 0.08);
+		}
+
+		.site-nav__mobile-menu a:first-child {
+			border-top: 0;
+		}
+
+		.site-nav__mobile-menu a:hover,
+		.site-nav__mobile-menu a:focus-visible {
+			opacity: 0.62;
+		}
+
+		.site-nav.is-mobile-open .site-nav__mobile-menu {
+			display: grid;
+		}
+	}
 </style>
 
 <script>
 	const nav = document.querySelector<HTMLElement>(".site-nav");
 	const hero = document.querySelector<HTMLElement>("#top");
+	const mobileToggle = nav?.querySelector<HTMLButtonElement>("[data-mobile-nav-toggle]");
+	const mobileMenu = nav?.querySelector<HTMLElement>("[data-mobile-nav]");
+	const mobileLinks = mobileMenu?.querySelectorAll<HTMLAnchorElement>("a") ?? [];
+	const mobileMediaQuery = window.matchMedia("(max-width: 900px)");
+	let mobileOpen = false;
+
+	const setMobileState = (open: boolean, focusToggle = false) => {
+		if (!nav || !mobileToggle || !mobileMenu) return;
+
+		mobileOpen = open;
+		nav.classList.toggle("is-mobile-open", open);
+		mobileToggle.setAttribute("aria-expanded", String(open));
+		mobileToggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+		mobileMenu.hidden = !open;
+
+		if (focusToggle) {
+			mobileToggle.focus();
+		}
+	};
+
+	const closeMobileMenu = (focusToggle = false) => setMobileState(false, focusToggle);
+	const openMobileMenu = () => {
+		setMobileState(true);
+		mobileLinks[0]?.focus();
+	};
 
 	if (nav && hero && window.matchMedia("(min-width: 901px)").matches) {
 		const updateNavState = () => {
@@ -93,5 +284,42 @@
 		updateNavState();
 		window.addEventListener("scroll", updateNavState, { passive: true });
 		window.addEventListener("resize", updateNavState);
+	}
+
+	if (nav && mobileToggle && mobileMenu) {
+		mobileToggle.addEventListener("click", () => {
+			if (mobileOpen) {
+				closeMobileMenu();
+			} else {
+				openMobileMenu();
+			}
+		});
+
+		mobileLinks.forEach((link) => {
+			link.addEventListener("click", () => {
+				closeMobileMenu();
+			});
+		});
+
+		document.addEventListener("pointerdown", (event) => {
+			if (!mobileOpen) return;
+			const target = event.target;
+			if (target instanceof Node && !nav.contains(target)) {
+				closeMobileMenu();
+			}
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (!mobileOpen) return;
+			if (event.key === "Escape") {
+				closeMobileMenu(true);
+			}
+		});
+
+		mobileMediaQuery.addEventListener("change", (event) => {
+			if (!event.matches) {
+				closeMobileMenu();
+			}
+		});
 	}
 </script>

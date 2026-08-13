@@ -1,16 +1,41 @@
 ---
 import { site } from "../data/site";
-const heroImagePath = `${import.meta.env.BASE_URL}images/hero/hero.jpg`;
-const mobileHeroImagePath = `${import.meta.env.BASE_URL}images/hero/hero-mobile.jpeg`;
-const heroLogoPath = `${import.meta.env.BASE_URL}images/logotype.png`;
+const imagePath = (assetPath: string) => `${import.meta.env.BASE_URL}${assetPath}`;
+
+const heroDesktopAvifSrcset = `${imagePath("images/hero/hero-1280.avif")} 1280w, ${imagePath("images/hero/hero-1920.avif")} 1920w, ${imagePath("images/hero/hero-2560.avif")} 2560w`;
+const heroDesktopWebpSrcset = `${imagePath("images/hero/hero-1280.webp")} 1280w, ${imagePath("images/hero/hero-1920.webp")} 1920w, ${imagePath("images/hero/hero-2560.webp")} 2560w`;
+const heroDesktopJpegSrcset = `${imagePath("images/hero/hero-1280.jpg")} 1280w, ${imagePath("images/hero/hero-1920.jpg")} 1920w, ${imagePath("images/hero/hero-2560.jpg")} 2560w`;
+
+const heroMobileWebpSrcset = `${imagePath("images/hero/hero-mobile-640.webp")} 640w, ${imagePath("images/hero/hero-mobile-960.webp")} 960w, ${imagePath("images/hero/hero-mobile-1280.webp")} 1280w`;
+const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 640w, ${imagePath("images/hero/hero-mobile-960.jpg")} 960w, ${imagePath("images/hero/hero-mobile-1280.jpg")} 1280w`;
+
+const heroLogoPath = `${import.meta.env.BASE_URL}images/logo/logo-complete.png`;
 ---
 <header class="hero" id="top">
   <picture class="hero__media" aria-hidden="true">
-    <source media="(max-width: 640px)" srcset={mobileHeroImagePath} />
+    <source
+      media="(max-width: 640px)"
+      type="image/webp"
+      srcset={heroMobileWebpSrcset}
+      sizes="100vw"
+    />
+    <source
+      media="(max-width: 640px)"
+      type="image/jpeg"
+      srcset={heroMobileJpegSrcset}
+      sizes="100vw"
+    />
+    <source type="image/avif" srcset={heroDesktopAvifSrcset} sizes="100vw" />
+    <source type="image/webp" srcset={heroDesktopWebpSrcset} sizes="100vw" />
     <img
       class="hero__img"
-      src={heroImagePath}
+      src={imagePath("images/hero/hero-1920.jpg")}
+      srcset={heroDesktopJpegSrcset}
+      sizes="100vw"
       alt=""
+      width="6240"
+      height="4160"
+      loading="eager"
       fetchpriority="high"
       decoding="async"
     />
@@ -19,7 +44,7 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logotype.png`;
   <div class="hero__inner container">
     <div class="hero__brand">
       <img class="hero__logo hero-in" src={heroLogoPath} alt="" width="640" height="220" decoding="async" />
-      <p class="hero__eyebrow hero-in">{site.eyebrow}</p>
+      <h1 class="hero__eyebrow hero-in">{site.eyebrow}</h1>
     </div>
   </div>
 </header>
@@ -67,10 +92,10 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logotype.png`;
        whisk-and-bowl stay in frame rather than the blurred counter.
        Mobile shows nearly the full frame, so it stays centred (below). */
     object-position: center center;
-    transform: scale(1.05);
+    transform: scale(1);
     transform-origin: center;
     will-change: transform, opacity;
-    animation: heroIntro 6s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+    opacity: 1;
   }
 
   /* Soft cream veil so the dark logo stays legible on a bright photo. */
@@ -123,11 +148,6 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logotype.png`;
   }
 
   /* ── entrance ──────────────────────────────────────── */
-  @keyframes heroIntro {
-    0%   { opacity: 0; transform: scale(1.05); }
-    35%  { opacity: 1; }
-    100% { opacity: 1; transform: scale(1); }
-  }
   /* Restrained parallax: the photograph drifts at roughly a sixth
      of scroll speed. Where scroll-driven animations are supported
      this runs entirely on the compositor — no JS, no scroll handler. */

@@ -1,8 +1,9 @@
 import { defineConfig } from "astro/config";
+import sitemap from "@astrojs/sitemap";
 
 // https://astro.build/config
 export default defineConfig({
-  // Set your production domain here for correct canonical/OG URLs:
-  // site: "https://euforia.example.com",
+  site: "https://tartaspuntog.es",
+  integrations: [sitemap()],
   compressHTML: true,
 });

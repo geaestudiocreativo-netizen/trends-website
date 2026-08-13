@@ -11,6 +11,9 @@ interface Props {
 const { cake, id, index } = Astro.props;
 const num = String(index + 1).padStart(2, "0");
 const orderMsg = site.whatsappItemMessage.replace("{item}", cake.name);
+const imageBase = cake.image.replace(/\.(?:jpe?g|png)$/i, "");
+const webpSrcSet = `${imageBase}-420.webp 420w, ${imageBase}-760.webp 760w, ${imageBase}-1080.webp 1080w`;
+const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imageBase}-1080.jpg 1080w`;
 ---
 <article class="card" data-card>
   <button
@@ -20,7 +23,19 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.name);
     id={`btn-${id}`}
   >
     <span class="card__media">
-      <img src={cake.image} alt={cake.name} width="339" height="366" loading="lazy" decoding="async" />
+      <picture>
+        <source type="image/webp" srcset={webpSrcSet} sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" />
+        <img
+          src={`${imageBase}-760.jpg`}
+          srcset={jpegSrcSet}
+          sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw"
+          alt={cake.name}
+          width="339"
+          height="366"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
     </span>
 
     <span class="card__body">

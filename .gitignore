@@ -9,3 +9,7 @@ node_modules/
 .env.production
 # os
 .DS_Store
+
+# browser tooling accidentally committed during audits
+/chrome/
+/chromium/

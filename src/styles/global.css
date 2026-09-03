@@ -28,7 +28,7 @@
   --grid-max: 1120px;      /* 3×360 + 2×20 */
   --gutter: clamp(20px, 8.8vw, 127px);
   --radius-card: 10px;
-  --radius-btn: 5px;
+  --radius-btn: 2px;
 
   /* Motion */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -88,26 +88,33 @@ ul { list-style: none; padding: 0; }
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
-  height: 50px;
-  padding-inline: 22px;
+  height: 46px;
+  padding-inline: 34px;
   border-radius: var(--radius-btn);
-  font-size: 0.95rem;
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
   color: var(--brown);
-  will-change: transform;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease),
-    background-color var(--dur) var(--ease);
+  transition: opacity var(--dur) var(--ease), background-color var(--dur) var(--ease),
+    color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 }
-.btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(0); }
-.btn--light { background: var(--pink-white); box-shadow: 0 2px 12px rgba(69,41,40,.14), inset 0 0 0 1px rgba(69,41,40,.07); }
-.btn--light:hover { box-shadow: 0 10px 24px rgba(69,41,40,.18), inset 0 0 0 1px rgba(69,41,40,.07); }
+.btn:hover { opacity: 0.82; }
+.btn:active { opacity: 1; }
+.btn--light {
+  background: var(--cream-hero);
+  color: var(--catalogue-dark);
+  border: 1px solid var(--catalogue-dark);
+}
+.btn--light:hover {
+  opacity: 1;
+  background: var(--catalogue-dark);
+  color: var(--cream-hero);
+}
 .btn--dark { background: var(--btn-dark); color: var(--cream-hero); }
-.btn--dark:hover { box-shadow: 0 8px 22px rgba(41,25,24,.38); }
-.btn--gold { background: var(--gold); }
-.btn--gold:hover { box-shadow: 0 8px 22px rgba(212,189,101,.5); }
+.btn--gold { background: var(--catalogue-dark); color: var(--cream-hero); }
 
 /* ---------- category pills ---------- */
 .pill {
@@ -152,6 +159,6 @@ ul { list-style: none; padding: 0; }
 /* Tokens from the FINAL Desktop/Mobile Home Page frames */
 :root {
   --cream-hero: #FFFAF4;     /* services band + card surface */
-  --catalogue-dark: #291918; /* catalogue band */
+  --catalogue-dark: #1B1917; /* catalogue band + introduction band */
   --btn-dark: #412726;       /* primary hero button */
 }

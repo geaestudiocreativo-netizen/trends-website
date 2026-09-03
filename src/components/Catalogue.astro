@@ -17,32 +17,54 @@ import CakeCard from "./CakeCard.astro";
 
 <style>
   .catalogue { background: var(--catalogue-dark); }
-  .catalogue__head .section-title { color: var(--cream-hero); }
+  .catalogue__head .section-title {
+    color: var(--cream-hero);
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+  }
   .catalogue__head .eyebrow { color: rgba(255, 250, 244, 0.62); }
   .catalogue__head { display: flex; flex-direction: column; gap: 6px; }
   .catalogue__grid {
-    margin-top: clamp(24px, 4vw, 36px);
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    row-gap: clamp(24px, 3vw, 32px);
-    column-gap: clamp(24px, 2.4vw, 30px);
-    max-width: var(--grid-max);
-    margin-inline: 0;
-    align-items: start;
+    margin-top: clamp(32px, 4vw, 48px);
+    display: flex;
+    flex-direction: column;
   }
-  @media (max-width: 900px) {
+  .catalogue__grid :global(.card) {
+    padding-block: clamp(48px, 8vw, 88px);
+    position: relative;
+  }
+  .catalogue__grid :global(.card:first-child) {
+    padding-top: 0;
+  }
+  .catalogue__grid :global(.card:not(:last-child))::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: calc(var(--gutter) * -1);
+    width: calc(100% + var(--gutter) * 2);
+    height: 0.5px;
+    background: #fff;
+  }
+
+  /* Desktop/tablet-landscape: a compact, proportioned product grid
+     instead of the full-bleed vertical list used on mobile. */
+  @media (min-width: 1024px) {
     .catalogue__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      row-gap: clamp(20px, 2.2vw, 24px);
-      column-gap: clamp(20px, 2.2vw, 24px);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      /* Prevents grid's default "stretch": each card keeps its own
+         content height instead of matching the tallest in its row. */
+      align-items: start;
+      --row-gap: clamp(32px, 3.4vw, 56px);
+      gap: var(--row-gap) clamp(28px, 3vw, 48px);
     }
-  }
-  @media (max-width: 640px) {
-    .catalogue__grid {
-      grid-template-columns: 1fr;
-      max-width: none;
-      row-gap: 18px;
-      column-gap: 18px;
+    .catalogue__grid :global(.card) {
+      padding-block: 0;
+    }
+    .catalogue__grid :global(.card:not(:last-child))::after {
+      content: none;
     }
   }
 </style>
@@ -59,6 +81,5 @@ import CakeCard from "./CakeCard.astro";
         head.setAttribute("aria-expanded", open ? "false" : "true");
       });
     });
-
   }
 </script>

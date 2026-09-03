@@ -8,9 +8,11 @@ const {
   description = "Tartas de autor elaboradas artesanalmente en Las Rozas. Postres para celebrar, compartir y disfrutar en cada ocasión.",
 } = Astro.props;
 
-const canonicalUrl = "https://www.tartaspuntog.es/";
-const openGraphImage = new URL(heroImage, canonicalUrl).toString();
-const logoUrl = new URL("/images/logo/logo-complete.png", canonicalUrl).toString();
+const siteOrigin = "https://www.tartaspuntog.es";
+// Canonical follows the current route so non-home pages get their own URL.
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).toString();
+const openGraphImage = new URL(heroImage, siteOrigin).toString();
+const logoUrl = new URL("/images/logo/logo-complete.png", siteOrigin).toString();
 const phoneNumber = "+34 609 08 69 64";
 const whatsappUrl = "https://wa.me/34609086964";
 
@@ -117,8 +119,11 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
         <img class="site-footer__logo" src="/images/logo/logo-simple.svg" alt="Punto G" width="180" height="60" decoding="async" />
         <span>© {new Date().getFullYear()}</span>
       </div>
+      <div class="site-footer__legal">
+        <a class="site-footer__legal-link" href="/privacidad/">Privacidad y protección de datos</a>
+      </div>
       <div class="site-footer__credit">
-        <a class="site-footer__credit-link" href="https://www.geaestudiocreativo.com" target="_blank" rel="noopener">Una web creada por <span class="site-footer__credit-name">Gea Estudio</span></a>
+        <span class="site-footer__credit-name">Gea Estudio</span>
       </div>
     </footer>
 
@@ -138,11 +143,26 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
       }
       .site-footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
       .site-footer__logo { width: auto; height: 26px; }
-      .site-footer__credit {
+      .site-footer__legal {
         margin-top: 20px;
         padding-top: 16px;
         padding-inline: clamp(20px, 5vw, 40px);
         border-top: 1px solid var(--hairline);
+        width: 100%;
+        text-align: center;
+      }
+      .site-footer__legal-link {
+        font-size: 0.7rem;
+        color: var(--muted);
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        text-decoration: none;
+        transition: opacity 0.2s ease;
+      }
+      .site-footer__legal-link:hover { opacity: 0.55; text-decoration: underline; text-underline-offset: 3px; }
+      .site-footer__credit {
+        margin-top: 10px;
+        padding-inline: clamp(20px, 5vw, 40px);
         font-size: 0.7rem;
         color: var(--muted);
         letter-spacing: 0.06em;

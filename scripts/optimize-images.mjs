@@ -18,7 +18,8 @@ const heroTasks = [
 ];
 
 const serviceTasks = ["public/images/services", [480, 960, 1440], ["jpeg", "webp"]];
-const cakeTasks = ["public/images/cakes", [420, 760, 1080], ["jpeg", "webp"]];
+// 1600w added for the full-bleed editorial catalogue layout on large screens.
+const cakeTasks = ["public/images/cakes", [420, 760, 1080, 1600], ["jpeg", "webp"]];
 
 function withVariantName(filePath, width, format) {
   const ext = path.extname(filePath);

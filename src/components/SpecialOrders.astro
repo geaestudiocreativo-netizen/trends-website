@@ -1,28 +1,34 @@
 ---
 import { site, waLink } from "../data/site";
-import WhatsAppIcon from "./WhatsAppIcon.astro";
 
 const message = site.whatsappDefaultMessage;
+const telHref = `tel:+${site.whatsappNumber}`;
 ---
 <section id="contacto" class="special-orders" aria-labelledby="special-orders-title">
   <div class="special-orders__inner">
     <p class="special-orders__eyebrow">ENCARGOS ESPECIALES</p>
-    <h2 class="special-orders__heading" id="special-orders-title">¿Y SI TU TARTA FUERA OTRA?</h2>
-    <p class="special-orders__body">
-      Para una celebración, un encargo especial o simplemente porque tienes una idea en la cabeza.
-      <br /><br />
-      Cuéntanos qué necesitas. Nos gusta escuchar primero y crear después.
-    </p>
-    <a class="btn btn--gold special-orders__btn" href={waLink(message)} target="_blank" rel="noopener">
-      <WhatsAppIcon size={17} /> Hacer un encargo
-    </a>
+    <h2 class="special-orders__heading" id="special-orders-title">¿Y SI TU TARTA<br />FUERA OTRA?</h2>
+
+    <p class="special-orders__body">Para una celebración, un encargo especial o simplemente porque tienes una idea en mente.</p>
+
+    <p class="special-orders__notice">Pedidos con 48 h de antelación.</p>
+    <p class="special-orders__hint">Para pedidos y consultas, escríbenos por WhatsApp o llámanos.</p>
+
+    <div class="special-orders__actions">
+      <a class="btn btn--gold special-orders__btn" href={waLink(message)} target="_blank" rel="noopener">
+        Hacer un encargo
+      </a>
+      <a class="btn btn--light special-orders__btn" href={telHref}>
+        Llamar por teléfono
+      </a>
+    </div>
   </div>
 </section>
 
 <style>
   .special-orders {
     background: var(--cream-hero);
-    padding-block: clamp(140px, 15vw, 180px);
+    padding-block: clamp(120px, 14vw, 168px);
   }
 
   .special-orders__inner {
@@ -36,22 +42,25 @@ const message = site.whatsappDefaultMessage;
   }
 
   .special-orders__eyebrow {
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+    font-family: var(--font-sans);
+    font-weight: 300;
     font-size: 0.6rem;
-    font-weight: 600;
     letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--olive-dark);
-    margin: 0 0 20px;
+    color: var(--catalogue-dark);
+    margin: 0 0 18px;
   }
 
   .special-orders__heading {
-    font-family: "Montserrat", var(--font-sans);
-    font-size: clamp(1.4rem, 3.2vw, 2.1rem);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    line-height: 1.1;
-    color: var(--brown);
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+    font-family: var(--font-sans);
+    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+    font-weight: 300;
+    text-transform: none;
+    letter-spacing: 0.01em;
+    line-height: 1.25;
+    color: var(--catalogue-dark);
     margin: 0 0 28px;
   }
 
@@ -59,20 +68,41 @@ const message = site.whatsappDefaultMessage;
     .special-orders__inner {
       max-width: 760px;
     }
-
-    .special-orders__heading {
-      white-space: nowrap;
-    }
   }
 
-  .special-orders__body {
-    font-size: clamp(0.88rem, 1.2vw, 1rem);
-    line-height: 1.8;
+  .special-orders__body,
+  .special-orders__hint {
+    font-family: "Montserrat", var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(0.9rem, 1vw, 1rem);
+    line-height: 1.7;
     color: var(--brown);
+    opacity: 0.78;
     width: 100%;
-    max-width: clamp(440px, 58vw, 860px);
-    margin: 0 0 40px;
-    opacity: 0.82;
+    max-width: clamp(420px, 54vw, 640px);
+    margin: 0 auto 18px;
+  }
+
+  .special-orders__notice {
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    color: var(--catalogue-dark);
+    margin: 0 0 18px;
+  }
+
+  .special-orders__hint {
+    margin-bottom: 36px;
+  }
+
+  .special-orders__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
   }
 
   .special-orders__btn {
@@ -81,7 +111,12 @@ const message = site.whatsappDefaultMessage;
 
   @media (max-width: 640px) {
     .special-orders {
-      padding-block: 108px;
+      padding-block: 96px;
+    }
+    .special-orders__actions {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
     }
     .special-orders__btn {
       width: 100%;

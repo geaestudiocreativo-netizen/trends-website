@@ -8,8 +8,6 @@ const heroDesktopJpegSrcset = `${imagePath("images/hero/hero-1280.jpg")} 1280w, 
 
 const heroMobileWebpSrcset = `${imagePath("images/hero/hero-mobile-640.webp")} 640w, ${imagePath("images/hero/hero-mobile-960.webp")} 960w, ${imagePath("images/hero/hero-mobile-1280.webp")} 1280w`;
 const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 640w, ${imagePath("images/hero/hero-mobile-960.jpg")} 960w, ${imagePath("images/hero/hero-mobile-1280.jpg")} 1280w`;
-
-const heroLogoPath = `${import.meta.env.BASE_URL}images/logo/logo-complete.png`;
 ---
 <header class="hero" id="top">
   <picture class="hero__media" aria-hidden="true">
@@ -43,7 +41,11 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logo/logo-complete.png`;
   <div class="hero__scrim" aria-hidden="true"></div>
   <div class="hero__inner container">
     <div class="hero__brand">
-      <img class="hero__logo hero-in" src={heroLogoPath} alt="" width="640" height="220" decoding="async" />
+      <svg class="hero__mark hero-in" viewBox="0 0 241 201" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="21.5" cy="178.5" r="21.5" fill="var(--catalogue-dark)" />
+        <path d="M54.0023 120.266C54.0023 109.523 56.0205 99.4974 60.057 90.1875C64.0935 80.8125 69.9854 72.6745 77.7328 65.7734C85.4802 58.8724 94.9854 53.4362 106.248 49.4648C117.577 45.4935 130.532 43.5078 145.116 43.5078C150.389 43.5078 155.662 43.8008 160.936 44.3867C166.274 44.9076 171.515 45.7539 176.659 46.9258C181.867 48.0977 186.912 49.5951 191.795 51.418C196.743 53.1758 201.431 55.2917 205.858 57.7656L191.6 81.2031C188.931 79.6406 185.903 78.2409 182.518 77.0039C179.133 75.7018 175.487 74.6276 171.58 73.7812C167.739 72.8698 163.735 72.1862 159.569 71.7305C155.467 71.2747 151.333 71.0469 147.166 71.0469C137.531 71.0469 128.937 72.2839 121.385 74.7578C113.833 77.1667 107.453 80.5846 102.245 85.0117C97.0362 89.3737 93.0648 94.6146 90.3304 100.734C87.5961 106.854 86.2289 113.56 86.2289 120.852C86.2289 128.404 87.6612 135.337 90.5258 141.652C93.3903 147.967 97.4594 153.404 102.733 157.961C108.006 162.518 114.386 166.099 121.873 168.703C129.36 171.242 137.726 172.512 146.971 172.512C154.328 172.512 161.066 171.698 167.186 170.07C173.306 168.378 178.644 166.001 183.202 162.941C187.759 159.882 191.47 156.203 194.334 151.906C197.199 147.544 199.087 142.661 199.998 137.258H146.678V111.77H227.83V111.867L227.928 111.77C229.556 119.582 230.044 127.199 229.393 134.621C228.807 141.978 227.114 148.944 224.315 155.52C221.58 162.03 217.804 168.02 212.987 173.488C208.169 178.957 202.407 183.677 195.702 187.648C188.996 191.555 181.379 194.615 172.85 196.828C164.321 198.977 154.979 200.051 144.823 200.051C130.63 200.051 117.902 197.967 106.639 193.801C95.4411 189.634 85.9359 183.938 78.1234 176.711C70.3109 169.484 64.3213 161.021 60.1547 151.32C56.0531 141.62 54.0023 131.268 54.0023 120.266Z" fill="var(--catalogue-dark)" />
+      </svg>
+      <p class="hero__byline hero-in">{site.tagline}</p>
       <h1 class="hero__eyebrow hero-in">{site.eyebrow}</h1>
     </div>
   </div>
@@ -130,21 +132,34 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logo/logo-complete.png`;
     flex-direction: column;
     align-items: flex-start;
   }
+  .hero__mark {
+    display: block;
+    width: auto;
+    height: clamp(64px, 9.5vw, 100px);
+    max-width: 100%;
+  }
+  .hero__byline {
+    /* Close coupling with the mark above — reads as a signature, not a stacked headline. */
+    margin-top: clamp(10px, 1.6vw, 16px);
+    margin-bottom: 0;
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(11px, 1vw, 13px);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--catalogue-dark);
+    text-align: left;
+  }
   .hero__eyebrow {
     font-size: clamp(0.72rem, 1.1vw, 0.95rem);
     letter-spacing: 0.22em;
-    color: var(--brown);
+    color: var(--catalogue-dark);
     font-weight: 300;
-    margin-top: 14px;
+    /* Wider gap sets it apart as a caption tier, distinct from the signature above. */
+    margin-top: clamp(40px, 5.5vw, 64px);
     margin-bottom: 0;
     text-align: left;
-  }
-  .hero__logo {
-    display: block;
-    width: auto;
-    height: 180px;
-    max-width: 100%;
-    object-fit: contain;
   }
 
   /* ── entrance ──────────────────────────────────────── */
@@ -173,16 +188,23 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logo/logo-complete.png`;
     will-change: transform, opacity;
     animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
-  .hero__logo.hero-in { animation-delay: 0.15s; }
+  .hero__mark.hero-in { animation-delay: 0.15s; }
+  .hero__byline.hero-in { animation-delay: 0.22s; }
   .hero__eyebrow.hero-in  { animation-delay: 0.30s; }
 
   @media (min-width: 641px) {
+    /* Off-centre editorial anchor — the brand block rests in the left
+       third of the frame instead of the dead-centre lockup. */
     .hero__inner {
-      align-items: center;
+      align-items: flex-start;
       text-align: left;
+      padding-left: clamp(48px, 11vw, 160px);
       padding-right: clamp(20px, 7.6vw, 110px);
     }
     .hero__brand { align-items: flex-start; }
+    /* Slight stagger keeps the caption from reading as a second headline
+       stacked flush under the signature. */
+    .hero__eyebrow { margin-left: clamp(18px, 2.6vw, 32px); }
   }
 
   /* ── mobile ────────────────────────────────────────────
@@ -217,9 +239,12 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logo/logo-complete.png`;
     /* Type sits directly on the photograph now, so a barely-visible
        cream halo keeps it crisp over crumbs and shadows without
        lightening the image itself. */
-    .hero__eyebrow,
-    .hero__logo {
+    .hero__byline,
+    .hero__eyebrow {
       text-shadow: 0 1px 14px rgba(255, 250, 244, 0.62);
+    }
+    .hero__mark {
+      filter: drop-shadow(0 1px 14px rgba(255, 250, 244, 0.62));
     }
 
     /* Mobile shows almost the whole portrait — centre it. */
@@ -235,8 +260,8 @@ const heroLogoPath = `${import.meta.env.BASE_URL}images/logo/logo-complete.png`;
       align-items: flex-start;
     }
 
-    .hero__logo {
-      height: 120px;
+    .hero__mark {
+      height: clamp(46px, 17vw, 70px);
       max-width: 100%;
     }
   }

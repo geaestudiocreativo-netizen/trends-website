@@ -1,7 +1,7 @@
 ---
 import type { Cake } from "../data/cakes";
+import { SERVINGS_BY_SIZE } from "../data/cakes";
 import { site, waLink } from "../data/site";
-import WhatsAppIcon from "./WhatsAppIcon.astro";
 
 interface Props {
   cake: Cake;
@@ -12,8 +12,11 @@ const { cake, id, index } = Astro.props;
 const num = String(index + 1).padStart(2, "0");
 const orderMsg = site.whatsappItemMessage.replace("{item}", cake.name);
 const imageBase = cake.image.replace(/\.(?:jpe?g|png)$/i, "");
-const webpSrcSet = `${imageBase}-420.webp 420w, ${imageBase}-760.webp 760w, ${imageBase}-1080.webp 1080w`;
-const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imageBase}-1080.jpg 1080w`;
+const webpSrcSet = `${imageBase}-420.webp 420w, ${imageBase}-760.webp 760w, ${imageBase}-1080.webp 1080w, ${imageBase}-1600.webp 1600w`;
+const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imageBase}-1080.jpg 1080w, ${imageBase}-1600.jpg 1600w`;
+const sizesLabel = cake.sizes && cake.sizes.length > 0
+  ? cake.sizes.map((s) => `${s.size} (${SERVINGS_BY_SIZE[s.size]})`).join(" \u00b7 ")
+  : "";
 ---
 <article class="card" data-card>
   <button
@@ -22,16 +25,18 @@ const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imag
     aria-controls={`panel-${id}`}
     id={`btn-${id}`}
   >
+    <span class="card__number">{num}</span>
+
     <span class="card__media">
       <picture>
-        <source type="image/webp" srcset={webpSrcSet} sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" />
+        <source type="image/webp" srcset={webpSrcSet} sizes="100vw" />
         <img
-          src={`${imageBase}-760.jpg`}
+          src={`${imageBase}-1080.jpg`}
           srcset={jpegSrcSet}
-          sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw"
+          sizes="100vw"
           alt={cake.name}
-          width="339"
-          height="366"
+          width="1080"
+          height="1350"
           loading="lazy"
           decoding="async"
         />
@@ -39,14 +44,12 @@ const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imag
     </span>
 
     <span class="card__body">
-      <span class="card__editorial">{num} / {cake.category}</span>
-      <span class="card__title-row">
-        <span class="card__title">{cake.name}</span>
-      </span>
+      <span class="card__title">{cake.name}</span>
       {cake.description && <span class="card__desc">{cake.description}</span>}
-      <span class="card__bottom-row">
-        <span></span>
-          <span class="card__details">Ver detalles</span>
+      {sizesLabel && <span class="card__sizes-line">Tamaños: {sizesLabel}</span>}
+      <span class="card__details">
+        <span class="card__details-open">[VER DETALLES]</span>
+        <span class="card__details-close">[×]</span>
       </span>
     </span>
   </button>
@@ -62,6 +65,7 @@ const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imag
                 <li class="size">
                   <span class="size__label">
                     <span class="size-chip" style={`--bg:${i % 2 === 0 ? "#7B8062" : "#4A2928"};--fg:#F7F1E8`}>{s.size}</span>
+                    {SERVINGS_BY_SIZE[s.size] && <span class="size__note">{SERVINGS_BY_SIZE[s.size]}</span>}
                   </span>
                   <span class="size__price">{s.price}</span>
                 </li>
@@ -88,8 +92,8 @@ const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imag
           </>
         )}
 
-        <a class="btn btn--gold detail__cta" href={waLink(orderMsg)} target="_blank" rel="noopener">
-          <WhatsAppIcon size={17} /> Pedir esta tarta
+        <a class="btn btn--light detail__cta" href={waLink(orderMsg)} target="_blank" rel="noopener">
+          Pedir esta tarta
         </a>
       </div>
     </div>
@@ -100,135 +104,116 @@ const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imag
   .card {
     display: flex;
     flex-direction: column;
-    background: var(--cream-hero);
-    border-radius: 0;
-    box-shadow: var(--card-shadow);
-    overflow: hidden;
-    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
-    will-change: transform;
+    background: transparent;
   }
-  .card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
-  .card:focus-within { box-shadow: var(--card-shadow-hover); }
 
   .card__head {
     display: flex;
     flex-direction: column;
     width: 100%;
     text-align: left;
-    padding: 9px 8px 0;
+    padding: 0;
+  }
+
+  .card__number {
+    display: block;
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.24em;
+    color: rgba(255, 250, 244, 0.5);
+    margin-bottom: clamp(14px, 2vw, 20px);
   }
 
   .card__media {
     position: relative;
     display: block;
-    aspect-ratio: 339 / 366;
-    border-radius: 0;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
+    width: calc(100% + var(--gutter) * 2);
+    margin-inline: calc(var(--gutter) * -1);
+  }
+  @media (min-width: 641px) {
+    .card__media { aspect-ratio: 16 / 10; }
+  }
+  @media (min-width: 901px) {
+    .card__media { aspect-ratio: 21 / 9; }
+  }
+  /* Grid mode: a contained product photo (matching the source images'
+     natural 4:5 ratio) instead of the full-bleed banner crop above. */
+  @media (min-width: 1024px) {
+    .card__media {
+      width: 100%;
+      margin-inline: 0;
+      aspect-ratio: 4 / 5;
+    }
   }
   .card__media img {
     width: 100%; height: 100%; object-fit: cover;
     transition: transform 0.6s var(--ease);
     will-change: transform;
   }
-  .card:hover .card__media img { transform: scale(1.05); }
-  .card__price {
-    position: absolute; top: 0; right: 0;
-    background: var(--brown);
-    color: var(--cream-hero);
-    font-size: 0.76rem; font-weight: 500;
-    padding: 6px 14px;
-    border-radius: 0 var(--radius-card) 0 10px;
-  }
-  .card__price::before { content: "desde "; }
+  .card:hover .card__media img { transform: scale(1.03); }
 
   .card__body {
     display: flex;
     flex-direction: column;
-    padding: 17px 2px 11px;
-  }
-  .card__editorial {
-    display: block;
-    font-size: 0.58rem;
-    font-weight: 600;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--olive-dark);
-    margin-bottom: 4px;
-  }
-  .card__title-row {
-    display: flex;
-    min-height: 2.816rem;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
+    max-width: 620px;
+    padding-top: clamp(36px, 5.5vw, 56px);
   }
   .card__title {
-    font-family: "Montserrat", var(--font-sans);
-    font-weight: 600;
-    font-size: 1.28rem;
-    color: var(--brown);
-    line-height: 1.1;
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 18px;
+    color: var(--cream-hero);
+    line-height: 1.15;
     text-transform: uppercase;
     letter-spacing: 0.02em;
-  }
-  .card__sizes { display: inline-flex; gap: 5px; flex-shrink: 0; }
-  .card__bottom-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 20px;
-    margin-bottom: 16px;
-  }
-  .size-chip {
-    display: inline-grid;
-    place-items: center;
-    min-width: 52px;
-    height: 21px;
-    padding-inline: 6px;
-    white-space: nowrap;
-    border-radius: 5px;
-    background: var(--bg, var(--olive));
-    color: var(--fg, #fff);
-    font-size: 0.68rem;
-    font-weight: 600;
-    line-height: 1;
-    letter-spacing: 0;
   }
 
   .card__desc {
     display: block;
-    min-height: 4rem; /* 3 columns worst case: 3 lines at 0.8rem/1.5lh */
-    margin-top: 5px;
-    font-size: 0.8rem;
-    color: var(--brown);
+    margin-top: 4px;
+    /* Montserrat has no 300 face loaded; browser resolves to its lightest loaded weight (500). */
+    font-family: "Montserrat", var(--font-sans);
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 1.6;
+    color: rgba(255, 250, 244, 0.72);
   }
 
-  @media (max-width: 900px) {
-    /* 2 columns: longest desc wraps to ~2 lines */
-    .card__desc { min-height: 2.8rem; }
+  .card__sizes-line {
+    display: block;
+    margin-top: 18px;
+    /* Montserrat has no 300 face loaded; browser resolves to its lightest loaded weight (500). */
+    font-family: "Montserrat", var(--font-sans);
+    font-weight: 300;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    color: rgba(255, 250, 244, 0.6);
   }
 
-  @media (max-width: 640px) {
-    /* 1 column: all descs fit in 1–2 lines */
-    .card__desc { min-height: 2rem; }
-  }
-  .card__sub { display: block; margin-top: 0; font-size: calc(0.66rem + 2px); color: var(--muted); }
   .card__details {
-    display: inline-flex;
-    align-items: center;
-    padding: 5px 10px;
-    border: 1px solid #452928;
-    border-radius: 100px;
-    background: transparent;
-    color: #452928;
-    font-size: 0.7rem;
-    letter-spacing: 0.04em;
-    opacity: 0.72;
-    transition: opacity var(--dur) var(--ease), background var(--dur) var(--ease);
+    display: inline-block;
+    align-self: flex-end;
+    margin-top: clamp(40px, 6vw, 56px);
+    color: var(--cream-hero);
+    font-size: 0.76rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: 0.85;
+    transition: opacity var(--dur) var(--ease);
   }
   .card__head:hover .card__details,
-  .card__head:focus-visible .card__details { opacity: 1; background: rgba(69,41,40,0.06); }
+  .card__head:focus-visible .card__details {
+    opacity: 1;
+  }
+  .card__details-close { display: none; }
+  .card__head[aria-expanded="true"] .card__details-open { display: none; }
+  .card__head[aria-expanded="true"] .card__details-close { display: inline; }
 
   /* expand */
   .card__panel {
@@ -248,26 +233,25 @@ const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imag
   .detail {
     display: flex;
     flex-direction: column;
-    padding: 4px 20px 22px;
-    border-top: 1px solid var(--hairline);
-    margin: 0 4px;
+    max-width: 620px;
+    padding: 20px 0 4px;
   }
-  .card__panel-inner { background: var(--cream-hero); }
+  .card__panel-inner { background: transparent; }
   .detail__h {
     font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--olive-dark); margin-top: 16px; margin-bottom: 8px;
+    color: rgba(255, 250, 244, 0.5); margin-top: 16px; margin-bottom: 8px;
   }
   .sizes { display: flex; flex-direction: column; gap: 8px; }
   .size { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 0.86rem; }
-  .size__label { display: flex; align-items: center; gap: 8px; color: var(--brown); flex-wrap: wrap; }
+  .size__label { display: flex; align-items: center; gap: 8px; color: var(--cream-hero); flex-wrap: wrap; }
   .size__code {
     display: inline-grid; place-items: center;
     width: 20px; height: 20px; border-radius: 5px;
     background: var(--bg); color: var(--fg);
     font-size: 0.66rem; font-weight: 600; line-height: 1;
   }
-  .size__note { display: block; width: 100%; font-size: 0.7rem; color: var(--muted); font-style: normal; padding-left: 28px; }
-  .size__price { color: var(--brown); font-weight: 600; white-space: nowrap; }
+  .size__note { display: block; width: 100%; font-size: 0.7rem; color: rgba(255, 250, 244, 0.6); font-style: normal; padding-left: 28px; }
+  .size__price { color: var(--cream-hero); font-weight: 600; white-space: nowrap; }
 
   .detail__allergens {
     list-style: none;
@@ -278,13 +262,14 @@ const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imag
     gap: 4px;
     font-size: 0.7rem;
     line-height: 1.5;
-    color: #6b5c5a;
+    color: rgba(255, 250, 244, 0.62);
   }
   .detail__allergens li::before { content: "— "; }
 
-  .detail__storage { font-size: 0.8rem; color: var(--muted); line-height: 1.55; }
-  .detail__cta { margin-top: 18px; width: 100%; height: 46px; font-size: 0.9rem; }
+  .detail__storage { font-size: 0.8rem; color: rgba(255, 250, 244, 0.6); line-height: 1.55; }
+  .detail__cta { align-self: center; margin-top: 44px; }
 
   .card.is-hidden { display: none; }
 
 </style>
+

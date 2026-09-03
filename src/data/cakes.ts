@@ -3,6 +3,14 @@ export type CakeSize = {
   price: string;
 };
 
+// Definitive size-to-servings chart for the business; single source of truth
+// for every place sizes are displayed across the site.
+export const SERVINGS_BY_SIZE: Record<string, string> = {
+  "15 cm": "8–10 pers.",
+  "22 cm": "12–14 pers.",
+  "24 cm": "14–16 pers.",
+};
+
 export type Cake = {
   name: string;
   category: string;

@@ -1,16 +1,24 @@
 <section id="sobre-nosotros" class="section introduction" aria-labelledby="introduction-title">
 	<div class="container introduction__inner">
-		<h2 id="introduction-title" class="introduction__title">TARTAS DE AUTOR EN LAS ROZAS</h2>
+		<h2 id="introduction-title" class="introduction__title">Tartas de autor en Las Rozas</h2>
+
 		<p class="introduction__body">
 			En mi casa, el postre siempre tuvo su momento. Y quizá por eso aprendí que siempre hay que dejar un huequito para lo que nos hace felices.
-			<br />
-			<br />
-			Porque creemos que una buena tarta no es solo un postre. Es una mesa que se llena y una sobremesa que se alarga.
-			<br />
-			<br />
+		</p>
+
+		<p class="introduction__body">
+			Porque creemos que una buena tarta no es solo un postre.
+		</p>
+
+		<p class="introduction__statement">
+			Es una mesa que se llena y una sobremesa que se alarga.
+		</p>
+
+		<p class="introduction__body">
 			Por eso hacemos cada receta de forma artesanal, como se hacen las cosas que importan: con tiempo, con cuidado y con mucho cariño.
-			<br />
-			<br />
+		</p>
+
+		<p class="introduction__body">
 			Para que cuando llegue a tu mesa, no solo tengas un postre. Tengas un motivo más para compartir.
 		</p>
 	</div>
@@ -18,8 +26,8 @@
 
 <style>
 	.introduction {
-		background: #291918;
-		padding-block: clamp(140px, 15vw, 180px);
+		background: var(--catalogue-dark);
+		padding-block: clamp(100px, 14vw, 160px);
 	}
 
 	.introduction__inner {
@@ -29,37 +37,54 @@
 	}
 
 	@media (min-width: 641px) {
-		.introduction__inner {
-			max-width: clamp(760px, 72vw, 1180px);
-		}
+		.introduction__inner { max-width: 640px; }
+	}
+
+	@media (min-width: 1280px) {
+		.introduction__inner { max-width: 720px; }
 	}
 
 	.introduction__title {
-		color: #FFFFFF;
+		color: var(--cream-hero);
+		/* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
 		font-family: var(--font-sans);
-		font-size: clamp(1.05rem, 1.6vw, 1.35rem);
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.14em;
-		line-height: 1.35;
+		font-weight: 300;
+		font-size: clamp(24px, 4vw, 30px);
+		text-transform: none;
+		letter-spacing: 0.01em;
+		line-height: 1.3;
 	}
 
 	.introduction__body {
-		margin-top: 24px;
-		color: #FFFFFF;
-		font-size: clamp(1rem, 1.25vw, 1.125rem);
-		line-height: 1.85;
+		margin-top: 22px;
+		max-width: 46ch;
+		/* Montserrat has no 300 face loaded; browser resolves to its lightest loaded weight (500). */
+		font-family: "Montserrat", var(--font-sans);
+		font-weight: 300;
+		font-size: clamp(14px, 0.9vw, 16px);
+		line-height: 1.8;
+		color: rgba(255, 250, 244, 0.72);
+	}
+
+	.introduction__title + .introduction__body {
+		margin-top: 28px;
+	}
+
+	.introduction__statement {
+		margin-block: clamp(56px, 9vw, 88px);
+		max-width: clamp(280px, 60vw, 620px);
+		/* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+		font-family: var(--font-sans);
+		font-weight: 300;
+		font-size: clamp(28px, 3.2vw, 52px);
+		line-height: 1.35;
+		letter-spacing: 0;
+		color: var(--cream-hero);
 	}
 
 	@media (max-width: 640px) {
 		.introduction {
-			min-height: 100dvh;
-			display: flex;
-			align-items: center;
-			padding-block: 108px;
-		}
-		.introduction__body {
-			font-size: 15px;
+			padding-block: clamp(88px, 20vw, 120px);
 		}
 	}
 </style>

@@ -1,122 +1,88 @@
 ---
-const editorialServices = [
-  {
-    image: "/images/services/para-ti.jpeg",
-    alt: "Porción de tarta servida en plato para una celebración personal.",
-    title: "PARA TI",
-  },
-  {
-    image: "/images/services/restaurante.jpeg",
-    alt: "Persona sirviendo mini postres en un plato para restaurante.",
-    title: "PARA TU RESTAURANTE",
-  },
-  {
-    image: "/images/services/evento.jpeg",
-    alt: "Preparacion artesanal de una tarta para evento.",
-    title: "PARA TU EVENTO",
-  },
-] as const;
+const wideImage = {
+  image: "/images/services/restaurante.jpeg",
+  alt: "Persona sirviendo mini postres en un plato para restaurante.",
+};
+
+const imageBase = wideImage.image.replace(/\.(?:jpe?g|png)$/i, "");
+const webpSrcSet = `${imageBase}-480.webp 480w, ${imageBase}-960.webp 960w, ${imageBase}-1440.webp 1440w`;
+const jpegSrcSet = `${imageBase}-480.jpg 480w, ${imageBase}-960.jpg 960w, ${imageBase}-1440.jpg 1440w`;
 ---
 <section id="servicios" class="services-editorial section" aria-label="Servicios">
-  <div class="services-editorial__flow">
-    {editorialServices.map((item, index) => {
-      const imageBase = item.image.replace(/\.(?:jpe?g|png)$/i, "");
-      const webpSrcSet = `${imageBase}-480.webp 480w, ${imageBase}-960.webp 960w, ${imageBase}-1440.webp 1440w`;
-      const jpegSrcSet = `${imageBase}-480.jpg 480w, ${imageBase}-960.jpg 960w, ${imageBase}-1440.jpg 1440w`;
+  <div class="services-editorial__text">
+    <p class="services-editorial__statement">
+      Para ti,<br />
+      para tu restaurante<br />
+      o para tu evento.
+    </p>
 
-      return (
-        <figure class="service-spot__media">
-          <picture>
-            <source type="image/webp" srcset={webpSrcSet} sizes="(max-width: 900px) 52vw, 34vw" />
-            <img
-              src={`${imageBase}-960.jpg`}
-              srcset={jpegSrcSet}
-              sizes="(max-width: 900px) 52vw, 34vw"
-              alt={item.alt}
-              width="6240"
-              height="4160"
-              loading={index === 0 ? "eager" : "lazy"}
-              decoding="async"
-            />
-          </picture>
-          <figcaption class="service-spot__title">{item.title}</figcaption>
-        </figure>
-      );
-    })}
+    <p class="services-editorial__eyebrow">ENCARGOS ESPECIALES</p>
   </div>
+
+  <figure class="services-editorial__media">
+    <picture>
+      <source type="image/webp" srcset={webpSrcSet} sizes="100vw" />
+      <img
+        src={`${imageBase}-960.jpg`}
+        srcset={jpegSrcSet}
+        sizes="100vw"
+        alt={wideImage.alt}
+        width="6240"
+        height="4160"
+        loading="lazy"
+        decoding="async"
+      />
+    </picture>
+  </figure>
 </section>
 
 <style>
   .services-editorial {
     background: var(--cream-hero);
     padding-block: clamp(88px, 13vw, 148px);
-  }
-
-  .services-editorial__flow {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: clamp(24px, 4vw, 40px);
+  }
+
+  .services-editorial__text {
+    max-width: clamp(280px, 60vw, 620px);
     padding-inline: var(--gutter);
-  }
-
-  .service-spot__media {
-    position: relative;
-    margin: 0;
-    width: min(52vw, 400px);
-    aspect-ratio: 11 / 10;
-    overflow: hidden;
-  }
-
-  .service-spot__media::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(27, 25, 23, 0.16);
-    pointer-events: none;
-  }
-
-  .service-spot__media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .service-spot__title {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    padding-inline: 12px;
     text-align: center;
-    text-transform: uppercase;
-    /* Satoshi Medium isn't loaded in this project; falls back to Poppins Medium (500), already loaded. */
+  }
+
+  .services-editorial__statement {
+    margin: 0;
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
     font-family: var(--font-sans);
-    font-weight: 500;
-    font-size: clamp(1rem, 1.6vw, 1.125rem);
-    letter-spacing: 0.14em;
-    line-height: 1.3;
-    color: var(--cream-hero);
+    font-weight: 300;
+    font-size: clamp(28px, 4vw, 48px);
+    line-height: 1.35;
+    letter-spacing: 0;
+    color: var(--catalogue-dark);
   }
 
-  @media (min-width: 641px) {
-    .service-spot__media {
-      width: min(42vw, 420px);
-      aspect-ratio: 3 / 2;
-    }
+  .services-editorial__eyebrow {
+    margin: 20px 0 0;
+    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 0.6rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--catalogue-dark);
+    opacity: 0.62;
   }
 
-  @media (min-width: 1280px) {
-    .services-editorial__flow {
-      max-width: 600px;
-      margin-inline: auto;
-    }
+  .services-editorial__media {
+    margin: clamp(48px, 8vw, 80px) 0 0;
+    width: 100%;
+  }
 
-    .service-spot__media {
-      width: 100%;
-    }
+  .services-editorial__media img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 </style>
+

@@ -1,35 +1,69 @@
 ---
 import { cakes } from "../data/cakes";
 import CakeCard from "./CakeCard.astro";
----
-<section class="section catalogue" id="catalogo" aria-labelledby="catalogue-title">
-  <div class="container">
-    <header class="catalogue__head reveal">
-      <h2 class="section-title" id="catalogue-title">Nuestras tartas</h2>
-      <p class="eyebrow">Siempre para compartir.</p>
-    </header>
 
+const beforeBreak = cakes.slice(0, 2);
+const afterBreak = cakes.slice(2);
+---
+<section class="section catalogue" id="catalogo" aria-label="Nuestras tartas">
+  <div class="container">
     <div class="catalogue__grid" data-cards>
-      {cakes.map((cake, i) => <CakeCard cake={cake} id={`cake-${i}`} index={i} />)}
+      {beforeBreak.map((cake, i) => <CakeCard cake={cake} id={`cake-${i}`} index={i} />)}
+
+      <div class="catalogue__break">
+        <div class="catalogue__break-inner">
+          <p class="catalogue__break-heading">Una buena tarta<br />no es solo un postre.</p>
+          <p class="catalogue__break-body">Es una mesa que se llena y una<br />sobremesa que se alarga.</p>
+        </div>
+      </div>
+
+      {afterBreak.map((cake, i) => <CakeCard cake={cake} id={`cake-${i + 2}`} index={i + 2} />)}
     </div>
   </div>
 </section>
 
 <style>
-  .catalogue { background: var(--catalogue-dark); }
-  .catalogue__head .section-title {
-    color: var(--cream-hero);
+  .catalogue { background: var(--cream-hero); }
+  .catalogue__grid {
+    display: flex;
+    flex-direction: column;
+  }
+  .catalogue__break {
+    width: calc(100% + var(--gutter) * 2);
+    margin-inline: calc(var(--gutter) * -1);
+    background: var(--catalogue-dark);
+    padding-block: clamp(96px, 14vw, 160px);
+    display: flex;
+    justify-content: center;
+  }
+  .catalogue__break-inner {
+    max-width: 460px;
+    padding-inline: var(--gutter);
+    text-align: center;
+  }
+  .catalogue__break-heading {
+    margin: 0;
     /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
     font-family: var(--font-sans);
     font-weight: 300;
-    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.25;
+    letter-spacing: 0.03em;
+    color: var(--cream-hero);
   }
-  .catalogue__head .eyebrow { color: rgba(255, 250, 244, 0.62); }
-  .catalogue__head { display: flex; flex-direction: column; gap: 6px; }
-  .catalogue__grid {
-    margin-top: clamp(32px, 4vw, 48px);
-    display: flex;
-    flex-direction: column;
+  .catalogue__break-body {
+    margin: 28px 0 0;
+    font-family: "Montserrat", var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(14px, 0.9vw, 16px);
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+    color: rgba(255, 250, 244, 0.72);
+  }
+  @media (min-width: 1024px) {
+    .catalogue__break {
+      grid-column: 1 / -1;
+    }
   }
   .catalogue__grid :global(.card) {
     padding-block: clamp(48px, 8vw, 88px);
@@ -45,7 +79,7 @@ import CakeCard from "./CakeCard.astro";
     left: calc(var(--gutter) * -1);
     width: calc(100% + var(--gutter) * 2);
     height: 0.5px;
-    background: #fff;
+    background: var(--catalogue-dark);
   }
 
   /* Desktop/tablet-landscape: a compact, proportioned product grid

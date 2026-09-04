@@ -120,17 +120,16 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
   .hero__inner {
     padding-inline: clamp(20px, 7.6vw, 110px);
     max-width: none;
-    text-align: right;
+    text-align: center;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    padding-right: clamp(20px, 9vw, 132px);
+    align-items: center;
     width: 100%;
   }
   .hero__brand {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
   .hero__mark {
     display: block;
@@ -149,7 +148,7 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--catalogue-dark);
-    text-align: left;
+    text-align: center;
   }
   .hero__eyebrow {
     font-size: clamp(0.72rem, 1.1vw, 0.95rem);
@@ -159,7 +158,7 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
     /* Wider gap sets it apart as a caption tier, distinct from the signature above. */
     margin-top: clamp(40px, 5.5vw, 64px);
     margin-bottom: 0;
-    text-align: left;
+    text-align: center;
   }
 
   /* ── entrance ──────────────────────────────────────── */
@@ -193,18 +192,13 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
   .hero__eyebrow.hero-in  { animation-delay: 0.30s; }
 
   @media (min-width: 641px) {
-    /* Off-centre editorial anchor — the brand block rests in the left
-       third of the frame instead of the dead-centre lockup. */
+    /* Centred editorial lockup — logo, byline and eyebrow all share the
+       same horizontal axis, aligned to the centre of the hero image. */
     .hero__inner {
-      align-items: flex-start;
-      text-align: left;
-      padding-left: clamp(48px, 11vw, 160px);
-      padding-right: clamp(20px, 7.6vw, 110px);
+      align-items: center;
+      text-align: center;
     }
-    .hero__brand { align-items: flex-start; }
-    /* Slight stagger keeps the caption from reading as a second headline
-       stacked flush under the signature. */
-    .hero__eyebrow { margin-left: clamp(18px, 2.6vw, 32px); }
+    .hero__brand { align-items: center; }
   }
 
   /* ── mobile ────────────────────────────────────────────
@@ -220,8 +214,8 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
     .hero {
       min-height: 92vh;
       min-height: 92svh;
-      /* content is anchored in the lower half rather than centred */
-      place-items: start end;
+      /* content is anchored in the upper area rather than centred vertically */
+      place-items: start center;
       padding-block: clamp(40px, 8vh, 72px) clamp(72px, 14vh, 132px);
     }
 
@@ -251,13 +245,12 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
     .hero__img { object-position: 42% center; }
 
     .hero__inner {
-      text-align: right;
-      align-items: flex-end;
-      padding-right: clamp(20px, 7.6vw, 110px);
+      text-align: center;
+      align-items: center;
     }
 
     .hero__brand {
-      align-items: flex-start;
+      align-items: center;
     }
 
     .hero__mark {

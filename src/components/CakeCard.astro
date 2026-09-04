@@ -14,6 +14,9 @@ const orderMsg = site.whatsappItemMessage.replace("{item}", cake.name);
 const imageBase = cake.image.replace(/\.(?:jpe?g|png)$/i, "");
 const webpSrcSet = `${imageBase}-420.webp 420w, ${imageBase}-760.webp 760w, ${imageBase}-1080.webp 1080w, ${imageBase}-1600.webp 1600w`;
 const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imageBase}-1080.jpg 1080w, ${imageBase}-1600.jpg 1600w`;
+const galleryBases = cake.images && cake.images.length > 1
+  ? cake.images.map((img) => img.replace(/\.(?:jpe?g|png)$/i, ""))
+  : null;
 const sizesLabel = cake.sizes && cake.sizes.length > 0
   ? cake.sizes.map((s) => `${s.size} (${SERVINGS_BY_SIZE[s.size]})`).join(" \u00b7 ")
   : "";
@@ -28,19 +31,50 @@ const sizesLabel = cake.sizes && cake.sizes.length > 0
     <span class="card__number">{num}</span>
 
     <span class="card__media">
-      <picture>
-        <source type="image/webp" srcset={webpSrcSet} sizes="100vw" />
-        <img
-          src={`${imageBase}-1080.jpg`}
-          srcset={jpegSrcSet}
-          sizes="100vw"
-          alt={cake.name}
-          width="1080"
-          height="1350"
-          loading="lazy"
-          decoding="async"
-        />
-      </picture>
+      {galleryBases ? (
+        <>
+          <span class="card__gallery" role="group" aria-label={`Galería de fotos de ${cake.name}`}>
+            {galleryBases.map((base, i) => (
+              <span class="card__slide">
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcset={`${base}-420.webp 420w, ${base}-760.webp 760w, ${base}-1080.webp 1080w, ${base}-1600.webp 1600w`}
+                    sizes="100vw"
+                  />
+                  <img
+                    src={`${base}-1080.jpg`}
+                    srcset={`${base}-420.jpg 420w, ${base}-760.jpg 760w, ${base}-1080.jpg 1080w, ${base}-1600.jpg 1600w`}
+                    sizes="100vw"
+                    alt={`${cake.name} — foto ${i + 1} de ${galleryBases.length}`}
+                    width="1080"
+                    height="1350"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </span>
+            ))}
+          </span>
+          <span class="card__gallery-progress" aria-hidden="true">
+            <span class="card__gallery-progress-fill"></span>
+          </span>
+        </>
+      ) : (
+        <picture>
+          <source type="image/webp" srcset={webpSrcSet} sizes="100vw" />
+          <img
+            src={`${imageBase}-1080.jpg`}
+            srcset={jpegSrcSet}
+            sizes="100vw"
+            alt={cake.name}
+            width="1080"
+            height="1350"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      )}
     </span>
 
     <span class="card__body">
@@ -155,6 +189,43 @@ const sizesLabel = cake.sizes && cake.sizes.length > 0
     will-change: transform;
   }
   .card:hover .card__media img { transform: scale(1.03); }
+
+  /* Editorial swipe gallery: native horizontal scroll-snap, no visible controls. */
+  .card__gallery {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    touch-action: pan-x;
+    scrollbar-width: none;
+  }
+  .card__gallery::-webkit-scrollbar { display: none; }
+  .card__slide {
+    flex: 0 0 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Discreet swipe-progress hairline; sits over the photo, secondary to it. */
+  .card__gallery-progress {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(14px, 3vw, 20px);
+    transform: translateX(-50%);
+    width: 40px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.35);
+    pointer-events: none;
+  }
+  .card__gallery-progress-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 33.333%;
+    background: rgba(255, 255, 255, 0.92);
+  }
 
   .card__body {
     display: flex;

@@ -6,7 +6,6 @@ const telHref = `tel:+${site.whatsappNumber}`;
 ---
 <section id="contacto" class="special-orders" aria-labelledby="special-orders-title">
   <div class="special-orders__inner">
-    <p class="special-orders__eyebrow">ENCARGOS ESPECIALES</p>
     <h2 class="special-orders__heading" id="special-orders-title">¿Y SI QUIERO<br />UNA TARTA<br />DIFERENTE?</h2>
 
     <p class="special-orders__body">Para una celebración, un encargo especial o simplemente porque tienes una idea en mente.</p>
@@ -40,17 +39,6 @@ const telHref = `tel:+${site.whatsappNumber}`;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-
-  .special-orders__eyebrow {
-    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
-    font-family: var(--font-sans);
-    font-weight: 300;
-    font-size: 0.6rem;
-    letter-spacing: 0.24em;
-    text-transform: uppercase;
-    color: var(--catalogue-dark);
-    margin: 0 0 18px;
   }
 
   .special-orders__heading {
@@ -112,7 +100,7 @@ const telHref = `tel:+${site.whatsappNumber}`;
 
   @media (max-width: 640px) {
     .special-orders {
-      padding-block: 96px;
+      padding-block: 40px 96px;
     }
     .special-orders__actions {
       flex-direction: column;

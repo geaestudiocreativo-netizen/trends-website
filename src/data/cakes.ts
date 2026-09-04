@@ -19,6 +19,8 @@ export type Cake = {
   sizes: CakeSize[];
   flavors: string[];
   image: string;
+  // Optional set of images for a swipeable gallery; falls back to `image` alone when absent.
+  images?: string[];
 };
 
 export const cakes: Cake[] = [
@@ -83,6 +85,11 @@ export const cakes: Cake[] = [
     ],
     flavors: [],
     image: "/images/cakes/Duo-citrico.jpeg",
+    images: [
+      "/images/cakes/Duo-citrico.jpeg",
+      "/images/cakes/Duo-citrico-2.jpeg",
+      "/images/cakes/Duo-citrico-3.jpeg",
+    ],
   },
   {
     name: "Tarta de zanahoria",

@@ -10,13 +10,13 @@ const jpegSrcSet = `${imageBase}-480.jpg 480w, ${imageBase}-960.jpg 960w, ${imag
 ---
 <section id="servicios" class="services-editorial section" aria-label="Servicios">
   <div class="services-editorial__text">
+    <p class="services-editorial__eyebrow">ENCARGOS ESPECIALES</p>
+
     <p class="services-editorial__statement">
       Para ti,<br />
       para tu restaurante<br />
       o para tu evento.
     </p>
-
-    <p class="services-editorial__eyebrow">ENCARGOS ESPECIALES</p>
   </div>
 
   <figure class="services-editorial__media">
@@ -46,13 +46,13 @@ const jpegSrcSet = `${imageBase}-480.jpg 480w, ${imageBase}-960.jpg 960w, ${imag
   }
 
   .services-editorial__text {
-    max-width: clamp(280px, 60vw, 620px);
+    max-width: clamp(340px, 60vw, 620px);
     padding-inline: var(--gutter);
     text-align: center;
   }
 
   .services-editorial__statement {
-    margin: 0;
+    margin: 20px 0 0;
     /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
     font-family: var(--font-sans);
     font-weight: 300;
@@ -60,10 +60,11 @@ const jpegSrcSet = `${imageBase}-480.jpg 480w, ${imageBase}-960.jpg 960w, ${imag
     line-height: 1.35;
     letter-spacing: 0;
     color: var(--catalogue-dark);
+    white-space: nowrap;
   }
 
   .services-editorial__eyebrow {
-    margin: 20px 0 0;
+    margin: 0;
     /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
     font-family: var(--font-sans);
     font-weight: 300;

@@ -72,7 +72,7 @@ const afterBreak = cakes.slice(2);
   .catalogue__grid :global(.card:first-child) {
     padding-top: 0;
   }
-  .catalogue__grid :global(.card:not(:last-child))::after {
+  .catalogue__grid :global(.card)::after {
     content: "";
     position: absolute;
     bottom: 0;
@@ -97,7 +97,7 @@ const afterBreak = cakes.slice(2);
     .catalogue__grid :global(.card) {
       padding-block: 0;
     }
-    .catalogue__grid :global(.card:not(:last-child))::after {
+    .catalogue__grid :global(.card)::after {
       content: none;
     }
   }
@@ -114,6 +114,29 @@ const afterBreak = cakes.slice(2);
         heads.forEach((h) => h.setAttribute("aria-expanded", "false"));
         head.setAttribute("aria-expanded", open ? "false" : "true");
       });
+    });
+
+    // ── Swipe galleries: thin progress line tracks scroll position ──
+    const galleries = Array.from(grid.querySelectorAll<HTMLElement>(".card__gallery"));
+    galleries.forEach((gallery) => {
+      const track = gallery.nextElementSibling as HTMLElement | null;
+      const fill = track?.classList.contains("card__gallery-progress")
+        ? track.querySelector<HTMLElement>(".card__gallery-progress-fill")
+        : null;
+      const count = gallery.children.length;
+      if (!track || !fill || count < 2) return;
+
+      const trackWidth = track.clientWidth;
+      const fillWidth = trackWidth / count;
+      fill.style.width = `${fillWidth}px`;
+
+      const update = () => {
+        const max = gallery.scrollWidth - gallery.clientWidth;
+        const ratio = max > 0 ? gallery.scrollLeft / max : 0;
+        fill.style.transform = `translateX(${ratio * (trackWidth - fillWidth)}px)`;
+      };
+      update();
+      gallery.addEventListener("scroll", update, { passive: true });
     });
   }
 </script>

@@ -102,6 +102,7 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
     transform-origin: center;
     will-change: transform, opacity;
     opacity: 1;
+    animation: heroImageReveal 2.4s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   /* Soft cream veil so the dark logo stays legible on a bright photo. */
@@ -210,12 +211,16 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
   }
 
   @keyframes heroRise {
-    from { opacity: 0; transform: translate3d(0, 14px, 0); }
+    from { opacity: 0; transform: translate3d(0, 8px, 0); }
     to   { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
+  @keyframes heroImageReveal {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
   .hero-in {
     will-change: transform, opacity;
-    animation: heroRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: heroRise 2.4s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .hero__mark.hero-in { animation-delay: 0.15s; }
   .hero__title.hero-in { animation-delay: 0.22s; }

@@ -9,7 +9,7 @@ const orderLink = waLink(site.whatsappDefaultMessage);
   <div class="container">
     <div class="catalogue__intro">
       <h2 class="catalogue__intro-heading">Nuestras tartas</h2>
-      <p class="catalogue__intro-body">
+      <p class="catalogue__intro-body quote-reveal">
         En mi casa, el postre siempre tuvo su momento. Y quizá por eso aprendí que siempre hay que dejar un huequito para lo que nos hace felices.
       </p>
     </div>
@@ -320,6 +320,24 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       });
     }
     updateCatalogueNav();
+
+    if (window.matchMedia("(max-width: 640px)").matches
+      && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const mobileCardObserver = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add("card--mobile-reveal");
+            observer.unobserve(entry.target);
+          });
+        },
+        { threshold: 0.15 },
+      );
+
+      grid.querySelectorAll<HTMLElement>(".card").forEach((card) => {
+        mobileCardObserver.observe(card);
+      });
+    }
 
     const heads = Array.from(grid.querySelectorAll<HTMLButtonElement>(".card__head"));
     heads.forEach((head) => {

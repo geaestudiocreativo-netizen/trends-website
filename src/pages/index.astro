@@ -10,7 +10,7 @@ import SpecialOrders from "../components/SpecialOrders.astro";
   <Header />
   <Hero />
   <section class="catalogue-statement" aria-label="Sobre las tartas">
-    <p>En mi casa, el postre siempre tuvo su momento. Y quizá por eso aprendí que siempre hay que dejar un huequito para lo que nos hace felices.</p>
+    <p class="quote-reveal">En mi casa, el postre siempre tuvo su momento. Y quizá por eso aprendí que siempre hay que dejar un huequito para lo que nos hace felices.</p>
   </section>
   <main>
     <Catalogue />
@@ -42,6 +42,25 @@ import SpecialOrders from "../components/SpecialOrders.astro";
       font-weight: 300;
       line-height: 1.6;
       color: var(--catalogue-dark);
+    }
+  }
+
+  :global(.quote-reveal) {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+    transition: opacity 1.8s var(--ease), transform 1.8s var(--ease);
+  }
+
+  :global(.quote-reveal.is-visible) {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(.quote-reveal) {
+      opacity: 1;
+      transform: none;
+      transition: none;
     }
   }
 
@@ -80,3 +99,22 @@ import SpecialOrders from "../components/SpecialOrders.astro";
     }
   }
 </style>
+
+<script>
+  const quoteReveals = document.querySelectorAll<HTMLElement>(".quote-reveal");
+
+  if (quoteReveals.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    quoteReveals.forEach((quote) => revealObserver.observe(quote));
+  }
+</script>

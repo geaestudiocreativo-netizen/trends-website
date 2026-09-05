@@ -31,6 +31,12 @@ const telHref = `tel:+${site.whatsappNumber}`;
     padding-block: clamp(120px, 14vw, 168px);
   }
 
+  @media (min-width: 1024px) {
+    .special-orders {
+      background: #ffffff;
+    }
+  }
+
   .special-orders__inner {
     max-width: 560px;
     margin-inline: auto;
@@ -55,7 +61,8 @@ const telHref = `tel:+${site.whatsappNumber}`;
 
   @media (min-width: 1024px) {
     .special-orders__inner {
-      max-width: 760px;
+      /* Widened so the intro paragraph below has room to fit its own single-line max-width. */
+      max-width: 840px;
     }
   }
 
@@ -70,6 +77,13 @@ const telHref = `tel:+${site.whatsappNumber}`;
     width: 100%;
     max-width: clamp(420px, 54vw, 640px);
     margin: 0 auto 18px;
+  }
+
+  @media (min-width: 1024px) {
+    .special-orders__body {
+      /* Wide enough to keep the full sentence on one line at the desktop font size. */
+      max-width: 780px;
+    }
   }
 
   .special-orders__notice {

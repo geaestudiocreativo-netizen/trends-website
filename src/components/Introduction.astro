@@ -69,4 +69,21 @@
 			display: block;
 		}
 	}
+
+	@media (min-width: 1024px) {
+		.introduction {
+			padding-block: clamp(48px, 6vw, 80px);
+		}
+
+		/* Sized to its content instead of the shared container gutter, so both lines have room to fit in one row. */
+		.introduction__inner {
+			max-width: none;
+			width: max-content;
+			padding-inline: 0;
+		}
+
+		.introduction__title-break {
+			display: none;
+		}
+	}
 </style>

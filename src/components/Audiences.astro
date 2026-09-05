@@ -13,7 +13,7 @@ const jpegSrcSet = `${imageBase}-480.jpg 480w, ${imageBase}-960.jpg 960w, ${imag
     <p class="services-editorial__eyebrow">ENCARGOS ESPECIALES</p>
 
     <p class="services-editorial__statement">
-      Para ti,<br />
+      Para ti,<br class="services-editorial__statement-break--mobile" />
       para tu restaurante<br />
       o para tu evento.
     </p>
@@ -84,6 +84,63 @@ const jpegSrcSet = `${imageBase}-480.jpg 480w, ${imageBase}-960.jpg 960w, ${imag
     display: block;
     width: 100%;
     height: auto;
+  }
+
+  @media (min-width: 1024px) {
+    .services-editorial {
+      flex-direction: row;
+      align-items: center;
+      /* Packs text tight against the image on the left, leaving empty space on the right. */
+      justify-content: flex-start;
+      gap: clamp(30px, 3vw, 50px);
+      padding-left: 0;
+      padding-right: var(--gutter);
+      padding-block: clamp(32px, 4vw, 56px);
+      /* Anchors the divider below to this section's own bottom edge. */
+      position: relative;
+    }
+
+    .services-editorial::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: var(--catalogue-dark);
+    }
+
+    .services-editorial__text {
+      /* No max-width: lets the text size to its natural (nowrap) line length. */
+      flex: 0 0 auto;
+      padding-inline: 0;
+      text-align: left;
+      /* Text sits on the right of the row; the image (order: 1) comes first. */
+      order: 2;
+    }
+
+    .services-editorial__media {
+      /* Fixed, capped width instead of growing to fill space: smaller, more editorial. */
+      flex: 0 0 clamp(260px, 24vw, 400px);
+      margin: 0;
+      order: 1;
+    }
+
+    .services-editorial__media img {
+      /* Fills the section's full height (divider to divider) without disturbing
+         the figure's flex slot, so the text's position stays unchanged. */
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: clamp(260px, 24vw, 400px);
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .services-editorial__statement-break--mobile {
+      display: none;
+    }
   }
 </style>
 

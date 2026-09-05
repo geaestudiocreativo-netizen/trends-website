@@ -16,17 +16,22 @@ const afterBreak = cakes.slice(2);
             Una buena tarta<br class="catalogue__break-heading-break--mobile" />
             no es solo un postre.
           </p>
-          <p class="catalogue__break-body">Es una mesa que se llena y una<br class="catalogue__break-body-break--mobile" />sobremesa que se alarga.</p>
+          <p class="catalogue__break-body">Es una mesa que se llena y una <br class="catalogue__break-body-break--mobile" />sobremesa que se alarga.</p>
         </div>
       </div>
 
       {afterBreak.map((cake, i) => <CakeCard cake={cake} id={`cake-${i + 2}`} index={i + 2} />)}
     </div>
+
+    <div class="catalogue__divider" aria-hidden="true"></div>
   </div>
 </section>
 
 <style>
-  .catalogue { background: var(--cream-hero); }
+  .catalogue { background: #ffffff; }
+  .catalogue__divider {
+    display: none;
+  }
   .catalogue__grid {
     display: flex;
     flex-direction: column;
@@ -45,16 +50,43 @@ const afterBreak = cakes.slice(2);
     text-align: center;
   }
   @media (min-width: 1024px) {
+    .catalogue {
+      /* Anchors the divider to the exact bottom edge of this section, i.e. the boundary with Services. */
+      position: relative;
+    }
+    .catalogue__divider {
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: var(--catalogue-dark);
+    }
+  }
+  @media (min-width: 1024px) {
     .catalogue__break {
-      width: fit-content;
-      max-width: 1200px;
-      margin-inline: auto;
-      padding-block: clamp(28px, 4vw, 48px);
+      /* Full-bleed: the flex row's justify-content:center already centers this
+         oversized (100vw) item flush with the viewport edges; an explicit
+         left/transform offset would double that shift. */
+      width: 100vw;
+      max-width: none;
+      margin-inline: 0;
+      /* +5px each side offsets the reduced heading/body gap below, keeping total height unchanged. */
+      padding-block: calc(clamp(8px, 1vw, 14px) + 5px);
       align-items: center;
+      /* Prevents the flex-wrap algorithm from shrinking this back down to fit the row. */
+      flex-shrink: 0;
+      /* Sits after the first 3 cards (order 1) and before the last 2 (order 3), see below. */
+      order: 2;
     }
     .catalogue__break-inner {
       max-width: none;
       padding-inline: clamp(32px, 3vw, 56px);
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.6em;
     }
     .catalogue__break-heading-break--mobile,
     .catalogue__break-body-break--mobile {
@@ -84,9 +116,24 @@ const afterBreak = cakes.slice(2);
     letter-spacing: 0.01em;
     color: rgba(255, 250, 244, 0.72);
   }
+  /* Unifies both lines into one cohesive editorial statement: same family
+     and color, single row on desktop, first sentence noticeably lighter
+     than the second for contrast. */
   @media (min-width: 1024px) {
-    .catalogue__break {
-      grid-column: 1 / -1;
+    .catalogue__break-heading,
+    .catalogue__break-body {
+      font-family: var(--font-sans);
+      font-size: clamp(13px, 0.9vw, 15px);
+      line-height: 1.1;
+      letter-spacing: 0.14em;
+      color: var(--cream-hero);
+    }
+    .catalogue__break-heading {
+      font-weight: 300;
+    }
+    .catalogue__break-body {
+      margin-top: 0;
+      font-weight: 500;
     }
   }
   .catalogue__grid :global(.card) {
@@ -107,22 +154,39 @@ const afterBreak = cakes.slice(2);
   }
 
   /* Desktop/tablet-landscape: a compact, proportioned product grid
-     instead of the full-bleed vertical list used on mobile. */
+     instead of the full-bleed vertical list used on mobile. Flex (not
+     CSS Grid) so an incomplete last row of cards auto-centers via
+     justify-content instead of trailing to one side. */
   @media (min-width: 1024px) {
     .catalogue__grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      /* Prevents grid's default "stretch": each card keeps its own
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      /* Prevents flex's default "stretch": each card keeps its own
          content height instead of matching the tallest in its row. */
       align-items: start;
       --row-gap: clamp(32px, 3.4vw, 56px);
       gap: var(--row-gap) clamp(28px, 3vw, 48px);
     }
     .catalogue__grid :global(.card) {
+      /* No flex-grow: cards keep the same width in both rows; justify-content
+         centers the row instead of stretching a shorter row to fill it. */
+      flex: 0 1 calc(33.333% - clamp(28px, 3vw, 48px) * 2 / 3);
+      min-width: 280px;
       padding-block: 0;
     }
     .catalogue__grid :global(.card)::after {
       content: none;
+    }
+    /* Reorders the DOM's 2-cards/break/3-cards split into a 3-cards/break/2-cards
+       visual layout, so row 1 has 3 cards and row 2 has 2 centered cards. */
+    .catalogue__grid :global(.card:nth-of-type(3)) {
+      order: 1;
+    }
+    .catalogue__grid :global(.card:nth-of-type(4)),
+    .catalogue__grid :global(.card:nth-of-type(5)) {
+      order: 3;
     }
   }
 </style>
@@ -140,34 +204,103 @@ const afterBreak = cakes.slice(2);
       });
     });
 
-    // ── Swipe galleries: thin progress line tracks scroll position ──
+    // ── Circular galleries: JS-driven position (not native scroll), so every
+    // slide can navigate both directions, wrapping past the first/last slide. ──
     const galleries = Array.from(grid.querySelectorAll<HTMLElement>(".card__gallery"));
     galleries.forEach((gallery) => {
-      const track = gallery.nextElementSibling as HTMLElement | null;
-      const fill = track?.classList.contains("card__gallery-progress")
-        ? track.querySelector<HTMLElement>(".card__gallery-progress-fill")
-        : null;
-      const count = gallery.children.length;
-      if (!track || !fill || count < 2) return;
+      // Progress track is a later sibling of the gallery within .card__media,
+      // not the immediately-next element (the nav arrows sit in between).
+      const media = gallery.parentElement;
+      const progressTrack = media?.querySelector<HTMLElement>(".card__gallery-progress") ?? null;
+      const fill = progressTrack?.querySelector<HTMLElement>(".card__gallery-progress-fill") ?? null;
+      // The slides live in a separate inner track so the transform moves them
+      // inside a stationary, clipped viewport (.card__gallery) instead of moving
+      // the viewport itself off-frame (which produced a blank gap).
+      const slidesTrack = gallery.querySelector<HTMLElement>(".card__gallery-track");
+      const realSlides = slidesTrack ? Array.from(slidesTrack.children) : [];
+      const count = realSlides.length;
+      if (!progressTrack || !fill || !slidesTrack || count < 2) return;
 
-      const trackWidth = track.clientWidth;
+      const trackWidth = progressTrack.clientWidth;
       const fillWidth = trackWidth / count;
       fill.style.width = `${fillWidth}px`;
 
-      const update = () => {
-        const max = gallery.scrollWidth - gallery.clientWidth;
-        const ratio = max > 0 ? gallery.scrollLeft / max : 0;
-        fill.style.transform = `translateX(${ratio * (trackWidth - fillWidth)}px)`;
-      };
-      update();
-      gallery.addEventListener("scroll", update, { passive: true });
+      // Infinite-track illusion: clone the first/last slide onto the opposite
+      // ends of the track. NEXT always moves further left and PREVIOUS always
+      // moves further right — including across the wrap — by animating onto a
+      // clone (pixel-identical to the real slide it wraps to), then instantly
+      // (no transition) snapping onto that real slide once settled, which is
+      // imperceptible since the clone and the real slide look identical.
+      const firstClone = realSlides[0].cloneNode(true) as HTMLElement;
+      const lastClone = realSlides[count - 1].cloneNode(true) as HTMLElement;
+      firstClone.setAttribute("aria-hidden", "true");
+      lastClone.setAttribute("aria-hidden", "true");
+      slidesTrack.appendChild(firstClone);
+      slidesTrack.insertBefore(lastClone, realSlides[0]);
 
-      // ── Desktop-only nav arrows: step one slide per click/keypress ──
-      const media = gallery.parentElement;
+      // Track position includes the two clones: 0 = lastClone, 1..count = the
+      // real slides, count+1 = firstClone. `index` is the real (0-based) slide.
+      let index = 0;
+      let position = 1;
+
+      const setPosition = (animate: boolean, pos: number) => {
+        if (animate) {
+          slidesTrack.style.transition = "";
+        } else {
+          slidesTrack.style.transition = "none";
+        }
+        slidesTrack.style.transform = `translateX(-${pos * 100}%)`;
+        if (!animate) {
+          // Commits the jump before any later animated transform is applied,
+          // otherwise the browser can animate across the jump itself.
+          void slidesTrack.offsetWidth;
+        }
+      };
+      const updateFill = () => {
+        fill.style.transform = `translateX(${index * fillWidth}px)`;
+      };
+      setPosition(false, position);
+      updateFill();
+
+      // If we're currently resting on a clone, snap back onto the matching
+      // real slide (no-op otherwise).
+      const settle = () => {
+        if (position === 0) {
+          position = count;
+          setPosition(false, position);
+        } else if (position === count + 1) {
+          position = 1;
+          setPosition(false, position);
+        }
+      };
+
+      // Deterministic settle timer instead of `transitionend`, which can be
+      // skipped/unreliable (e.g. an interrupted transition never fires it).
+      let settleTimer: ReturnType<typeof setTimeout> | undefined;
+      const scheduleSettle = () => {
+        if (settleTimer) clearTimeout(settleTimer);
+        settleTimer = setTimeout(settle, 450);
+      };
+
+      const render = (animate: boolean) => {
+        setPosition(animate, position);
+        updateFill();
+      };
+
+      const goTo = (dir: 1 | -1) => {
+        settle();
+        index = ((index + dir) % count + count) % count;
+        position += dir;
+        setPosition(true, position);
+        updateFill();
+        scheduleSettle();
+      };
+
+      // ── Desktop-only nav arrows: step one slide per click/keypress, wrapping at both ends ──
       const arrows = Array.from(media?.querySelectorAll<HTMLElement>(".card__gallery-arrow") ?? []);
       arrows.forEach((arrow) => {
-        const dir = Number(arrow.dataset.dir) || 0;
-        const step = () => gallery.scrollBy({ left: dir * gallery.clientWidth, behavior: "smooth" });
+        const dir = (Number(arrow.dataset.dir) || 0) as 1 | -1;
+        const step = () => goTo(dir);
         arrow.addEventListener("click", (event) => {
           event.stopPropagation();
           step();
@@ -180,6 +313,53 @@ const afterBreak = cakes.slice(2);
           }
         });
       });
+
+      // ── Swipe/drag: Pointer Events cover touch, mouse and pen with one code path,
+      // so dragging always works regardless of input device. Snaps to the nearest
+      // slide (wrapping past either end) on release. ──
+      let startX = 0;
+      let currentX = 0;
+      let dragging = false;
+      let pointerId: number | null = null;
+
+      const onPointerDown = (event: PointerEvent) => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        // Prevent the browser's native image-drag gesture from hijacking the
+        // pointer (it fires pointercancel almost immediately otherwise).
+        if (event.pointerType === "mouse") event.preventDefault();
+        settle();
+        dragging = true;
+        pointerId = event.pointerId;
+        startX = currentX = event.clientX;
+        slidesTrack.style.transition = "none";
+        gallery.setPointerCapture(pointerId);
+      };
+
+      const onPointerMove = (event: PointerEvent) => {
+        if (!dragging || event.pointerId !== pointerId) return;
+        currentX = event.clientX;
+        const deltaPercent = ((currentX - startX) / gallery.clientWidth) * 100;
+        slidesTrack.style.transform = `translateX(calc(-${position * 100}% + ${deltaPercent}%))`;
+      };
+
+      const endDrag = (event: PointerEvent) => {
+        if (!dragging || event.pointerId !== pointerId) return;
+        dragging = false;
+        const deltaX = currentX - startX;
+        const threshold = gallery.clientWidth * 0.15;
+        if (deltaX <= -threshold) {
+          goTo(1);
+        } else if (deltaX >= threshold) {
+          goTo(-1);
+        } else {
+          render(true);
+        }
+      };
+
+      gallery.addEventListener("pointerdown", onPointerDown);
+      gallery.addEventListener("pointermove", onPointerMove);
+      gallery.addEventListener("pointerup", endDrag);
+      gallery.addEventListener("pointercancel", endDrag);
     });
   }
 </script>

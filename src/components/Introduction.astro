@@ -3,10 +3,10 @@
 		<h2 id="introduction-title" class="introduction__title">Tartas de autor<br class="introduction__title-break" /> en Las&nbsp;Rozas</h2>
 
 		<p class="introduction__body">
-			En mi casa, el postre siempre tuvo<br />
-			su momento. Y quizá por eso<br />
-			aprendí que siempre hay que dejar<br />
-			un huequito para lo que nos hace<br />
+			En mi casa, el postre siempre tuvo<br class="introduction__body-break" />
+			su momento. Y quizá por eso<br class="introduction__body-break" />
+			aprendí que siempre hay que dejar<br class="introduction__body-break" />
+			un huequito para lo que nos hace<br class="introduction__body-break" />
 			felices.
 		</p>
 	</div>
@@ -25,11 +25,11 @@
 	}
 
 	@media (min-width: 641px) {
-		.introduction__inner { max-width: 460px; }
+		.introduction__inner { max-width: 620px; }
 	}
 
 	@media (min-width: 1280px) {
-		.introduction__inner { max-width: 520px; }
+		.introduction__inner { max-width: 680px; }
 	}
 
 	.introduction__title {
@@ -43,14 +43,9 @@
 		line-height: 1.25;
 	}
 
+	/* Always shown, on mobile and desktop alike, so the heading reflows into the same two lines. */
 	.introduction__title-break {
-		display: none;
-	}
-
-	@media (max-width: 640px) {
-		.introduction__title-break {
-			display: block;
-		}
+		display: block;
 	}
 
 	.introduction__body {
@@ -62,5 +57,16 @@
 		line-height: 1.8;
 		letter-spacing: 0.01em;
 		color: rgba(255, 250, 244, 0.72);
+	}
+
+	/* Hardcoded breaks reproduce the mobile line lengths; hide them past mobile so the paragraph reflows into the wider desktop column. */
+	.introduction__body-break {
+		display: none;
+	}
+
+	@media (max-width: 640px) {
+		.introduction__body-break {
+			display: block;
+		}
 	}
 </style>

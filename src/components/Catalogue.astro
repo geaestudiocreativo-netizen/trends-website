@@ -12,8 +12,11 @@ const afterBreak = cakes.slice(2);
 
       <div class="catalogue__break">
         <div class="catalogue__break-inner">
-          <p class="catalogue__break-heading">Una buena tarta<br />no es solo un postre.</p>
-          <p class="catalogue__break-body">Es una mesa que se llena y una<br />sobremesa que se alarga.</p>
+          <p class="catalogue__break-heading">
+            Una buena tarta<br class="catalogue__break-heading-break--mobile" />
+            no es solo un postre.
+          </p>
+          <p class="catalogue__break-body">Es una mesa que se llena y una<br class="catalogue__break-body-break--mobile" />sobremesa que se alarga.</p>
         </div>
       </div>
 
@@ -40,6 +43,27 @@ const afterBreak = cakes.slice(2);
     max-width: 460px;
     padding-inline: var(--gutter);
     text-align: center;
+  }
+  @media (min-width: 1024px) {
+    .catalogue__break {
+      width: fit-content;
+      max-width: 1200px;
+      margin-inline: auto;
+      padding-block: clamp(28px, 4vw, 48px);
+      align-items: center;
+    }
+    .catalogue__break-inner {
+      max-width: none;
+      padding-inline: clamp(32px, 3vw, 56px);
+    }
+    .catalogue__break-heading-break--mobile,
+    .catalogue__break-body-break--mobile {
+      display: none;
+    }
+    .catalogue__break-heading,
+    .catalogue__break-body {
+      white-space: nowrap;
+    }
   }
   .catalogue__break-heading {
     margin: 0;
@@ -137,6 +161,25 @@ const afterBreak = cakes.slice(2);
       };
       update();
       gallery.addEventListener("scroll", update, { passive: true });
+
+      // ── Desktop-only nav arrows: step one slide per click/keypress ──
+      const media = gallery.parentElement;
+      const arrows = Array.from(media?.querySelectorAll<HTMLElement>(".card__gallery-arrow") ?? []);
+      arrows.forEach((arrow) => {
+        const dir = Number(arrow.dataset.dir) || 0;
+        const step = () => gallery.scrollBy({ left: dir * gallery.clientWidth, behavior: "smooth" });
+        arrow.addEventListener("click", (event) => {
+          event.stopPropagation();
+          step();
+        });
+        arrow.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            event.stopPropagation();
+            step();
+          }
+        });
+      });
     });
   }
 </script>

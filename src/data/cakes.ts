@@ -38,6 +38,11 @@ export const cakes: Cake[] = [
     ],
     flavors: [],
     image: "/images/cakes/Cremosa-de-oreo.jpeg",
+    images: [
+      "/images/cakes/Cremosa-de-oreo.jpeg",
+      "/images/cakes/Cremosa-de-oreo-2.jpeg",
+      "/images/cakes/Cremosa-de-oreo-3.jpeg",
+    ],
   },
 
   {
@@ -57,6 +62,11 @@ export const cakes: Cake[] = [
       "Galleta Lotus",
     ],
     image: "/images/cakes/Nuestra-tarta-de-queso.jpeg",
+    images: [
+      "/images/cakes/Nuestra-tarta-de-queso.jpeg",
+      "/images/cakes/Nuestra-tarta-de-queso-2.jpeg",
+      "/images/cakes/Nuestra-tarta-de-queso-3.jpeg",
+    ],
   },
   {
     name: "Recuerdos de la infancia",
@@ -69,6 +79,11 @@ export const cakes: Cake[] = [
     ],
     flavors: [],
     image: "/images/cakes/Recuerdos-de-la-infancia.jpeg",
+    images: [
+      "/images/cakes/Recuerdos-de-la-infancia.jpeg",
+      "/images/cakes/Recuerdos-de-la-infancia-2.jpeg",
+      "/images/cakes/Recuerdos-de-la-infancia-3.jpeg",
+    ],
   },
   {
     name: "Duo cítrico",
@@ -106,5 +121,10 @@ export const cakes: Cake[] = [
     ],
     flavors: [],
     image: "/images/cakes/Tarta-de-zanahoria.jpeg",
+    images: [
+      "/images/cakes/Tarta-de-zanahoria.jpeg",
+      "/images/cakes/Tarta-de-zanahoria-2.jpeg",
+      "/images/cakes/Tarta-de-zanahoria-3.jpeg",
+    ],
   },
 ];

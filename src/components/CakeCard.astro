@@ -56,6 +56,28 @@ const sizesLabel = cake.sizes && cake.sizes.length > 0
               </span>
             ))}
           </span>
+          <span
+            class="card__gallery-arrow card__gallery-arrow--prev"
+            role="button"
+            tabindex="0"
+            aria-label={`Foto anterior de ${cake.name}`}
+            data-dir="-1"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="M14.5 5.5l-6.5 6.5 6.5 6.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <span
+            class="card__gallery-arrow card__gallery-arrow--next"
+            role="button"
+            tabindex="0"
+            aria-label={`Foto siguiente de ${cake.name}`}
+            data-dir="1"
+          >
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="M9.5 5.5l6.5 6.5-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
           <span class="card__gallery-progress" aria-hidden="true">
             <span class="card__gallery-progress-fill"></span>
           </span>
@@ -225,6 +247,30 @@ const sizesLabel = cake.sizes && cake.sizes.length > 0
     inset: 0 auto 0 0;
     width: 33.333%;
     background: rgba(255, 255, 255, 0.92);
+  }
+
+  /* Desktop-only editorial nav arrows: thin strokes, no button chrome, mouse pointers only. */
+  .card__gallery-arrow {
+    display: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    padding: 8px;
+    line-height: 0;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: color var(--dur) var(--ease);
+  }
+  .card__gallery-arrow:hover,
+  .card__gallery-arrow:focus-visible {
+    color: rgba(255, 255, 255, 0.95);
+  }
+  .card__gallery-arrow svg { display: block; }
+  .card__gallery-arrow--prev { left: clamp(6px, 1.5vw, 14px); }
+  .card__gallery-arrow--next { right: clamp(6px, 1.5vw, 14px); }
+  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+    .card__gallery-arrow { display: block; }
   }
 
   .card__body {

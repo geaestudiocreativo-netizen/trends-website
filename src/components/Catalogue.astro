@@ -283,15 +283,20 @@ const orderLink = waLink(site.whatsappDefaultMessage);
     };
     positionCatalogueArrows();
     window.addEventListener("resize", positionCatalogueArrows);
-    let revealPrevAfterScroll = false;
     let carouselOffset = 0;
+    const getCarouselScrollPosition = () => {
+      const cssOffset = Number.parseFloat(getComputedStyle(grid).getPropertyValue("--cards-offset"));
+      const renderedTransformOffset = Number.isFinite(cssOffset) ? Math.abs(cssOffset) : 0;
+      return Math.max(grid.scrollLeft, renderedTransformOffset);
+    };
     const updateCatalogueNav = () => {
       if (!cataloguePrev || !firstCard) return;
-      const maxScroll = grid.scrollWidth - grid.clientWidth;
-      if (revealPrevAfterScroll && carouselOffset <= 2) return;
-      revealPrevAfterScroll = false;
-      cataloguePrev.hidden = false;
-      if (catalogueNext) catalogueNext.hidden = false;
+      const maxScroll = Math.max(0, grid.scrollWidth - grid.clientWidth);
+      const currentScroll = Math.min(maxScroll, getCarouselScrollPosition());
+      const atStart = currentScroll <= 2;
+      const atEnd = maxScroll <= 2 || maxScroll - currentScroll <= 2;
+      cataloguePrev.toggleAttribute("hidden", atStart);
+      if (catalogueNext) catalogueNext.toggleAttribute("hidden", atEnd);
     };
     const scrollByCard = (direction: number) => {
       const firstCard = grid.querySelector<HTMLElement>(".card");
@@ -313,13 +318,10 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       cataloguePrev.addEventListener("click", () => scrollByCard(-1));
     }
     if (catalogueNext) {
-      catalogueNext.addEventListener("click", () => {
-        revealPrevAfterScroll = true;
-        if (cataloguePrev) cataloguePrev.hidden = false;
-        scrollByCard(1);
-      });
+      catalogueNext.addEventListener("click", () => scrollByCard(1));
     }
     updateCatalogueNav();
+    window.addEventListener("resize", updateCatalogueNav);
 
     if (window.matchMedia("(min-width: 1024px)").matches
       && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

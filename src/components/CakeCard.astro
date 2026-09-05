@@ -17,9 +17,6 @@ const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imag
 const galleryBases = cake.images && cake.images.length > 1
   ? cake.images.map((img) => img.replace(/\.(?:jpe?g|png)$/i, ""))
   : null;
-const sizesLabel = cake.sizes && cake.sizes.length > 0
-  ? cake.sizes.map((s) => `${s.size} (${SERVINGS_BY_SIZE[s.size]})`).join(" \u00b7 ")
-  : "";
 ---
 <article class="card" data-card>
   <button
@@ -104,9 +101,8 @@ const sizesLabel = cake.sizes && cake.sizes.length > 0
     <span class="card__body">
       <span class="card__title">{cake.name}</span>
       {cake.description && <span class="card__desc">{cake.description}</span>}
-      {sizesLabel && <span class="card__sizes-line">Tamaños: {sizesLabel}</span>}
       <span class="card__details">
-        <span class="card__details-open">[VER DETALLES]</span>
+        <span class="card__details-open">[MÁS DETALLES]</span>
         <span class="card__details-close">[×]</span>
       </span>
     </span>
@@ -293,7 +289,7 @@ const sizesLabel = cake.sizes && cake.sizes.length > 0
     /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
     font-family: var(--font-sans);
     font-weight: 300;
-    font-size: 18px;
+    font-size: 21px;
     color: var(--catalogue-dark);
     line-height: 1.15;
     text-transform: uppercase;
@@ -306,7 +302,7 @@ const sizesLabel = cake.sizes && cake.sizes.length > 0
     /* Uses --font-sans (Poppins Light) instead of Montserrat: Montserrat has no 300 face loaded on this site, so it would render as a synthesized medium instead of genuinely light. */
     font-family: var(--font-sans);
     font-weight: 300;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.6;
     color: var(--catalogue-dark);
   }
@@ -350,11 +346,11 @@ const sizesLabel = cake.sizes && cake.sizes.length > 0
       padding-top: clamp(20px, 3vw, 32px);
     }
     .card__title {
-      font-size: 20px;
+      font-size: 23px;
     }
     .card__desc {
       min-height: 4.8em;
-      font-size: 13px;
+      font-size: 15px;
     }
     .card__sizes-line {
       margin-top: 8px;

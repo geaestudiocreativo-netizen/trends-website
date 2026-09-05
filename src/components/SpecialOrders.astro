@@ -6,7 +6,7 @@ const telHref = `tel:+${site.whatsappNumber}`;
 ---
 <section id="contacto" class="special-orders" aria-labelledby="special-orders-title">
   <div class="special-orders__inner">
-    <h2 class="special-orders__heading" id="special-orders-title">¿Y SI QUIERO<br />UNA TARTA<br />DIFERENTE?</h2>
+    <h2 class="special-orders__heading" id="special-orders-title">¿y si quiero <br class="special-orders__heading-break" /> una tarta <br class="special-orders__heading-break" /> diferente?</h2>
 
     <p class="special-orders__body">Para una celebración, un encargo especial o simplemente porque tienes una idea en mente.</p>
 
@@ -16,12 +16,11 @@ const telHref = `tel:+${site.whatsappNumber}`;
       <a class="btn btn--gold special-orders__btn" href={waLink(message)} target="_blank" rel="noopener">
         Hacer un encargo
       </a>
-      <a class="btn btn--light special-orders__btn" href={telHref}>
+      <a class="btn btn--light special-orders__btn special-orders__phone-btn" href={telHref}>
         Llamar por teléfono
       </a>
     </div>
 
-    <p class="special-orders__notice">Pedidos con 48 h de antelación.</p>
   </div>
 </section>
 
@@ -50,13 +49,19 @@ const telHref = `tel:+${site.whatsappNumber}`;
   .special-orders__heading {
     /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
     font-family: var(--font-sans);
-    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+    font-size: 16px;
     font-weight: 300;
     text-transform: none;
     letter-spacing: 0.01em;
     line-height: 1.25;
     color: var(--catalogue-dark);
     margin: 0 0 28px;
+  }
+
+  @media (min-width: 1024px) {
+    .special-orders__heading-break {
+      display: none;
+    }
   }
 
   @media (min-width: 1024px) {
@@ -86,15 +91,8 @@ const telHref = `tel:+${site.whatsappNumber}`;
     }
   }
 
-  .special-orders__notice {
-    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
-    font-family: var(--font-sans);
-    font-weight: 300;
-    font-size: clamp(0.75rem, 0.95vw, 0.85rem);
-    letter-spacing: 0.04em;
-    line-height: 1.6;
-    color: var(--catalogue-dark);
-    margin: 24px 0 0;
+  .special-orders__body {
+    margin-bottom: 0;
   }
 
   .special-orders__hint {
@@ -112,9 +110,16 @@ const telHref = `tel:+${site.whatsappNumber}`;
     padding-inline: 32px;
   }
 
+  .special-orders__phone-btn {
+    background: #ffffff;
+  }
+
   @media (max-width: 640px) {
     .special-orders {
       padding-block: 40px 96px;
+    }
+    .special-orders__heading-break {
+      display: none;
     }
     .special-orders__actions {
       flex-direction: column;

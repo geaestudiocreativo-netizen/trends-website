@@ -1,7 +1,6 @@
 ---
 import type { Cake } from "../data/cakes";
 import { SERVINGS_BY_SIZE } from "../data/cakes";
-import { site, waLink } from "../data/site";
 
 interface Props {
   cake: Cake;
@@ -10,7 +9,6 @@ interface Props {
 }
 const { cake, id, index } = Astro.props;
 const num = String(index + 1).padStart(2, "0");
-const orderMsg = site.whatsappItemMessage.replace("{item}", cake.name);
 const imageBase = cake.image.replace(/\.(?:jpe?g|png)$/i, "");
 const webpSrcSet = `${imageBase}-420.webp 420w, ${imageBase}-760.webp 760w, ${imageBase}-1080.webp 1080w, ${imageBase}-1600.webp 1600w`;
 const jpegSrcSet = `${imageBase}-420.jpg 420w, ${imageBase}-760.jpg 760w, ${imageBase}-1080.jpg 1080w, ${imageBase}-1600.jpg 1600w`;
@@ -102,6 +100,7 @@ const galleryBases = cake.images && cake.images.length > 1
       <span class="card__title">{cake.name}</span>
       {cake.description && <span class="card__desc">{cake.description}</span>}
       <span class="card__details">
+        {cake.sizes && cake.sizes.length > 0 && <span class="card__details-title" role="heading" aria-level="4">Tamaños y precios</span>}
         <span class="card__details-open">[MÁS DETALLES]</span>
         <span class="card__details-close">[×]</span>
       </span>
@@ -113,12 +112,12 @@ const galleryBases = cake.images && cake.images.length > 1
       <div class="detail">
         {cake.sizes && cake.sizes.length > 0 && (
           <>
-            <h4 class="detail__h">Tamaños y precios</h4>
             <ul class="sizes">
               {cake.sizes.map((s, i) => (
                 <li class="size">
                   <span class="size__label">
                     <span class="size-chip" style={`--bg:${i % 2 === 0 ? "#7B8062" : "#4A2928"};--fg:#F7F1E8`}>{s.size}</span>
+                    {SERVINGS_BY_SIZE[s.size] && <span class="size__divider" aria-hidden="true">|</span>}
                     {SERVINGS_BY_SIZE[s.size] && <span class="size__note">{SERVINGS_BY_SIZE[s.size]}</span>}
                   </span>
                   <span class="size__price">{s.price}</span>
@@ -146,9 +145,6 @@ const galleryBases = cake.images && cake.images.length > 1
           </>
         )}
 
-        <a class="btn btn--light detail__cta" href={waLink(orderMsg)} target="_blank" rel="noopener">
-          Pedir esta tarta
-        </a>
       </div>
     </div>
   </div>
@@ -253,26 +249,34 @@ const galleryBases = cake.images && cake.images.length > 1
     background: rgba(255, 255, 255, 0.92);
   }
 
-  /* Desktop-only editorial nav arrows: thin strokes, no button chrome, mouse pointers only. */
+  /* Desktop-only gallery controls: compact white squares over the photo. */
   .card__gallery-arrow {
     display: none;
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: auto;
+    bottom: 8px;
     z-index: 1;
-    padding: 8px;
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    box-sizing: border-box;
     line-height: 0;
+    background: rgba(0, 0, 0, 0.4);
     color: #fff;
     cursor: pointer;
-    transition: color var(--dur) var(--ease);
+    transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+  }
+  .card__gallery-arrow[hidden] {
+    display: none;
   }
   .card__gallery-arrow:hover,
   .card__gallery-arrow:focus-visible {
     color: #fff;
+    background: rgba(0, 0, 0, 0.4);
   }
   .card__gallery-arrow svg { display: block; }
-  .card__gallery-arrow--prev { left: clamp(6px, 1.5vw, 14px); }
-  .card__gallery-arrow--next { right: clamp(6px, 1.5vw, 14px); }
+  .card__gallery-arrow--prev { left: 4px; }
+  .card__gallery-arrow--next { right: 4px; }
   @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
     .card__gallery-arrow { display: block; }
     /* Arrows replace the progress bar as the nav cue on desktop. */
@@ -284,6 +288,13 @@ const galleryBases = cake.images && cake.images.length > 1
     flex-direction: column;
     max-width: 620px;
     padding-top: clamp(36px, 5.5vw, 56px);
+  }
+  @media (max-width: 640px) {
+    .card__media,
+    .card__body {
+      width: calc(100% + var(--gutter) * 2 - 32px);
+      margin-inline: calc(var(--gutter) * -1 + 16px);
+    }
   }
   .card__title {
     /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
@@ -319,16 +330,24 @@ const galleryBases = cake.images && cake.images.length > 1
   }
 
   .card__details {
-    display: inline-block;
-    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    align-self: flex-start;
     margin-top: clamp(40px, 6vw, 56px);
-    color: var(--catalogue-dark);
+    color: #8a8580;
     font-size: 0.76rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     text-decoration: none;
     opacity: 0.85;
     transition: opacity var(--dur) var(--ease);
+  }
+  @media (min-width: 1024px) {
+    .card__details {
+      margin-top: 8px;
+    }
   }
   .card__head:hover .card__details,
   .card__head:focus-visible .card__details {
@@ -337,12 +356,24 @@ const galleryBases = cake.images && cake.images.length > 1
   .card__details-close { display: none; }
   .card__head[aria-expanded="true"] .card__details-open { display: none; }
   .card__head[aria-expanded="true"] .card__details-close { display: inline; }
+  .card__details-title { display: none; }
+  .card__head[aria-expanded="true"] .card__details {
+    justify-content: space-between;
+  }
+  .card__head[aria-expanded="true"] .card__details-title { display: inline; }
 
   /* Desktop grid: reserve room for the longest description (up to 3 lines)
      so "Tamaños:" and "[VER DETALLES]" line up across cards even when one
      card's description wraps to more lines than the others. */
   @media (min-width: 1024px) {
+    .card__number,
+    .card__title,
+    .card__desc {
+      margin-left: 12px;
+    }
     .card__body {
+      height: 187px;
+      min-height: 187px;
       padding-top: clamp(20px, 3vw, 32px);
     }
     .card__title {
@@ -350,6 +381,7 @@ const galleryBases = cake.images && cake.images.length > 1
     }
     .card__desc {
       min-height: 4.8em;
+      flex: 1 1 auto;
       font-size: 15px;
     }
     .card__sizes-line {
@@ -357,7 +389,9 @@ const galleryBases = cake.images && cake.images.length > 1
       font-size: 11px;
     }
     .card__details {
-      margin-top: clamp(16px, 2.5vw, 24px);
+      margin-top: 2px;
+      margin-left: 12px;
+      width: calc(100% - 12px);
     }
   }
 
@@ -380,23 +414,35 @@ const galleryBases = cake.images && cake.images.length > 1
     display: flex;
     flex-direction: column;
     max-width: 620px;
-    padding: 20px 0 4px;
+    padding: 0 0 4px;
+  }
+  @media (max-width: 640px) {
+    .card__panel-inner {
+      width: calc(100% + var(--gutter) * 2 - 32px);
+      margin-inline: calc(var(--gutter) * -1 + 16px);
+    }
+  }
+  @media (min-width: 641px) {
+    .detail {
+      margin-left: 12px;
+    }
   }
   .card__panel-inner { background: transparent; }
   .detail__h {
     font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     color: rgba(69, 41, 40, 0.5); margin-top: 16px; margin-bottom: 8px;
   }
-  .sizes { display: flex; flex-direction: column; gap: 8px; }
+  .sizes { display: flex; flex-direction: column; gap: 8px; margin: 16px 0 0; }
   .size { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 0.86rem; }
-  .size__label { display: flex; align-items: center; gap: 8px; color: var(--catalogue-dark); flex-wrap: wrap; }
+  .size__label { display: flex; align-items: center; gap: 8px; color: var(--catalogue-dark); flex-wrap: nowrap; white-space: nowrap; }
   .size__code {
     display: inline-grid; place-items: center;
     width: 20px; height: 20px; border-radius: 5px;
     background: var(--bg); color: var(--fg);
     font-size: 0.66rem; font-weight: 600; line-height: 1;
   }
-  .size__note { display: block; width: 100%; font-size: 0.7rem; color: rgba(69, 41, 40, 0.6); font-style: normal; padding-left: 28px; }
+  .size__note { display: inline; width: auto; font-size: 0.7rem; color: rgba(69, 41, 40, 0.6); font-style: normal; padding-left: 0; white-space: nowrap; }
+  .size__divider { color: rgba(69, 41, 40, 0.45); font-size: 0.7rem; }
   .size__price { color: var(--catalogue-dark); font-weight: 600; white-space: nowrap; }
 
   .detail__allergens {
@@ -413,8 +459,6 @@ const galleryBases = cake.images && cake.images.length > 1
   .detail__allergens li::before { content: "— "; }
 
   .detail__storage { font-size: 0.8rem; color: rgba(69, 41, 40, 0.6); line-height: 1.55; }
-  .detail__cta { align-self: center; margin-top: 44px; }
-
   .card.is-hidden { display: none; }
 
 </style>

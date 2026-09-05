@@ -2,7 +2,6 @@
 import Base from "../layouts/Base.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
-import Introduction from "../components/Introduction.astro";
 import Audiences from "../components/Audiences.astro";
 import Catalogue from "../components/Catalogue.astro";
 import SpecialOrders from "../components/SpecialOrders.astro";
@@ -10,10 +9,74 @@ import SpecialOrders from "../components/SpecialOrders.astro";
 <Base>
   <Header />
   <Hero />
+  <section class="catalogue-statement" aria-label="Sobre las tartas">
+    <p>En mi casa, el postre siempre tuvo su momento. Y quizá por eso aprendí que siempre hay que dejar un huequito para lo que nos hace felices.</p>
+  </section>
   <main>
-    <Introduction />
     <Catalogue />
     <Audiences />
     <SpecialOrders />
   </main>
 </Base>
+
+<style>
+  .catalogue-statement {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .catalogue-statement {
+      display: grid;
+      min-height: 152px;
+      place-items: center;
+      padding: 150px var(--gutter);
+      background: #ffffff;
+      text-align: center;
+    }
+
+    .catalogue-statement p {
+      max-width: 900px;
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--catalogue-dark);
+    }
+  }
+
+  @media (max-width: 640px) {
+    main {
+      display: flex;
+      flex-direction: column;
+    }
+
+    main :global(.services-editorial) {
+      display: contents;
+    }
+
+    main :global(.services-editorial__text) {
+      order: 1;
+      width: 100%;
+      max-width: none;
+      padding: 88px var(--gutter) 48px;
+      background: var(--cream-hero);
+      border-top: 1px solid var(--catalogue-dark);
+    }
+
+    main :global(.services-editorial__eyebrow),
+    main :global(.services-editorial__statement) {
+      color: var(--catalogue-dark);
+    }
+
+    main :global(.special-orders) {
+      order: 2;
+    }
+
+    main :global(.services-editorial__media) {
+      order: 3;
+      margin: 0;
+      background: var(--cream-hero);
+    }
+  }
+</style>

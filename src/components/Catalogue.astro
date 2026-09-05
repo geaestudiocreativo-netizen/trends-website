@@ -1,27 +1,38 @@
 ---
 import { cakes } from "../data/cakes";
+import { site, waLink } from "../data/site";
 import CakeCard from "./CakeCard.astro";
 
-const beforeBreak = cakes.slice(0, 2);
-const afterBreak = cakes.slice(2);
+const orderLink = waLink(site.whatsappDefaultMessage);
 ---
 <section class="section catalogue" id="catalogo" aria-label="Nuestras tartas">
   <div class="container">
-    <div class="catalogue__grid" data-cards>
-      {beforeBreak.map((cake, i) => <CakeCard cake={cake} id={`cake-${i}`} index={i} />)}
-
-      <div class="catalogue__break">
-        <div class="catalogue__break-inner">
-          <p class="catalogue__break-heading">
-            Una buena tarta<br class="catalogue__break-heading-break--mobile" />
-            no es solo un postre.
-          </p>
-          <p class="catalogue__break-body">Es una mesa que se llena y una <br class="catalogue__break-body-break--mobile" />sobremesa que se alarga.</p>
-        </div>
-      </div>
-
-      {afterBreak.map((cake, i) => <CakeCard cake={cake} id={`cake-${i + 2}`} index={i + 2} />)}
+    <div class="catalogue__intro">
+      <h2 class="catalogue__intro-heading">Nuestras tartas</h2>
+      <p class="catalogue__intro-body">
+        En mi casa, el postre siempre tuvo su momento. Y quizá por eso aprendí que siempre hay que dejar un huequito para lo que nos hace felices.
+      </p>
     </div>
+    <div class="catalogue__carousel">
+      <button class="catalogue__nav" type="button" aria-label="Tartas anteriores" data-catalogue-prev>
+        <svg viewBox="0 0 24 24" width="64" height="64" aria-hidden="true">
+          <path d="M16 4.5 8.5 12l7.5 7.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <button class="catalogue__nav catalogue__nav--next" type="button" aria-label="Tartas siguientes" data-catalogue-next>
+        <svg viewBox="0 0 24 24" width="64" height="64" aria-hidden="true">
+          <path d="m8 4.5 7.5 7.5-7.5 7.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+      <div class="catalogue__grid" data-cards>
+        {cakes.map((cake, i) => <CakeCard cake={cake} id={`cake-${i}`} index={i} />)}
+      </div>
+    </div>
+    <p class="catalogue__order-intro">Para los momentos que merecen algo más.</p>
+    <a class="btn btn--gold catalogue__order" href={orderLink} target="_blank" rel="noopener">
+      HACER PEDIDO
+    </a>
+    <p class="catalogue__notice">Pedidos con 48 h de antelación.</p>
 
     <div class="catalogue__divider" aria-hidden="true"></div>
   </div>
@@ -36,104 +47,123 @@ const afterBreak = cakes.slice(2);
     display: flex;
     flex-direction: column;
   }
-  .catalogue__break {
-    width: calc(100% + var(--gutter) * 2);
-    margin-inline: calc(var(--gutter) * -1);
-    background: var(--catalogue-dark);
-    padding-block: clamp(96px, 14vw, 160px);
-    display: flex;
-    justify-content: center;
+  .catalogue__carousel {
+    position: relative;
   }
-  .catalogue__break-inner {
-    max-width: 460px;
-    padding-inline: var(--gutter);
+  .catalogue__order {
+    display: flex;
+    width: fit-content;
+    margin: clamp(64px, 8vw, 104px) auto 0;
+  }
+  .catalogue__order-intro {
+    display: none;
+  }
+  @media (max-width: 640px) {
+    .catalogue__order {
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+  @media (min-width: 1024px) {
+    .catalogue__order-intro {
+      display: block;
+      margin: 160px auto 0;
+      font-family: var(--font-sans);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+      color: var(--catalogue-dark);
+      text-align: center;
+    }
+    .catalogue__order {
+      width: 260px;
+      margin-top: 20px;
+    }
+  }
+  .catalogue__notice {
+    margin: 20px auto 0;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    color: var(--catalogue-dark);
     text-align: center;
+  }
+  .catalogue__nav {
+    display: none;
+  }
+  .catalogue__intro {
+    margin-inline: auto;
+    padding: clamp(48px, 8vw, 88px) 0 clamp(32px, 5vw, 56px);
+    text-align: left;
+  }
+  .catalogue__intro-heading {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.25;
+    letter-spacing: 0.03em;
+    color: var(--catalogue-dark);
+  }
+  .catalogue__intro-body {
+    margin: 16px 0 0;
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(14px, 0.9vw, 16px);
+    line-height: 1.8;
+    letter-spacing: 0.01em;
+    color: rgba(27, 25, 23, 0.72);
+  }
+  @media (max-width: 1023px) {
+    .catalogue__intro {
+      margin-inline: auto;
+    }
+  }
+  @media (max-width: 640px) {
+    .catalogue__intro {
+      padding-bottom: 120px;
+      text-align: center;
+    }
+    .catalogue__intro-heading {
+      display: none;
+    }
   }
   @media (min-width: 1024px) {
     .catalogue {
       /* Anchors the divider to the exact bottom edge of this section, i.e. the boundary with Services. */
       position: relative;
+      padding-top: 0;
     }
-    .catalogue__divider {
-      display: block;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      background: var(--catalogue-dark);
-    }
-  }
-  @media (min-width: 1024px) {
-    .catalogue__break {
-      /* Full-bleed: the flex row's justify-content:center already centers this
-         oversized (100vw) item flush with the viewport edges; an explicit
-         left/transform offset would double that shift. */
-      width: 100vw;
-      max-width: none;
-      margin-inline: 0;
-      /* +5px each side offsets the reduced heading/body gap below, keeping total height unchanged. */
-      padding-block: calc(clamp(8px, 1vw, 14px) + 5px);
-      align-items: center;
-      /* Prevents the flex-wrap algorithm from shrinking this back down to fit the row. */
-      flex-shrink: 0;
-      /* Sits after the first 3 cards (order 1) and before the last 2 (order 3), see below. */
-      order: 2;
-    }
-    .catalogue__break-inner {
-      max-width: none;
-      padding-inline: clamp(32px, 3vw, 56px);
-      display: flex;
-      align-items: baseline;
-      justify-content: center;
-      gap: 0.6em;
-    }
-    .catalogue__break-heading-break--mobile,
-    .catalogue__break-body-break--mobile {
+    .catalogue__intro {
       display: none;
     }
-    .catalogue__break-heading,
-    .catalogue__break-body {
-      white-space: nowrap;
-    }
   }
-  .catalogue__break-heading {
-    margin: 0;
-    /* Satoshi isn't loaded in this project; falls back to Poppins Light (300), already loaded. */
-    font-family: var(--font-sans);
-    font-weight: 300;
-    font-size: clamp(28px, 4vw, 42px);
-    line-height: 1.25;
-    letter-spacing: 0.03em;
-    color: var(--cream-hero);
-  }
-  .catalogue__break-body {
-    margin: 28px 0 0;
-    font-family: "Montserrat", var(--font-sans);
-    font-weight: 300;
-    font-size: clamp(14px, 0.9vw, 16px);
-    line-height: 1.8;
-    letter-spacing: 0.01em;
-    color: rgba(255, 250, 244, 0.72);
-  }
-  /* Unifies both lines into one cohesive editorial statement: same family
-     and color, single row on desktop, first sentence noticeably lighter
-     than the second for contrast. */
   @media (min-width: 1024px) {
-    .catalogue__break-heading,
-    .catalogue__break-body {
+    .catalogue__intro {
+      margin-inline: calc(var(--gutter) * -1 + 40px);
+      padding-top: clamp(56px, 6vw, 88px);
+      padding-bottom: clamp(32px, 3vw, 48px);
+    }
+    .catalogue__intro-heading,
+    .catalogue__intro-body {
       font-family: var(--font-sans);
-      font-size: clamp(13px, 0.9vw, 15px);
-      line-height: 1.1;
-      letter-spacing: 0.14em;
-      color: var(--cream-hero);
+      color: var(--catalogue-dark);
     }
-    .catalogue__break-heading {
-      font-weight: 300;
-    }
-    .catalogue__break-body {
-      margin-top: 0;
+    .catalogue__intro-heading {
+      font-size: clamp(24px, 2.2vw, 34px);
+      line-height: 1.2;
       font-weight: 500;
+    }
+    .catalogue__intro-body {
+      margin-top: 12px;
+      font-family: var(--font-sans);
+      font-size: clamp(14px, 0.9vw, 16px);
+      line-height: 1.8;
+      letter-spacing: 0.01em;
+      color: rgba(27, 25, 23, 0.72);
     }
   }
   .catalogue__grid :global(.card) {
@@ -152,58 +182,152 @@ const afterBreak = cakes.slice(2);
     height: 0.5px;
     background: var(--catalogue-dark);
   }
+  .catalogue__grid :global(.card:last-child)::after {
+    content: none;
+  }
 
   /* Desktop/tablet-landscape: a compact, proportioned product grid
      instead of the full-bleed vertical list used on mobile. Flex (not
      CSS Grid) so an incomplete last row of cards auto-centers via
      justify-content instead of trailing to one side. */
   @media (min-width: 1024px) {
+    .catalogue__carousel {
+      width: 100vw;
+      margin-left: calc((100% - 100vw) / 2);
+      margin-right: calc((100% - 100vw) / 2);
+    }
     .catalogue__grid {
       display: flex;
       flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: center;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
       /* Prevents flex's default "stretch": each card keeps its own
          content height instead of matching the tallest in its row. */
       align-items: start;
-      --row-gap: clamp(32px, 3.4vw, 56px);
-      gap: var(--row-gap) clamp(28px, 3vw, 48px);
+      gap: clamp(14px, 1.5vw, 24px);
+      overflow: hidden;
     }
     .catalogue__grid :global(.card) {
-      /* No flex-grow: cards keep the same width in both rows; justify-content
-         centers the row instead of stretching a shorter row to fill it. */
-      flex: 0 1 calc(33.333% - clamp(28px, 3vw, 48px) * 2 / 3);
+      flex: 0 0 calc((100% - clamp(28px, 3vw, 48px) * 2) / 3 - 148px);
       min-width: 280px;
       padding-block: 0;
+      scroll-snap-align: start;
+      transform: translateX(var(--cards-offset, 0px));
+      transition: transform var(--dur) var(--ease);
     }
     .catalogue__grid :global(.card)::after {
       content: none;
     }
-    /* Reorders the DOM's 2-cards/break/3-cards split into a 3-cards/break/2-cards
-       visual layout, so row 1 has 3 cards and row 2 has 2 centered cards. */
-    .catalogue__grid :global(.card:nth-of-type(3)) {
-      order: 1;
+    .catalogue__nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: 0;
+      color: #000000;
+      background: #ffffff;
+      border-radius: 0;
+      cursor: pointer;
+      filter: none;
     }
-    .catalogue__grid :global(.card:nth-of-type(4)),
-    .catalogue__grid :global(.card:nth-of-type(5)) {
-      order: 3;
+    .catalogue__nav--next {
+      left: auto;
+      right: 0;
+      width: 36px;
+      height: 36px;
+    }
+    .catalogue__nav:hover,
+    .catalogue__nav:focus-visible {
+      opacity: 1;
+      color: #8a8580;
+      background: #ffffff;
+    }
+    .catalogue__nav[hidden] {
+      display: none;
+    }
+    .catalogue__nav svg {
+      display: block;
+      width: 32px;
+      height: 32px;
     }
   }
 </style>
 
 <script>
-  // ── Cake cards: expand one at a time ───────────────────────────
+  // ── Cake cards: allow multiple cards to stay expanded ──────────
   const grid = document.querySelector<HTMLElement>("[data-cards]");
   if (grid) {
+    if (window.matchMedia("(min-width: 1024px)").matches) {
+      grid.scrollLeft = 0;
+    }
+    const cataloguePrev = document.querySelector<HTMLButtonElement>("[data-catalogue-prev]");
+    const catalogueNext = document.querySelector<HTMLButtonElement>("[data-catalogue-next]");
+    const firstCard = grid.querySelector<HTMLElement>(".card");
+    const carousel = grid.parentElement;
+    const positionCatalogueArrows = () => {
+      const media = firstCard?.querySelector<HTMLElement>(".card__media");
+      if (!carousel || !media) return;
+      const carouselTop = carousel.getBoundingClientRect().top;
+      const mediaRect = media.getBoundingClientRect();
+      const imageCenter = mediaRect.top + mediaRect.height / 2;
+      const top = `${imageCenter - carouselTop}px`;
+      if (cataloguePrev) cataloguePrev.style.top = top;
+      if (catalogueNext) catalogueNext.style.top = top;
+    };
+    positionCatalogueArrows();
+    window.addEventListener("resize", positionCatalogueArrows);
+    let revealPrevAfterScroll = false;
+    let carouselOffset = 0;
+    const updateCatalogueNav = () => {
+      if (!cataloguePrev || !firstCard) return;
+      const maxScroll = grid.scrollWidth - grid.clientWidth;
+      if (revealPrevAfterScroll && carouselOffset <= 2) return;
+      revealPrevAfterScroll = false;
+      cataloguePrev.hidden = carouselOffset <= 2;
+      if (catalogueNext) catalogueNext.hidden = carouselOffset >= maxScroll - 2;
+    };
+    const scrollByCard = (direction: number) => {
+      const firstCard = grid.querySelector<HTMLElement>(".card");
+      if (!firstCard) return;
+      const gap = Number.parseFloat(getComputedStyle(grid).columnGap) || 0;
+      const step = firstCard.getBoundingClientRect().width + gap;
+      const maxScroll = grid.scrollWidth - grid.clientWidth;
+      const nextScroll = carouselOffset + direction * step;
+      const target = direction > 0 && carouselOffset >= maxScroll - 2
+        ? 0
+        : direction < 0 && carouselOffset <= 2
+          ? maxScroll
+          : Math.max(0, Math.min(nextScroll, maxScroll));
+      carouselOffset = target;
+      grid.style.setProperty("--cards-offset", `${-target}px`);
+      updateCatalogueNav();
+    };
+    if (cataloguePrev) {
+      cataloguePrev.addEventListener("click", () => scrollByCard(-1));
+    }
+    if (catalogueNext) {
+      catalogueNext.addEventListener("click", () => {
+        revealPrevAfterScroll = true;
+        if (cataloguePrev) cataloguePrev.hidden = false;
+        scrollByCard(1);
+      });
+    }
+    updateCatalogueNav();
+
     const heads = Array.from(grid.querySelectorAll<HTMLButtonElement>(".card__head"));
     heads.forEach((head) => {
       head.addEventListener("click", () => {
         const open = head.getAttribute("aria-expanded") === "true";
-        heads.forEach((h) => h.setAttribute("aria-expanded", "false"));
         head.setAttribute("aria-expanded", open ? "false" : "true");
       });
     });
-
     // ── Circular galleries: JS-driven position (not native scroll), so every
     // slide can navigate both directions, wrapping past the first/last slide. ──
     const galleries = Array.from(grid.querySelectorAll<HTMLElement>(".card__gallery"));
@@ -291,6 +415,7 @@ const afterBreak = cakes.slice(2);
         settle();
         index = ((index + dir) % count + count) % count;
         position += dir;
+        updateArrowVisibility();
         setPosition(true, position);
         updateFill();
         scheduleSettle();
@@ -298,6 +423,13 @@ const afterBreak = cakes.slice(2);
 
       // ── Desktop-only nav arrows: step one slide per click/keypress, wrapping at both ends ──
       const arrows = Array.from(media?.querySelectorAll<HTMLElement>(".card__gallery-arrow") ?? []);
+      const previousArrow = arrows.find((arrow) => arrow.dataset.dir === "-1");
+      const nextArrow = arrows.find((arrow) => arrow.dataset.dir === "1");
+      const updateArrowVisibility = () => {
+        if (previousArrow) previousArrow.hidden = index === 0;
+        if (nextArrow) nextArrow.hidden = false;
+      };
+      updateArrowVisibility();
       arrows.forEach((arrow) => {
         const dir = (Number(arrow.dataset.dir) || 0) as 1 | -1;
         const step = () => goTo(dir);

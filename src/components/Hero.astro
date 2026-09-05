@@ -100,9 +100,8 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
     object-position: center center;
     transform: scale(1);
     transform-origin: center;
-    will-change: transform, opacity;
-    opacity: 1;
-    animation: heroImageReveal 2.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    will-change: transform;
+    animation: heroImageCinematic 3s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   /* Soft cream veil so the dark logo stays legible on a bright photo. */
@@ -210,23 +209,23 @@ const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 64
     }
   }
 
-  @keyframes heroRise {
-    from { opacity: 0; transform: translate3d(0, 8px, 0); }
+  @keyframes heroContentReveal {
+    from { opacity: 0; transform: translate3d(0, 12px, 0); }
     to   { opacity: 1; transform: translate3d(0, 0, 0); }
   }
-  @keyframes heroImageReveal {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+  @keyframes heroImageCinematic {
+    from { transform: scale(1.08); }
+    to   { transform: scale(1); }
   }
   .hero-in {
     will-change: transform, opacity;
-    animation: heroRise 2.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: heroContentReveal 1.65s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
   .hero__mark.hero-in { animation-delay: 0.15s; }
-  .hero__title.hero-in { animation-delay: 0.22s; }
-  .hero__description.hero-in { animation-delay: 0.29s; }
-  .hero__byline.hero-in { animation-delay: 0.36s; }
-  .hero__eyebrow.hero-in  { animation-delay: 0.30s; }
+  .hero__title.hero-in { animation-delay: 0.55s; }
+  .hero__description.hero-in { animation-delay: 0.95s; }
+  .hero__byline.hero-in { animation-delay: 1.35s; }
+  .hero__eyebrow.hero-in  { animation-delay: 1.05s; }
 
   @media (min-width: 641px) {
     /* Centred editorial lockup — logo, byline and eyebrow all share the

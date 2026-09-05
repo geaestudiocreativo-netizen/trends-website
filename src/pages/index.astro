@@ -46,25 +46,50 @@ import SpecialOrders from "../components/SpecialOrders.astro";
   }
 
   :global(.quote-reveal) {
-    opacity: 0;
-    transform: translate3d(0, 8px, 0);
-    transition: opacity 1.8s var(--ease), transform 1.8s var(--ease);
+    clip-path: inset(100% 0 0 0);
+    opacity: 0.12;
+    transform: translate3d(0, 42px, 0);
+    transition:
+      clip-path 2s var(--ease),
+      opacity 2s var(--ease),
+      transform 2s var(--ease);
   }
 
   :global(.quote-reveal.is-visible) {
     opacity: 1;
     transform: translate3d(0, 0, 0);
+    clip-path: inset(0 0 0 0);
   }
 
   @media (prefers-reduced-motion: reduce) {
     :global(.quote-reveal) {
       opacity: 1;
       transform: none;
+      clip-path: none;
       transition: none;
     }
   }
 
   @media (max-width: 640px) {
+    .catalogue-statement {
+      display: grid;
+      min-height: 152px;
+      place-items: center;
+      padding: 88px var(--gutter);
+      background: #ffffff;
+      text-align: center;
+    }
+
+    .catalogue-statement p {
+      max-width: 900px;
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--catalogue-dark);
+    }
+
     main {
       display: flex;
       flex-direction: column;

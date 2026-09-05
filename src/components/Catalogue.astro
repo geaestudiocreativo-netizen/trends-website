@@ -342,7 +342,8 @@ const orderLink = waLink(site.whatsappDefaultMessage);
         if (!scrollingDown || desktopRevealStarted) return;
 
         const gridRect = grid.getBoundingClientRect();
-        if (gridRect.top >= window.innerHeight || gridRect.bottom <= 0) return;
+        const viewportCenter = window.innerHeight * 0.5;
+        if (gridRect.top > viewportCenter || gridRect.bottom < viewportCenter) return;
 
         desktopRevealStarted = true;
         window.removeEventListener("scroll", startDesktopRevealOnScroll);

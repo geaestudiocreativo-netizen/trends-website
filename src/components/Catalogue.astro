@@ -290,8 +290,8 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       const maxScroll = grid.scrollWidth - grid.clientWidth;
       if (revealPrevAfterScroll && carouselOffset <= 2) return;
       revealPrevAfterScroll = false;
-      cataloguePrev.hidden = carouselOffset <= 2;
-      if (catalogueNext) catalogueNext.hidden = carouselOffset >= maxScroll - 2;
+      cataloguePrev.hidden = false;
+      if (catalogueNext) catalogueNext.hidden = false;
     };
     const scrollByCard = (direction: number) => {
       const firstCard = grid.querySelector<HTMLElement>(".card");

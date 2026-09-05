@@ -353,6 +353,11 @@ const galleryBases = cake.images && cake.images.length > 1
   .card__head:focus-visible .card__details {
     opacity: 1;
   }
+  @media (pointer: coarse) {
+    .card__head:focus {
+      outline: none;
+    }
+  }
   .card__details-close { display: none; }
   .card__head[aria-expanded="true"] .card__details-open { display: none; }
   .card__head[aria-expanded="true"] .card__details-close { display: inline; }

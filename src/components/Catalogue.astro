@@ -321,22 +321,91 @@ const orderLink = waLink(site.whatsappDefaultMessage);
     }
     updateCatalogueNav();
 
+    if (window.matchMedia("(min-width: 1024px)").matches
+      && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const desktopCards = Array.from(grid.querySelectorAll<HTMLElement>(".card"));
+      grid.classList.add("catalogue__grid--desktop-reveal");
+      desktopCards.forEach((card) => card.classList.add("card--desktop-reveal-pending"));
+
+      let desktopRevealStarted = false;
+      const startDesktopReveal = () => {
+        desktopCards.forEach((card, index) => {
+          card.style.setProperty("--desktop-reveal-delay", `${index * 0.34}s`);
+          card.classList.add("card--desktop-reveal");
+        });
+      };
+      let previousScrollY = window.scrollY;
+      const startDesktopRevealOnScroll = () => {
+        const currentScrollY = window.scrollY;
+        const scrollingDown = currentScrollY > previousScrollY;
+        previousScrollY = currentScrollY;
+        if (!scrollingDown || desktopRevealStarted) return;
+
+        const gridRect = grid.getBoundingClientRect();
+        if (gridRect.top >= window.innerHeight || gridRect.bottom <= 0) return;
+
+        desktopRevealStarted = true;
+        window.removeEventListener("scroll", startDesktopRevealOnScroll);
+        startDesktopReveal();
+      };
+      window.addEventListener("scroll", startDesktopRevealOnScroll, { passive: true });
+    }
+
     if (window.matchMedia("(max-width: 640px)").matches
       && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const mobileCardObserver = new IntersectionObserver(
-        (entries, observer) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            entry.target.classList.add("card--mobile-reveal");
-            observer.unobserve(entry.target);
-          });
-        },
-        { threshold: 0.15 },
-      );
+      const mobileCards = Array.from(grid.querySelectorAll<HTMLElement>(".card"));
+      const activeMobileCards = new Set<HTMLElement>();
+      const completedMobileCards = new Set<HTMLElement>();
+      let mobileRevealFrame = 0;
+      let previousMobileScrollY = window.scrollY;
+      const updateMobileImageReveal = () => {
+        mobileRevealFrame = 0;
+        const viewportHeight = window.innerHeight;
+        const revealDistance = viewportHeight * 0.55;
+        const scrollingDown = window.scrollY > previousMobileScrollY;
+        previousMobileScrollY = window.scrollY;
 
-      grid.querySelectorAll<HTMLElement>(".card").forEach((card) => {
-        mobileCardObserver.observe(card);
-      });
+        if (scrollingDown) {
+          mobileCards.forEach((card) => {
+            if (activeMobileCards.has(card) || completedMobileCards.has(card)) return;
+            const media = card.querySelector<HTMLElement>(".card__media");
+            if (!media) return;
+            const mediaRect = media.getBoundingClientRect();
+            if (mediaRect.top > viewportHeight || mediaRect.bottom <= 0) return;
+            card.querySelectorAll<HTMLImageElement>(".card__media img").forEach((image) => {
+              image.style.transformOrigin = "center";
+              image.style.transition = "none";
+              image.style.transform = "scale(0.88)";
+            });
+            activeMobileCards.add(card);
+          });
+        }
+
+        activeMobileCards.forEach((card) => {
+          const media = card.querySelector<HTMLElement>(".card__media");
+          if (!media) return;
+          const progress = Math.max(0, Math.min(1,
+            (viewportHeight - media.getBoundingClientRect().top) / revealDistance,
+          ));
+          const scale = 0.88 + progress * 0.12;
+          card.querySelectorAll<HTMLImageElement>(".card__media img").forEach((image) => {
+            image.style.transform = `scale(${scale.toFixed(4)})`;
+          });
+          if (progress >= 1) {
+            card.querySelectorAll<HTMLImageElement>(".card__media img").forEach((image) => {
+              image.style.transform = "scale(1)";
+            });
+            activeMobileCards.delete(card);
+            completedMobileCards.add(card);
+          }
+        });
+      };
+      const requestMobileRevealFrame = () => {
+        if (!mobileRevealFrame) mobileRevealFrame = requestAnimationFrame(updateMobileImageReveal);
+      };
+
+      window.addEventListener("scroll", requestMobileRevealFrame, { passive: true });
+      window.addEventListener("resize", requestMobileRevealFrame);
     }
 
     const heads = Array.from(grid.querySelectorAll<HTMLButtonElement>(".card__head"));

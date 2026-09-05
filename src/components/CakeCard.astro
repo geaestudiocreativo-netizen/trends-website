@@ -210,13 +210,39 @@ const galleryBases = cake.images && cake.images.length > 1
     }
   }
   @media (max-width: 640px) {
-    .card.card--mobile-reveal .card__media img {
-      animation: cakeCardMobileReveal 1.1s var(--ease) both;
+    .card__media img {
+      transition: none;
     }
   }
-  @keyframes cakeCardMobileReveal {
-    from { transform: translate3d(0, 0.6%, 0) scale(1.04); }
-    to { transform: translate3d(0, 0, 0) scale(1); }
+
+  @media (min-width: 1024px) {
+    .card--desktop-reveal-pending {
+      visibility: hidden;
+    }
+
+    .card--desktop-reveal-pending.card--desktop-reveal {
+      visibility: visible;
+      animation: cakeCardDesktopReveal 1.05s cubic-bezier(0.22, 1, 0.36, 1) var(--desktop-reveal-delay, 0s) both;
+    }
+  }
+
+  @keyframes cakeCardDesktopReveal {
+    0% {
+      opacity: 0;
+      transform: translateX(var(--cards-offset, 0px)) scale(0.99);
+    }
+    24% {
+      opacity: 1;
+      transform: translateX(var(--cards-offset, 0px)) scale(1.035);
+    }
+    62% {
+      opacity: 1;
+      transform: translateX(var(--cards-offset, 0px)) scale(1.035);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(var(--cards-offset, 0px)) scale(1);
+    }
   }
 
   /* Editorial swipe gallery: JS-driven transform, no visible controls. */

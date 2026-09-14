@@ -57,28 +57,26 @@ const galleryBases = cake.images && cake.images.length > 1
               ))}
             </span>
           </span>
-          <span
+          <button
+            type="button"
             class="card__gallery-arrow card__gallery-arrow--prev"
-            role="button"
-            tabindex="0"
             aria-label={`Foto anterior de ${cake.name}`}
             data-dir="-1"
           >
             <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
               <path d="M14.5 5.5l-6.5 6.5 6.5 6.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-          </span>
-          <span
+          </button>
+          <button
+            type="button"
             class="card__gallery-arrow card__gallery-arrow--next"
-            role="button"
-            tabindex="0"
             aria-label={`Foto siguiente de ${cake.name}`}
             data-dir="1"
           >
             <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
               <path d="M9.5 5.5l6.5 6.5-6.5 6.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
-          </span>
+          </button>
           <span class="card__gallery-progress" aria-hidden="true">
             <span class="card__gallery-progress-fill"></span>
           </span>

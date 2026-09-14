@@ -6,11 +6,18 @@ const heroDesktopAvifSrcset = `${imagePath("images/hero/hero-1280.avif")} 1280w,
 const heroDesktopWebpSrcset = `${imagePath("images/hero/hero-1280.webp")} 1280w, ${imagePath("images/hero/hero-1920.webp")} 1920w, ${imagePath("images/hero/hero-2560.webp")} 2560w`;
 const heroDesktopJpegSrcset = `${imagePath("images/hero/hero-1280.jpg")} 1280w, ${imagePath("images/hero/hero-1920.jpg")} 1920w, ${imagePath("images/hero/hero-2560.jpg")} 2560w`;
 
+const heroMobileAvifSrcset = `${imagePath("images/hero/hero-mobile-640.avif")} 640w, ${imagePath("images/hero/hero-mobile-960.avif")} 960w, ${imagePath("images/hero/hero-mobile-1280.avif")} 1280w`;
 const heroMobileWebpSrcset = `${imagePath("images/hero/hero-mobile-640.webp")} 640w, ${imagePath("images/hero/hero-mobile-960.webp")} 960w, ${imagePath("images/hero/hero-mobile-1280.webp")} 1280w`;
 const heroMobileJpegSrcset = `${imagePath("images/hero/hero-mobile-640.jpg")} 640w, ${imagePath("images/hero/hero-mobile-960.jpg")} 960w, ${imagePath("images/hero/hero-mobile-1280.jpg")} 1280w`;
 ---
 <header class="hero" id="top">
   <picture class="hero__media" aria-hidden="true">
+    <source
+      media="(max-width: 640px)"
+      type="image/avif"
+      srcset={heroMobileAvifSrcset}
+      sizes="100vw"
+    />
     <source
       media="(max-width: 640px)"
       type="image/webp"

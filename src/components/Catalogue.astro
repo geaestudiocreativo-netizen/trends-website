@@ -421,11 +421,17 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       window.addEventListener("resize", requestMobileRevealFrame);
     }
 
-    const heads = Array.from(grid.querySelectorAll<HTMLButtonElement>(".card__head"));
+    const heads = Array.from(grid.querySelectorAll<HTMLElement>(".card__head"));
     heads.forEach((head) => {
-      head.addEventListener("click", () => {
+      const toggle = () => {
         const open = head.getAttribute("aria-expanded") === "true";
         head.setAttribute("aria-expanded", open ? "false" : "true");
+      };
+      head.addEventListener("click", toggle);
+      head.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        toggle();
       });
     });
     // ── Circular galleries: JS-driven position (not native scroll), so every

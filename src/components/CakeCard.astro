@@ -17,8 +17,10 @@ const galleryBases = cake.images && cake.images.length > 1
   : null;
 ---
 <article class="card" data-card>
-  <button
+  <div
     class="card__head"
+    role="button"
+    tabindex="0"
     aria-expanded="false"
     aria-controls={`panel-${id}`}
     id={`btn-${id}`}
@@ -107,7 +109,7 @@ const galleryBases = cake.images && cake.images.length > 1
         <span class="card__details-close">[×]</span>
       </span>
     </span>
-  </button>
+  </div>
 
   <div class="card__panel" id={`panel-${id}`} role="region" aria-labelledby={`btn-${id}`}>
     <div class="card__panel-inner">

@@ -9,6 +9,7 @@ export const SERVINGS_BY_SIZE: Record<string, string> = {
   "15 cm": "8–10 pers.",
   "22 cm": "12–14 pers.",
   "24 cm": "14–16 pers.",
+  "29 cm": "10–12 pers.",
 };
 
 export type Cake = {
@@ -19,6 +20,7 @@ export type Cake = {
   sizes: CakeSize[];
   flavors: string[];
   image: string;
+  imagePlaceholder?: string;
   // Optional set of images for a swipeable gallery; falls back to `image` alone when absent.
   images?: string[];
 };
@@ -126,5 +128,29 @@ export const cakes: Cake[] = [
       "/images/cakes/Tarta-de-zanahoria-2.jpeg",
       "/images/cakes/Tarta-de-zanahoria-3.jpeg",
     ],
+  },
+  {
+    name: "Bizcocho Felisa",
+    category: "CÍTRICO",
+    description: "Esponjoso bizcocho de limón, el de toda la vida, recubierto de una crujiente capa cítrica",
+    allergens: [],
+    sizes: [
+      { size: "29 cm", price: "18 €" },
+    ],
+    flavors: [],
+    image: "/images/cakes/Bizcocho.jpeg",
+  },
+  {
+    name: "Suspiro italiano",
+    category: "CLÁSICO",
+    description: "Nuestra versión del clásico tiramisú",
+    allergens: [],
+    sizes: [
+      { size: "15 cm", price: "20 €" },
+      { size: "24 cm", price: "30 €" },
+    ],
+    flavors: [],
+    image: "",
+    imagePlaceholder: "Se está horneando...",
   },
 ];

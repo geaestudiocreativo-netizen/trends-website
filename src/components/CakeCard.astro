@@ -26,7 +26,11 @@ const galleryBases = cake.images && cake.images.length > 1
     <span class="card__number">{num}</span>
 
     <span class="card__media">
-      {galleryBases ? (
+      {cake.imagePlaceholder ? (
+        <span class="card__placeholder" role="img" aria-label={cake.imagePlaceholder}>
+          {cake.imagePlaceholder}
+        </span>
+      ) : galleryBases ? (
         <>
           <span class="card__gallery" role="group" aria-label={`Galería de fotos de ${cake.name}`}>
             <span class="card__gallery-track">
@@ -183,6 +187,22 @@ const galleryBases = cake.images && cake.images.length > 1
     overflow: hidden;
     width: calc(100% + var(--gutter) * 2);
     margin-inline: calc(var(--gutter) * -1);
+  }
+
+  .card__placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+    background: var(--cream-hero);
+    color: var(--catalogue-dark);
+    font-family: var(--font-sans);
+    font-size: clamp(0.55rem, 1.1vw, 0.75rem);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    text-align: center;
   }
   @media (min-width: 641px) {
     .card__media { aspect-ratio: 16 / 10; }

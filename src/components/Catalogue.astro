@@ -299,9 +299,15 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       const renderedTransformOffset = Number.isFinite(cssOffset) ? Math.abs(cssOffset) : 0;
       return Math.max(grid.scrollLeft, renderedTransformOffset);
     };
+    const getMaxCarouselScroll = () => {
+      const cards = grid.querySelectorAll<HTMLElement>(".card");
+      const lastCard = cards[cards.length - 1];
+      if (!lastCard) return 0;
+      return Math.max(0, lastCard.offsetLeft + lastCard.offsetWidth - grid.clientWidth);
+    };
     const updateCatalogueNav = () => {
       if (!cataloguePrev || !firstCard) return;
-      const maxScroll = Math.max(0, grid.scrollWidth - grid.clientWidth);
+      const maxScroll = getMaxCarouselScroll();
       const currentScroll = Math.min(maxScroll, getCarouselScrollPosition());
       const atStart = currentScroll <= 2;
       const atEnd = maxScroll <= 2 || maxScroll - currentScroll <= 2;
@@ -313,7 +319,7 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       if (!firstCard) return;
       const gap = Number.parseFloat(getComputedStyle(grid).columnGap) || 0;
       const step = firstCard.getBoundingClientRect().width + gap;
-      const maxScroll = grid.scrollWidth - grid.clientWidth;
+      const maxScroll = getMaxCarouselScroll();
       const nextScroll = carouselOffset + direction * step;
       const target = direction > 0 && carouselOffset >= maxScroll - 2
         ? 0

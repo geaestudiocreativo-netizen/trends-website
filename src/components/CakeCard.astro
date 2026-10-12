@@ -299,7 +299,7 @@ const galleryBases = cake.images && cake.images.length > 1
     transform: translateX(-50%);
     width: 40px;
     height: 2px;
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.45);
     pointer-events: none;
   }
   @media (min-width: 1024px) {
@@ -309,7 +309,8 @@ const galleryBases = cake.images && cake.images.length > 1
     position: absolute;
     inset: 0 auto 0 0;
     width: 33.333%;
-    background: rgba(255, 255, 255, 0.92);
+    background: #ffffff;
+    transition: transform 0.25s var(--ease);
   }
 
   /* Desktop-only gallery controls: compact white squares over the photo. */

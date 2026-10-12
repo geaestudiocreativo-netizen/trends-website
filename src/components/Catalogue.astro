@@ -337,6 +337,8 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       catalogueNext.addEventListener("click", () => scrollByCard(1));
     }
     updateCatalogueNav();
+    requestAnimationFrame(updateCatalogueNav);
+    window.addEventListener("load", updateCatalogueNav);
     window.addEventListener("resize", updateCatalogueNav);
 
     if (window.matchMedia("(min-width: 1024px)").matches

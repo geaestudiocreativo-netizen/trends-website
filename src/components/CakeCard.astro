@@ -16,7 +16,7 @@ const galleryBases = cake.images && cake.images.length > 1
   ? cake.images.map((img) => img.replace(/\.(?:jpe?g|png)$/i, ""))
   : null;
 ---
-<article class="card" data-card>
+<article class:list={["card", cake.name === "Trilogía de chocolates" && "card--trilogia"]} data-card>
   <div
     class="card__head"
     role="button"
@@ -143,6 +143,7 @@ const galleryBases = cake.images && cake.images.length > 1
         {cake.allergens && cake.allergens.length > 0 && (
           <>
             <h4 class="detail__h">Alérgenos</h4>
+            {cake.note && <p class="detail__storage">{cake.note}</p>}
             <ul class="detail__allergens">
               {cake.allergens.map((a) => <li>{a}</li>)}
             </ul>
@@ -223,6 +224,9 @@ const galleryBases = cake.images && cake.images.length > 1
     width: 100%; height: 100%; object-fit: cover;
     transition: transform 0.8s var(--ease);
     will-change: transform;
+  }
+  .card--trilogia .card__media img {
+    object-position: center bottom;
   }
   @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
     .card:hover .card__media img {
@@ -522,7 +526,7 @@ const galleryBases = cake.images && cake.images.length > 1
   }
   .detail__allergens li::before { content: "— "; }
 
-  .detail__storage { font-size: 0.8rem; color: rgba(69, 41, 40, 0.6); line-height: 1.55; }
+  .detail__storage { margin: 0 0 8px; font-size: 0.8rem; color: rgba(69, 41, 40, 0.6); line-height: 1.55; }
   .card.is-hidden { display: none; }
 
 </style>

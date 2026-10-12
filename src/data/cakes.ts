@@ -17,6 +17,7 @@ export type Cake = {
   category: string;
   description: string;
   allergens: string[];
+  note?: string;
   sizes: CakeSize[];
   flavors: string[];
   image: string;
@@ -29,7 +30,7 @@ export const cakes: Cake[] = [
   {
     name: "Cremosa de Oreo",
     category: "INTENSO",
-    description: "La galleta de toda la vida hecha tarta",
+    description: "La galleta de toda la vida .",
     allergens: [
       "No apto para intolerantes a lactosa y gluten",
       "Puede contener trazas de: soja y mostaza"
@@ -75,6 +76,7 @@ export const cakes: Cake[] = [
     category: "CLÁSICO",
     description: "Laminado de galletas y chocolate. Un clásico que nunca falla.",
     allergens: [],
+    note: "Disponible en versión sin gluten.",
     sizes: [
       { size: "15 cm", price: "15 €" },
       { size: "24 cm", price: "25 €" },
@@ -90,7 +92,7 @@ export const cakes: Cake[] = [
   {
     name: "Duo cítrico",
     category: "CÍTRICO",
-    description: "Cremosa de limon con un toque fresco de lima que te dejara con ganas de mas.",
+    description: "Cremosa de limón con un toque fresco de lima que te dejará con ganas de más.",
     allergens: [
       "No apto para intolerantes a lactosa y gluten",
       "Contiene huevo crudo",
@@ -130,27 +132,57 @@ export const cakes: Cake[] = [
     ],
   },
   {
-    name: "Bizcocho Felisa",
-    category: "CÍTRICO",
-    description: "Esponjoso bizcocho de limón, el de toda la vida, recubierto de una crujiente capa cítrica",
-    allergens: [],
+    name: "Trilogía de chocolates",
+    category: "INTENSO",
+    description: "Para los que aman el chocolate, sus tres versiones con base de galleta.",
+    allergens: ["Lactosa", "Soja", "Frutos de cáscara", "Gluten"],
+    note: "Disponible en versión sin gluten.",
     sizes: [
-      { size: "29 cm", price: "18 €" },
+      { size: "15 cm", price: "20 €" },
+      { size: "22 cm", price: "30 €" },
     ],
     flavors: [],
-    image: "/images/cakes/Bizcocho.jpeg",
+    image: "/images/cakes/Trilogia-chocolates.JPG",
+    images: [
+      "/images/cakes/Trilogia-chocolates.JPG",
+      "/images/cakes/Trilogia-chocolates-2.JPG",
+      "/images/cakes/Trilogia-chocolates-3.JPG",
+      "/images/cakes/Trilogia-chocolates-5.JPG",
+      "/images/cakes/Trilogia-chocolates-7.JPG",
+    ],
   },
   {
-    name: "Suspiro italiano",
+    name: "Bizcocho Felisa",
+    category: "CÍTRICO",
+    description: "Esponjoso bizcocho de limón de la abuela, el de toda la vida, recubierto de una crujiente capa cítrica.",
+    allergens: ["Gluten", "Lactosa"],
+    sizes: [
+      { size: "Tamaño único — 10–12 porciones — 29 cm", price: "18 €" },
+    ],
+    flavors: [],
+    image: "/images/cakes/Bizcocho-felisa.JPG",
+    images: [
+      "/images/cakes/Bizcocho-felisa.JPG",
+      "/images/cakes/Bizcocho-felisa-2.JPG",
+      "/images/cakes/Bizcocho-felisa-3.JPG",
+    ],
+  },
+  {
+    name: "Suspiro Italiano",
     category: "CLÁSICO",
-    description: "Nuestra versión del clásico tiramisú",
-    allergens: [],
+    description: "Nuestra versión del clásico tiramisú.",
+    allergens: ["Gluten", "Lactosa", "Soja"],
     sizes: [
       { size: "15 cm", price: "20 €" },
       { size: "24 cm", price: "30 €" },
     ],
     flavors: [],
-    image: "",
-    imagePlaceholder: "Se está horneando...",
+    image: "/images/cakes/Suspiro-italiano.JPG",
+    images: [
+      "/images/cakes/Suspiro-italiano.JPG",
+      "/images/cakes/Suspiro-italiano-2.JPG",
+      "/images/cakes/Suspiro-italiano-3.JPG",
+      "/images/cakes/Suspiro-italiano-4.JPG",
+    ],
   },
 ];

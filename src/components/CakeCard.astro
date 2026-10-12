@@ -413,6 +413,10 @@ const gallerySizes = isNewCake ? "(min-width: 1024px) 28vw, 100vw" : "100vw";
     transition: opacity var(--dur) var(--ease);
   }
   @media (min-width: 1024px) {
+    .card__head,
+    .card__details {
+      cursor: pointer;
+    }
     .card__details {
       margin-top: 8px;
     }

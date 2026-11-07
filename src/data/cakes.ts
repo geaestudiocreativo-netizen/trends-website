@@ -94,10 +94,11 @@ export const cakes: Cake[] = [
     category: "CÍTRICO",
     description: "Cremosa de limón con un toque fresco de lima que te dejará con ganas de más.",
     allergens: [
-      "No apto para intolerantes a lactosa y gluten",
+      "No apto para intolerantes a lactosa",
       "Contiene huevo crudo",
       "Puede contener trazas de: leche, soja, mostaza"
     ],
+    note: "Disponible en versión sin gluten.",
     sizes: [
       { size: "15 cm", price: "20 €" },
       { size: "22 cm", price: "30 €" },
@@ -171,7 +172,7 @@ export const cakes: Cake[] = [
     name: "Suspiro Italiano",
     category: "CLÁSICO",
     description: "Nuestra versión del clásico tiramisú.",
-    allergens: ["Gluten", "Lactosa", "Soja"],
+    allergens: ["Gluten", "Lactosa", "Soja", "Huevo crudo"],
     sizes: [
       { size: "15 cm", price: "20 €" },
       { size: "24 cm", price: "30 €" },

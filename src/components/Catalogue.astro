@@ -14,16 +14,18 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       </p>
     </div>
     <div class="catalogue__carousel">
-      <button class="catalogue__nav" type="button" aria-label="Tartas anteriores" data-catalogue-prev>
-        <svg viewBox="0 0 24 24" width="64" height="64" aria-hidden="true">
-          <path d="M16 4.5 8.5 12l7.5 7.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <button class="catalogue__nav catalogue__nav--next" type="button" aria-label="Tartas siguientes" data-catalogue-next>
-        <svg viewBox="0 0 24 24" width="64" height="64" aria-hidden="true">
-          <path d="m8 4.5 7.5 7.5-7.5 7.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
+      <div class="catalogue__nav-bar">
+        <button class="catalogue__nav" type="button" aria-label="Tartas anteriores" data-catalogue-prev>
+          <svg viewBox="0 0 24 24" width="64" height="64" aria-hidden="true">
+            <path d="M16 4.5 8.5 12l7.5 7.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <button class="catalogue__nav catalogue__nav--next" type="button" aria-label="Tartas siguientes" data-catalogue-next>
+          <svg viewBox="0 0 24 24" width="64" height="64" aria-hidden="true">
+            <path d="m8 4.5 7.5 7.5-7.5 7.5" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </div>
       <div class="catalogue__grid" data-cards>
         {cakes.map((cake, i) => <CakeCard cake={cake} id={`cake-${i}`} index={i} />)}
       </div>
@@ -94,7 +96,7 @@ const orderLink = waLink(site.whatsappDefaultMessage);
     color: var(--catalogue-dark);
     text-align: center;
   }
-  .catalogue__nav {
+  .catalogue__nav-bar {
     display: none;
   }
   .catalogue__intro {
@@ -228,12 +230,14 @@ const orderLink = waLink(site.whatsappDefaultMessage);
     .catalogue__grid :global(.card)::after {
       content: none;
     }
+    .catalogue__nav-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding-inline: 24px;
+      margin-bottom: 16px;
+    }
     .catalogue__nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 0;
-      z-index: 2;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -247,20 +251,11 @@ const orderLink = waLink(site.whatsappDefaultMessage);
       cursor: pointer;
       filter: none;
     }
-    .catalogue__nav--next {
-      left: auto;
-      right: 0;
-      width: 36px;
-      height: 36px;
-    }
     .catalogue__nav:hover,
     .catalogue__nav:focus-visible {
       opacity: 1;
       color: #8a8580;
       background: #ffffff;
-    }
-    .catalogue__nav[hidden] {
-      display: none;
     }
     .catalogue__nav svg {
       display: block;
@@ -279,40 +274,12 @@ const orderLink = waLink(site.whatsappDefaultMessage);
     }
     const cataloguePrev = document.querySelector<HTMLButtonElement>("[data-catalogue-prev]");
     const catalogueNext = document.querySelector<HTMLButtonElement>("[data-catalogue-next]");
-    const firstCard = grid.querySelector<HTMLElement>(".card");
-    const carousel = grid.parentElement;
-    const positionCatalogueArrows = () => {
-      const media = firstCard?.querySelector<HTMLElement>(".card__media");
-      if (!carousel || !media) return;
-      const carouselTop = carousel.getBoundingClientRect().top;
-      const mediaRect = media.getBoundingClientRect();
-      const imageCenter = mediaRect.top + mediaRect.height / 2;
-      const top = `${imageCenter - carouselTop}px`;
-      if (cataloguePrev) cataloguePrev.style.top = top;
-      if (catalogueNext) catalogueNext.style.top = top;
-    };
-    positionCatalogueArrows();
-    window.addEventListener("resize", positionCatalogueArrows);
     let carouselOffset = 0;
-    const getCarouselScrollPosition = () => {
-      const cssOffset = Number.parseFloat(getComputedStyle(grid).getPropertyValue("--cards-offset"));
-      const renderedTransformOffset = Number.isFinite(cssOffset) ? Math.abs(cssOffset) : 0;
-      return Math.max(grid.scrollLeft, renderedTransformOffset);
-    };
     const getMaxCarouselScroll = () => {
       const cards = grid.querySelectorAll<HTMLElement>(".card");
       const lastCard = cards[cards.length - 1];
       if (!lastCard) return 0;
       return Math.max(0, lastCard.offsetLeft + lastCard.offsetWidth - grid.clientWidth);
-    };
-    const updateCatalogueNav = () => {
-      if (!cataloguePrev || !firstCard) return;
-      const maxScroll = getMaxCarouselScroll();
-      const currentScroll = Math.min(maxScroll, getCarouselScrollPosition());
-      const atStart = currentScroll <= 2;
-      const atEnd = maxScroll <= 2 || maxScroll - currentScroll <= 2;
-      cataloguePrev.toggleAttribute("hidden", atStart);
-      if (catalogueNext) catalogueNext.toggleAttribute("hidden", atEnd);
     };
     const scrollByCard = (direction: number) => {
       const firstCard = grid.querySelector<HTMLElement>(".card");
@@ -328,7 +295,6 @@ const orderLink = waLink(site.whatsappDefaultMessage);
           : Math.max(0, Math.min(nextScroll, maxScroll));
       carouselOffset = target;
       grid.style.setProperty("--cards-offset", `${-target}px`);
-      updateCatalogueNav();
     };
     if (cataloguePrev) {
       cataloguePrev.addEventListener("click", () => scrollByCard(-1));
@@ -336,10 +302,6 @@ const orderLink = waLink(site.whatsappDefaultMessage);
     if (catalogueNext) {
       catalogueNext.addEventListener("click", () => scrollByCard(1));
     }
-    updateCatalogueNav();
-    requestAnimationFrame(updateCatalogueNav);
-    window.addEventListener("load", updateCatalogueNav);
-    window.addEventListener("resize", updateCatalogueNav);
 
     if (window.matchMedia("(min-width: 1024px)").matches
       && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
